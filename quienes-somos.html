@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiénes somos · ValladeporteEscolar</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f4f4f4; }
+
+  .topbar { background: #0a1628; padding: 5px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar span { color: #7a8fa6; font-size: 11px; }
+
+  .header { background: #0d2149; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #c9a84c; }
+  .logo { color: white; font-size: 24px; font-weight: bold; line-height: 1; text-decoration: none; display: block; }
+  .logo em { color: #c9a84c; font-style: normal; }
+  .logo small { display: block; font-size: 10px; color: rgba(255,255,255,0.55); margin-top: 2px; font-weight: normal; }
+
+  .navbar { background: #0a1628; display: flex; padding: 0 20px; gap: 2px; overflow-x: auto; }
+  .navbar a { color: #7a8fa6; font-size: 12px; padding: 9px 14px; text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+  .navbar a.active { color: #c9a84c; border-bottom-color: #c9a84c; }
+  .navbar a:hover { color: white; }
+
+  /* HERO SECCIÓN */
+  .section-hero { background: linear-gradient(135deg, #0d2149, #163a6e); padding: 30px 20px; text-align: center; border-bottom: 3px solid #c9a84c; }
+  .section-hero h1 { color: white; font-size: 26px; margin-bottom: 8px; }
+  .section-hero h1 em { color: #c9a84c; font-style: normal; }
+  .section-hero p { color: rgba(255,255,255,0.7); font-size: 13px; max-width: 620px; margin: 0 auto; line-height: 1.6; }
+
+  /* MAIN */
+  .main { max-width: 1000px; margin: 0 auto; padding: 28px 20px; }
+
+  /* SECCIÓN HEADER */
+  .sec-h { font-size: 15px; font-weight: bold; color: #0d2149; padding-bottom: 6px; border-bottom: 2px solid #c9a84c; margin-bottom: 16px; }
+
+  /* PRESENTACIÓN */
+  .presentacion { background: white; border-radius: 8px; border: 1px solid #e0e0e0; padding: 24px 28px; margin-bottom: 24px; line-height: 1.75; }
+  .presentacion p { font-size: 13px; color: #444; margin-bottom: 12px; }
+  .presentacion p:last-child { margin-bottom: 0; }
+  .presentacion strong { color: #0d2149; }
+
+  /* MISIÓN GRID */
+  .mision-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 24px; }
+  .mision-card { background: #0d2149; border-radius: 8px; padding: 20px; border: 1px solid rgba(201,168,76,0.3); }
+  .mision-icon { font-size: 28px; margin-bottom: 10px; }
+  .mision-card h3 { color: #c9a84c; font-size: 13px; font-weight: bold; margin-bottom: 7px; }
+  .mision-card p { color: #7a8fa6; font-size: 12px; line-height: 1.6; }
+
+  /* EQUIPO */
+  .equipo-box { background: white; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; margin-bottom: 24px; }
+  .equipo-inner { padding: 24px 28px; display: flex; align-items: center; gap: 24px; }
+  .equipo-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #0d2149, #163a6e); border: 3px solid #c9a84c; display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+  .equipo-info h3 { color: #0d2149; font-size: 16px; font-weight: bold; margin-bottom: 4px; }
+  .equipo-info .rol { color: #c9a84c; font-size: 12px; font-weight: bold; margin-bottom: 6px; }
+  .equipo-info p { color: #555; font-size: 12px; line-height: 1.6; }
+
+  /* COLABORACION */
+  .colab-box { background: white; border-radius: 8px; border: 1px solid #e0e0e0; padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px; }
+  .colab-logo { width: 56px; height: 56px; background: #f0f4f8; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; border: 1px solid #e0e0e0; }
+  .colab-info h3 { color: #0d2149; font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+  .colab-info p { color: #555; font-size: 12px; line-height: 1.6; }
+  .colab-info a { color: #c9a84c; text-decoration: none; font-size: 12px; }
+  .colab-info a:hover { text-decoration: underline; }
+
+  /* PROBLEMA */
+  .problema-box { background: #f0f4f8; border-left: 3px solid #c9a84c; border-radius: 0 8px 8px 0; padding: 18px 22px; margin-bottom: 24px; }
+  .problema-box h3 { color: #0d2149; font-size: 14px; font-weight: bold; margin-bottom: 10px; }
+  .problema-box p { font-size: 13px; color: #444; line-height: 1.7; margin-bottom: 10px; }
+  .problema-box p:last-child { margin-bottom: 0; }
+  .problema-box strong { color: #0d2149; }
+
+  .medios-row { display: flex; gap: 12px; margin: 12px 0; }
+  .medio-tag { background: white; border: 1px solid #ddd; border-radius: 4px; padding: 6px 12px; font-size: 11px; color: #555; display: flex; align-items: center; gap: 6px; }
+  .medio-dot { width: 7px; height: 7px; border-radius: 50%; background: #b5261e; flex-shrink: 0; }
+
+  /* CONTACTO */
+  .contacto-box { background: #0d2149; border-radius: 8px; padding: 24px 28px; border: 1px solid rgba(201,168,76,0.3); margin-bottom: 8px; }
+  .contacto-box h3 { color: #c9a84c; font-size: 15px; font-weight: bold; margin-bottom: 8px; }
+  .contacto-box p { color: #7a8fa6; font-size: 12px; line-height: 1.65; margin-bottom: 16px; }
+  .contacto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .contacto-item { background: rgba(255,255,255,0.07); border-radius: 6px; padding: 12px; border: 1px solid rgba(201,168,76,0.15); text-align: center; }
+  .contacto-item .ci-icon { font-size: 22px; margin-bottom: 6px; }
+  .contacto-item p { font-size: 11px; color: #7a8fa6; margin: 0; }
+  .contacto-item strong { display: block; color: #c9a84c; font-size: 12px; margin-bottom: 3px; }
+
+  /* FOOTER */
+  .footer { background: #0a1628; padding: 20px; border-top: 3px solid #c9a84c; margin-top: 20px; }
+  .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 20px; margin-bottom: 16px; max-width: 1000px; margin-left: auto; margin-right: auto; }
+  .footer-logo { color: white; font-size: 18px; font-weight: bold; margin-bottom: 6px; }
+  .footer-logo em { color: #c9a84c; font-style: normal; }
+  .footer-desc { font-size: 11px; color: #4a6080; line-height: 1.65; }
+  .footer-col h4 { color: #c9a84c; font-size: 11px; font-weight: bold; margin-bottom: 10px; }
+  .footer-col a { display: block; color: #4a6080; font-size: 11px; margin-bottom: 5px; text-decoration: none; }
+  .footer-col a:hover { color: #c9a84c; }
+  .footer-bottom { border-top: 1px solid #1a2a3a; padding-top: 12px; display: flex; justify-content: space-between; max-width: 1000px; margin: 0 auto; }
+  .footer-bottom p { color: #2a3a4a; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Periodismo deportivo escolar · Valladolid · UVA TFG 2025-26</span>
+  <span id="fecha"></span>
+</div>
+
+<div class="header">
+  <a href="index.html" class="logo">
+    Valla<em>Deporte</em>Escolar
+    <small>La plataforma del deporte base escolar en Valladolid</small>
+  </a>
+</div>
+
+<div class="navbar">
+  <a href="index.html">Inicio</a>
+  <a href="#">Noticias</a>
+  <a href="#">Resultados</a>
+  <a href="#">Clasificaciones</a>
+  <a href="#">Calendario</a>
+  <a href="#">Multimedia</a>
+  <a href="manual.html">Manual Periodista</a>
+  <a href="quienes-somos.html" class="active">Quiénes somos</a>
+</div>
+
+<div class="section-hero">
+  <h1>🏫 Quiénes <em>somos</em></h1>
+  <p>Una plataforma nacida desde el periodismo para darle voz al deporte escolar de Valladolid. Conoce el proyecto, su misión y a quién hay detrás.</p>
+</div>
+
+<div class="main">
+
+  <!-- PRESENTACIÓN -->
+  <p class="sec-h">El proyecto</p>
+  <div class="presentacion">
+    <p><strong>ValladeporteEscolar</strong> es una plataforma digital especializada en la cobertura informativa del deporte base escolar en Valladolid. Nació con una convicción clara: los jóvenes deportistas de colegios e institutos merecen la misma visibilidad que cualquier otro protagonista del deporte local.</p>
+    <p>La web centraliza noticias, resultados, clasificaciones, calendarios y recursos multimedia, con el objetivo de informar, motivar y unir a toda la comunidad deportiva: jugadores, entrenadores, familias y centros educativos. Y va un paso más allá: invita a esa misma comunidad a <strong>ser parte activa</strong> de la información, enviando crónicas, fotos y resultados.</p>
+    <p>Este proyecto es el Trabajo de Fin de Grado del Grado en Periodismo de la <strong>Universidad de Valladolid</strong>, curso 2025-26, y está desarrollado en colaboración con la Fundación Municipal de Deportes de Valladolid.</p>
+  </div>
+
+  <!-- MISIÓN -->
+  <p class="sec-h">Nuestra misión</p>
+  <div class="mision-grid">
+    <div class="mision-card">
+      <div class="mision-icon">📢</div>
+      <h3>Visibilizar el deporte escolar</h3>
+      <p>Dar cobertura continua y rigurosa a los eventos, resultados y protagonistas del deporte base en Valladolid, cubriendo el vacío informativo que dejan los medios tradicionales.</p>
+    </div>
+    <div class="mision-card">
+      <div class="mision-icon">✏️</div>
+      <h3>Fomentar el periodismo juvenil</h3>
+      <p>Proporcionar herramientas y formación a estudiantes para que puedan informar sobre su propio entorno deportivo con rigor, ética y responsabilidad.</p>
+    </div>
+    <div class="mision-card">
+      <div class="mision-icon">🤝</div>
+      <h3>Crear comunidad</h3>
+      <p>Ser el punto de encuentro entre deportistas, entrenadores, familias, clubes e instituciones, fomentando la participación activa y el intercambio de información.</p>
+    </div>
+    <div class="mision-card">
+      <div class="mision-icon">💡</div>
+      <h3>Alfabetización digital</h3>
+      <p>Convertir la plataforma en un recurso educativo que mejore las competencias digitales e informacionales de sus usuarios, especialmente los más jóvenes.</p>
+    </div>
+  </div>
+
+  <!-- EQUIPO -->
+  <p class="sec-h">Quién hay detrás</p>
+  <div class="equipo-box">
+    <div class="equipo-inner">
+      <div class="equipo-avatar">🎓</div>
+      <div class="equipo-info">
+        <h3>Álvaro Cifuentes Miñambres</h3>
+        <div class="rol">Autor del proyecto · Grado en Periodismo, UVA</div>
+        <p>Estudiante de cuarto curso del Grado en Periodismo en la Universidad de Valladolid. ValladeporteEscolar nace de su convicción de que el periodismo deportivo puede ser una herramienta de cambio social, capaz de visibilizar historias que de otro modo quedarían en el anonimato. Este proyecto es su TFG del curso 2025-26.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLABORACIÓN FMD -->
+  <p class="sec-h">En colaboración con</p>
+  <div class="colab-box">
+    <div class="colab-logo">🏅</div>
+    <div class="colab-info">
+      <h3>Fundación Municipal de Deportes de Valladolid</h3>
+      <p>La FMD organiza y promueve las competiciones escolares en Valladolid, ofreciendo oportunidades deportivas a niños y jóvenes en disciplinas tan diversas como el fútbol, el baloncesto, la gimnasia rítmica o las actividades acuáticas. ValladeporteEscolar nace con el propósito de amplificar la difusión de todas esas iniciativas.</p>
+      <a href="https://www.fmdva.org/" target="_blank">→ Visitar fmdva.org</a>
+    </div>
+  </div>
+
+  <!-- EL PROBLEMA -->
+  <p class="sec-h">Por qué existe esta plataforma</p>
+  <div class="problema-box">
+    <h3>Una carencia informativa estructural</h3>
+    <p>El análisis de los principales medios locales revela una realidad preocupante: el deporte escolar en Valladolid apenas tiene presencia mediática. Cuando aparece, lo hace de forma puntual y superficial, limitada a grandes eventos o finales de torneo.</p>
+    <div class="medios-row">
+      <div class="medio-tag"><div class="medio-dot"></div> El Norte de Castilla — cobertura esporádica, orientada al deporte federado</div>
+      <div class="medio-tag"><div class="medio-dot"></div> El Día de Valladolid — sin sección específica, apariciones muy ocasionales</div>
+    </div>
+    <p>Ambos medios priorizan el fútbol masculino y el baloncesto, dejando al margen disciplinas como el voleibol, el ajedrez, el fútbol sala o la gimnasia rítmica. Los verdaderos protagonistas —jugadores, entrenadores, docentes— no tienen voz en esos espacios.</p>
+    <p><strong>ValladeporteEscolar nace para cubrir ese vacío</strong>, con una cobertura continua, diversa e inclusiva que ponga en el centro a quienes practican el deporte escolar cada día.</p>
+  </div>
+
+  <!-- COLABORA -->
+  <p class="sec-h">Colabora con nosotros</p>
+  <div class="contacto-box">
+    <h3>¿Formas parte del deporte escolar en Valladolid?</h3>
+    <p>Esta plataforma es tuya. Si eres entrenador, docente, jugador, club o centro educativo, puedes enviarnos resultados, crónicas, fotos y vídeos de tus partidos y eventos. Cuantas más voces, más completa es la cobertura.</p>
+    <div class="contacto-grid">
+      <div class="contacto-item">
+        <div class="ci-icon">⚽</div>
+        <strong>Clubes y equipos</strong>
+        <p>Envíanos resultados y clasificaciones de tus competiciones</p>
+      </div>
+      <div class="contacto-item">
+        <div class="ci-icon">📸</div>
+        <strong>Fotos y vídeos</strong>
+        <p>Comparte imágenes y vídeos de partidos y entrenamientos</p>
+      </div>
+      <div class="contacto-item">
+        <div class="ci-icon">📝</div>
+        <strong>Crónicas y noticias</strong>
+        <p>Escribe sobre tu equipo siguiendo el Manual del Periodista</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Valla<em>Deporte</em>Escolar</div>
+      <p class="footer-desc">Plataforma digital dedicada a la visibilización del deporte base escolar en Valladolid. Proyecto TFG — Grado en Periodismo, Universidad de Valladolid, 2025-26.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Secciones</h4>
+      <a href="#">Noticias</a>
+      <a href="#">Resultados</a>
+      <a href="#">Clasificaciones</a>
+      <a href="#">Calendario</a>
+      <a href="#">Multimedia</a>
+      <a href="manual.html">Manual Periodista</a>
+    </div>
+    <div class="footer-col">
+      <h4>Información</h4>
+      <a href="quienes-somos.html">Quiénes somos</a>
+      <a href="#">Colabora con nosotros</a>
+      <a href="https://www.fmdva.org/" target="_blank">Fundación Municipal de Deportes</a>
+      <a href="#">Política de privacidad</a>
+      <a href="#">Contacto</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 ValladeporteEscolar · Álvaro Cifuentes Miñambres · UVA Periodismo</p>
+    <p>En colaboración con la FMD Valladolid</p>
+  </div>
+</div>
+
+<script>
+  const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const hoy = new Date();
+  document.getElementById('fecha').textContent = dias[hoy.getDay()] + ', ' + hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
+</script>
+
+</body>
+</html>
