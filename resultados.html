@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resultados · ValladeporteEscolar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f4f4f4}
+.topbar{background:#0a1628;padding:5px 20px;display:flex;justify-content:space-between;align-items:center}
+.topbar span{color:#7a8fa6;font-size:11px}
+.header{background:#0d2149;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #c9a84c}
+.logo{color:white;font-size:24px;font-weight:bold;line-height:1;text-decoration:none;display:block}
+.logo em{color:#c9a84c;font-style:normal}
+.logo small{display:block;font-size:10px;color:rgba(255,255,255,0.55);margin-top:2px;font-weight:normal}
+.navbar{background:#0a1628;display:flex;padding:0 20px;gap:2px;overflow-x:auto}
+.navbar a{color:#7a8fa6;font-size:12px;padding:9px 14px;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+.navbar a.active{color:#c9a84c;border-bottom-color:#c9a84c}
+.navbar a:hover{color:white}
+.section-hero{background:linear-gradient(135deg,#0d2149,#163a6e);padding:24px 20px;text-align:center;border-bottom:3px solid #c9a84c}
+.section-hero h1{color:white;font-size:24px;margin-bottom:6px}
+.section-hero h1 em{color:#c9a84c;font-style:normal}
+.section-hero p{color:rgba(255,255,255,0.7);font-size:13px}
+.main{max-width:1100px;margin:0 auto;padding:20px}
+.sport-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.sport-tab{background:#0d2149;color:#7a8fa6;border:1px solid rgba(201,168,76,0.2);padding:8px 16px;border-radius:4px;font-size:12px;cursor:pointer;font-family:Arial,sans-serif}
+.sport-tab.active{background:#c9a84c;color:#0a1628;font-weight:bold}
+.sport-tab:hover:not(.active){color:#c9a84c}
+.sport-section{display:none}
+.sport-section.active{display:block}
+.cat-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;border-bottom:2px solid #c9a84c;padding-bottom:8px}
+.cat-tab{background:#f0f4f8;color:#444;border:none;padding:6px 12px;border-radius:4px 4px 0 0;font-size:11px;cursor:pointer;font-family:Arial,sans-serif}
+.cat-tab.active{background:#0d2149;color:#c9a84c;font-weight:bold}
+.cat-tab:hover:not(.active){background:#dce4ed}
+.cat-section{display:none}
+.cat-section.active{display:block}
+.group-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.group-tab{background:#f0f4f8;color:#444;border:1px solid #ddd;padding:5px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif}
+.group-tab.active{background:#163a6e;color:#c9a84c;font-weight:bold;border-color:#163a6e}
+.group-section{display:none}
+.group-section.active{display:block}
+.jornada{background:white;border-radius:8px;border:1px solid #e0e0e0;margin-bottom:12px;overflow:hidden}
+.jornada-header{background:#0a1628;padding:8px 14px;display:flex;align-items:center;gap:8px;cursor:pointer}
+.jornada-header h4{color:#c9a84c;font-size:12px;font-weight:bold;flex:1}
+.jornada-toggle{color:#c9a84c;font-size:12px}
+.jornada-body{padding:0;display:none}
+.jornada-body.open{display:block}
+table{width:100%;border-collapse:collapse}
+th{background:#0d2149;color:#c9a84c;font-size:11px;padding:7px 10px;text-align:left}
+td{font-size:11px;padding:6px 10px;color:#333;border-bottom:1px solid #f0f0f0}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#f9f9f9}
+td.local{font-weight:bold;color:#0d2149}
+td.visitante{font-weight:bold;color:#163a6e}
+td.resultado{font-weight:bold;text-align:center;color:#c9a84c}
+.footer{background:#0a1628;padding:20px;border-top:3px solid #c9a84c;margin-top:20px}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px;margin-bottom:16px;max-width:1100px;margin-left:auto;margin-right:auto}
+.footer-logo{color:white;font-size:18px;font-weight:bold;margin-bottom:6px}
+.footer-logo em{color:#c9a84c;font-style:normal}
+.footer-desc{font-size:11px;color:#4a6080;line-height:1.65}
+.footer-col h4{color:#c9a84c;font-size:11px;font-weight:bold;margin-bottom:10px}
+.footer-col a{display:block;color:#4a6080;font-size:11px;margin-bottom:5px;text-decoration:none}
+.footer-bottom{border-top:1px solid #1a2a3a;padding-top:12px;display:flex;justify-content:space-between;max-width:1100px;margin:0 auto}
+.footer-bottom p{color:#2a3a4a;font-size:10px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Periodismo deportivo escolar · Valladolid · UVA TFG 2024-25</span>
+  <span id="fecha"></span>
+</div>
+<div class="header">
+  <a href="index.html" class="logo">Valla<em>Deporte</em>Escolar<small>La plataforma del deporte base escolar en Valladolid</small></a>
+</div>
+<div class="navbar">
+  <a href="index.html">Inicio</a><a href="#">Noticias</a><a href="resultados.html" class="active">Resultados</a>
+  <a href="#">Clasificaciones</a><a href="calendario.html">Calendario</a>
+  <a href="#">Multimedia</a><a href="manual.html">Manual Periodista</a><a href="quienes-somos.html">Quiénes somos</a>
+</div>
+<div class="section-hero">
+  <h1>📊 Resultados de <em>Deporte Escolar</em></h1>
+  <p>Temporada 2025/2026 · Fundación Municipal de Deportes de Valladolid</p>
+</div>
+<div class="main">
+<div class="sport-tabs">
+  <button class="sport-tab active" onclick="showSport('futbol',this)">⚽ Fútbol Sala</button>
+  <button class="sport-tab" onclick="showSport('atletismo',this)">🏃 Atletismo</button>
+  <button class="sport-tab" onclick="showSport('ajedrez',this)">♟️ Ajedrez</button>
+  <button class="sport-tab" onclick="showSport('gimnasia',this)">🤸 Gimnasia Rítmica</button>
+  <button class="sport-tab" onclick="showSport('voleibol',this)">🏐 Voleibol</button>
+  <button class="sport-tab" onclick="showSport('balonmano',this)">🤾 Balonmano</button>
+  <button class="sport-tab" onclick="showSport('baloncesto',this)">🏀 Baloncesto</button>
+  <button class="sport-tab" onclick="showSport('natacion',this)">🏊 Natación</button>
+</div>
+<div id="sport-futbol" class="sport-section active"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('futbol','benjaminm',this)">Benjamín</button>
+<button class="cat-tab" onclick="showCat('futbol','alevinm',this)">Alevín Masculino</button>
+<button class="cat-tab" onclick="showCat('futbol','infantilm',this)">Infantil Masculino</button>
+<button class="cat-tab" onclick="showCat('futbol','cadetm',this)">Cadete Masculino</button>
+<button class="cat-tab" onclick="showCat('futbol','juvenilm',this)">Juvenil Masculino</button>
+<button class="cat-tab" onclick="showCat('futbol','fase2',this)">2ª Fase</button>
+</div>
+<div id="futbol-cat-benjaminm" class="cat-section active">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoB',this)">GrupoB</button>
+<button class="group-tab" onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoC',this)">GrupoC</button>
+<button class="group-tab" onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoD',this)">GrupoD</button>
+<button class="group-tab" onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoE',this)">GrupoE</button>
+</div>
+<div id="futbol-benjaminm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:15</td><td>PABELLÓN MILAGROS</td><td class="local">FERRARI</td><td class="resultado">60–45</td><td class="visitante">VAL SPORT SALA - 'B'</td></tr>
+<tr><td>12:03</td><td>PABELLÓN ESPERANTO</td><td class="local">C. JESUS Y MARIA</td><td class="resultado">45–40</td><td class="visitante">JESUITINAS</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:22</td><td>P. LAGUNA</td><td class="local">CD. FUTSAL CIGALES - CASA2</td><td class="resultado">73–48</td><td class="visitante">CD NIARA - A</td></tr>
+<tr><td>14:25</td><td>PABELLÓN MILAGROS</td><td class="local">MARISTAS INMACULADA - B</td><td class="resultado">72–51</td><td class="visitante">TIERNO GALVAN - A</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:15</td><td>P. SAN ISIDRO</td><td class="local">TIERNO GALVAN - B</td><td class="resultado">67–54</td><td class="visitante">LESTONNAC - TENDER LA MANO</td></tr>
+<tr><td>18:25</td><td>P. LAGUNA</td><td class="local">COLEGIO PEÑALBA</td><td class="resultado">69–42</td><td class="visitante">CORAZONISTAS - A</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-benjaminm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:40</td><td>PABELLÓN ESPERANTO</td><td class="local">UNIÓN ARROYO FS - B</td><td class="resultado">64–55</td><td class="visitante">ANUNCIATA - PADRE COLL</td></tr>
+<tr><td>18:57</td><td>P. LAGUNA</td><td class="local">TIERNO GALVAN - A</td><td class="resultado">68–52</td><td class="visitante">UNIÓN ARROYO FS - D</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:19</td><td>P. LAGUNA</td><td class="local">SAFA-GRIAL</td><td class="resultado">72–60</td><td class="visitante">EL PERAL</td></tr>
+<tr><td>12:57</td><td>P. MIRIAM BLASCO</td><td class="local">ZARATAN - SPORT</td><td class="resultado">59–44</td><td class="visitante">PONCE DE LEON</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:38</td><td>P. LAGUNA</td><td class="local">FERRARI</td><td class="resultado">65–59</td><td class="visitante">JESUITINAS - NARANJA</td></tr>
+<tr><td>09:26</td><td>PABELLÓN MILAGROS</td><td class="local">UNIÓN ARROYO FS - B</td><td class="resultado">42–58</td><td class="visitante">SAN VIATOR - ENJOY SPORT</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-benjaminm-GrupoC" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:15</td><td>PABELLÓN MILAGROS</td><td class="local">CD. FUTSAL CIGALES - CASA2</td><td class="resultado">41–50</td><td class="visitante">ANUNCIATA - PADRE COLL</td></tr>
+<tr><td>16:38</td><td>P. LAGUNA</td><td class="local">AGUSTINAS - AZUL</td><td class="resultado">48–37</td><td class="visitante">FRANCISCO PINO - 6º</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:36</td><td>PABELLÓN ESPERANTO</td><td class="local">MARINA ESCOBAR</td><td class="resultado">53–63</td><td class="visitante">PABLO PICASSO</td></tr>
+<tr><td>13:11</td><td>P. HUERTA DEL REY</td><td class="local">JESUITINAS - MORADO</td><td class="resultado">74–59</td><td class="visitante">PABLO PICASSO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:15</td><td>P. MIRIAM BLASCO</td><td class="local">AGUSTINAS</td><td class="resultado">75–50</td><td class="visitante">JESUITINAS - MORADO</td></tr>
+<tr><td>19:53</td><td>P. LA VICTORIA</td><td class="local">MARISTAS INMACULADA</td><td class="resultado">74–38</td><td class="visitante">IES ZORRILLA - OCIO-SPORT</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-benjaminm-GrupoD" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:39</td><td>PABELLÓN ESPERANTO</td><td class="local">IES ZORRILLA - OCIO-SPORT</td><td class="resultado">71–54</td><td class="visitante">GARCÍA LORCA - OCIO-SPORT</td></tr>
+<tr><td>14:02</td><td>P. MIRIAM BLASCO</td><td class="local">LESTONNAC - TENDER LA MANO</td><td class="resultado">46–69</td><td class="visitante">CDFS LA CISTÉRNIGA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:59</td><td>P. SAN ISIDRO</td><td class="local">TIERNO GALVAN - A</td><td class="resultado">40–46</td><td class="visitante">GALILEO - PANTERAS</td></tr>
+<tr><td>15:26</td><td>P. LA VICTORIA</td><td class="local">CORAZONISTAS</td><td class="resultado">58–43</td><td class="visitante">CD. FUTSAL CIGALES - DREAMS</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:12</td><td>P. LA VICTORIA</td><td class="local">CDFS LA CISTÉRNIGA</td><td class="resultado">57–50</td><td class="visitante">Nª SEÑORA DEL CARMEN</td></tr>
+<tr><td>15:16</td><td>P. LAGUNA</td><td class="local">CD. FUTSAL CIGALES - DQ TRAB</td><td class="resultado">46–61</td><td class="visitante">CDFS LA CISTÉRNIGA</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-benjaminm-GrupoE" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:16</td><td>P. HUERTA DEL REY</td><td class="local">ANUNCIATA - PADRE COLL</td><td class="resultado">63–48</td><td class="visitante">IES JIMENEZ LOZANO</td></tr>
+<tr><td>11:40</td><td>P. MIRIAM BLASCO</td><td class="local">IÑIGO DE TORO</td><td class="resultado">41–63</td><td class="visitante">IES PARQUESOL</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:06</td><td>P. SAN ISIDRO</td><td class="local">CORAZONISTAS</td><td class="resultado">64–43</td><td class="visitante">ANUNCIATA - PADRE COLL</td></tr>
+<tr><td>13:39</td><td>P. LAGUNA</td><td class="local">GALILEO - PANTERAS</td><td class="resultado">57–50</td><td class="visitante">MARINA ESCOBAR</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:25</td><td>P. LA VICTORIA</td><td class="local">CORAZONISTAS - A</td><td class="resultado">42–41</td><td class="visitante">LESTONNAC - TENDER LA MANO</td></tr>
+<tr><td>15:38</td><td>PABELLÓN ESPERANTO</td><td class="local">PABLO PICASSO</td><td class="resultado">68–65</td><td class="visitante">C.D.CRISTO REY</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="futbol-cat-alevinm" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-alevinm','futbol-alevinm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('futbol-alevinm','futbol-alevinm-GrupoB',this)">GrupoB</button>
+<button class="group-tab" onclick="showGroup('futbol-alevinm','futbol-alevinm-GrupoC',this)">GrupoC</button>
+</div>
+<div id="futbol-alevinm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:17</td><td>PABELLÓN MILAGROS</td><td class="local">SAFA-GRIAL</td><td class="resultado">50–52</td><td class="visitante">MARISTAS CCV - B</td></tr>
+<tr><td>16:18</td><td>PABELLÓN MILAGROS</td><td class="local">RAMON Y CAJAL - ENJOY SPORT</td><td class="resultado">52–48</td><td class="visitante">CORAZONISTAS</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:57</td><td>PABELLÓN MILAGROS</td><td class="local">IÑIGO DE TORO</td><td class="resultado">75–43</td><td class="visitante">RAMON Y CAJAL - ES DEPORTE</td></tr>
+<tr><td>16:04</td><td>PABELLÓN MILAGROS</td><td class="local">ZARATAN - SPORT</td><td class="resultado">68–51</td><td class="visitante">Nª SEÑORA DEL CARMEN</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:32</td><td>PABELLÓN ESPERANTO</td><td class="local">CD. FUTSAL CIGALES - CASA2</td><td class="resultado">74–55</td><td class="visitante">SAFA-GRIAL</td></tr>
+<tr><td>09:29</td><td>PABELLÓN ESPERANTO</td><td class="local">TIERNO GALVAN</td><td class="resultado">40–60</td><td class="visitante">CD NIARA - A</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-alevinm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>10:41</td><td>P. LA VICTORIA</td><td class="local">G. BERCEO</td><td class="resultado">60–58</td><td class="visitante">CD NIARA - N</td></tr>
+<tr><td>10:29</td><td>P. SAN ISIDRO</td><td class="local">FRANCISCO PINO - 5º</td><td class="resultado">49–52</td><td class="visitante">GARCIA QUINTANA - CARDENAL M</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:12</td><td>P. LA VICTORIA</td><td class="local">CD. FUTSAL CIGALES - CASA2</td><td class="resultado">58–38</td><td class="visitante">TIERNO GALVAN</td></tr>
+<tr><td>09:51</td><td>P. SAN ISIDRO</td><td class="local">SAN VIATOR - ENJOY SPORT</td><td class="resultado">71–44</td><td class="visitante">UNIÓN ARROYO FS - C</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:07</td><td>PABELLÓN ESPERANTO</td><td class="local">MARINA ESCOBAR</td><td class="resultado">62–56</td><td class="visitante">CONDESA EYLO - VERDE</td></tr>
+<tr><td>18:52</td><td>P. MIRIAM BLASCO</td><td class="local">MARINA ESCOBAR</td><td class="resultado">74–49</td><td class="visitante">CD NIARA - A</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-alevinm-GrupoC" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:36</td><td>P. LAGUNA</td><td class="local">FRANCISCO PINO - 5º</td><td class="resultado">66–70</td><td class="visitante">RAMON Y CAJAL - ES DEPORTE</td></tr>
+<tr><td>10:52</td><td>P. LA VICTORIA</td><td class="local">JESUITINAS</td><td class="resultado">57–39</td><td class="visitante">CD NIARA - A</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:57</td><td>PABELLÓN MILAGROS</td><td class="local">MARISTAS CCV</td><td class="resultado">68–53</td><td class="visitante">MARISTAS CCV - B</td></tr>
+<tr><td>10:59</td><td>P. HUERTA DEL REY</td><td class="local">PONCE DE LEON</td><td class="resultado">47–65</td><td class="visitante">ALONSO BERRUGUETE - G</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:10</td><td>PABELLÓN MILAGROS</td><td class="local">UNIÓN ARROYO FS - C</td><td class="resultado">51–37</td><td class="visitante">MARINA ESCOBAR</td></tr>
+<tr><td>19:28</td><td>PABELLÓN MILAGROS</td><td class="local">EL PERAL</td><td class="resultado">41–48</td><td class="visitante">UNIÓN ARROYO FS - D</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="futbol-cat-infantilm" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-infantilm','futbol-infantilm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('futbol-infantilm','futbol-infantilm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="futbol-infantilm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:28</td><td>P. SAN ISIDRO</td><td class="local">CONDESA EYLO - VERDE</td><td class="resultado">66–57</td><td class="visitante">MARISTAS INMACULADA - B</td></tr>
+<tr><td>12:49</td><td>P. MIRIAM BLASCO</td><td class="local">ALONSO BERRUGUETE - G</td><td class="resultado">69–56</td><td class="visitante">C. D. OCIO-SPORT</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:34</td><td>PABELLÓN ESPERANTO</td><td class="local">ANUNCIATA - PADRE COLL</td><td class="resultado">45–62</td><td class="visitante">TIERNO GALVAN - A</td></tr>
+<tr><td>09:08</td><td>P. SAN ISIDRO</td><td class="local">ZARATAN - SPORT</td><td class="resultado">61–52</td><td class="visitante">GARCIA QUINTANA - CARDENAL M</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:52</td><td>P. MIRIAM BLASCO</td><td class="local">RAMON Y CAJAL - ENJOY SPORT</td><td class="resultado">40–56</td><td class="visitante">ZARATAN - SPORT</td></tr>
+<tr><td>19:26</td><td>P. LA VICTORIA</td><td class="local">PONCE DE LEON</td><td class="resultado">74–63</td><td class="visitante">CORAZONISTAS - B</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-infantilm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:44</td><td>P. LAGUNA</td><td class="local">CORAZONISTAS</td><td class="resultado">41–38</td><td class="visitante">CD. FUTSAL CIGALES - DREAMS</td></tr>
+<tr><td>11:27</td><td>P. SAN ISIDRO</td><td class="local">COLEGIO PEÑALBA</td><td class="resultado">72–37</td><td class="visitante">CD. FUTSAL CIGALES - MENFIS</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:04</td><td>P. SAN ISIDRO</td><td class="local">GARCÍA LORCA - OCIO-SPORT</td><td class="resultado">57–58</td><td class="visitante">CD NIARA - U</td></tr>
+<tr><td>16:54</td><td>P. LA VICTORIA</td><td class="local">RAMON Y CAJAL - ES DEPORTE</td><td class="resultado">46–68</td><td class="visitante">MARISTAS CCV</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:51</td><td>P. HUERTA DEL REY</td><td class="local">CORAZONISTAS - A</td><td class="resultado">50–63</td><td class="visitante">CRISTOBAL COLON - PANTERAS</td></tr>
+<tr><td>13:47</td><td>PABELLÓN MILAGROS</td><td class="local">MARISTAS INMACULADA - A</td><td class="resultado">60–56</td><td class="visitante">HUELGAS - B</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="futbol-cat-cadetm" class="cat-section">
+<div id="futbol-cadetm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:11</td><td>P. MIRIAM BLASCO</td><td class="local">ANTONIO MACHADO</td><td class="resultado">45–48</td><td class="visitante">FRANCISCO PINO - 6º</td></tr>
+<tr><td>14:25</td><td>PABELLÓN ESPERANTO</td><td class="local">ANUNCIATA - PADRE COLL</td><td class="resultado">60–65</td><td class="visitante">CD NIARA - N</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:59</td><td>PABELLÓN ESPERANTO</td><td class="local">IES PARQUESOL</td><td class="resultado">46–58</td><td class="visitante">CD NIARA</td></tr>
+<tr><td>10:38</td><td>P. MIRIAM BLASCO</td><td class="local">ALONSO BERRUGUETE - G</td><td class="resultado">50–67</td><td class="visitante">CD NIARA - A</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:31</td><td>P. SAN ISIDRO</td><td class="local">COLEGIO PEÑALBA</td><td class="resultado">63–41</td><td class="visitante">ALONSO BERRUGUETE - I</td></tr>
+<tr><td>18:33</td><td>PABELLÓN ESPERANTO</td><td class="local">CORAZONISTAS</td><td class="resultado">48–39</td><td class="visitante">CD NIARA - A</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="futbol-cat-juvenilm" class="cat-section">
+<div id="futbol-juvenilm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:02</td><td>P. MIRIAM BLASCO</td><td class="local">CD. SANTO TORIBIO - CÁRITAS</td><td class="resultado">74–68</td><td class="visitante">SAN VIATOR - ENJOY SPORT</td></tr>
+<tr><td>19:34</td><td>PABELLÓN ESPERANTO</td><td class="local">MARISTAS INMACULADA - B</td><td class="resultado">49–50</td><td class="visitante">CD NIARA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>10:52</td><td>P. SAN ISIDRO</td><td class="local">RAMON Y CAJAL - ENJOY SPORT</td><td class="resultado">65–46</td><td class="visitante">LESTONNAC - TENDER LA MANO</td></tr>
+<tr><td>09:09</td><td>P. LA VICTORIA</td><td class="local">AGUSTINAS - AZUL</td><td class="resultado">61–69</td><td class="visitante">ARCA REAL - ENJOY SPORT</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:09</td><td>PABELLÓN ESPERANTO</td><td class="local">GARCÍA LORCA - OCIO-SPORT</td><td class="resultado">42–56</td><td class="visitante">C. JESUS Y MARIA</td></tr>
+<tr><td>16:52</td><td>P. LAGUNA</td><td class="local">UNIÓN ARROYO FS - D</td><td class="resultado">62–43</td><td class="visitante">SAFA-GRIAL</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="futbol-cat-fase2" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-fase2','futbol-fase2-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('futbol-fase2','futbol-fase2-GrupoB',this)">GrupoB</button>
+</div>
+<div id="futbol-fase2-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:21</td><td>P. SAN ISIDRO</td><td class="local">CONDESA EYLO - VERDE</td><td class="resultado">45–43</td><td class="visitante">PONCE DE LEON</td></tr>
+<tr><td>10:32</td><td>P. LA VICTORIA</td><td class="local">CD. FUTSAL CIGALES - DQ TRAB</td><td class="resultado">66–48</td><td class="visitante">CD. FUTSAL CIGALES - DREAMS</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:13</td><td>P. SAN ISIDRO</td><td class="local">CORAZONISTAS - B</td><td class="resultado">41–57</td><td class="visitante">ANTONIO MACHADO</td></tr>
+<tr><td>13:43</td><td>PABELLÓN ESPERANTO</td><td class="local">JESUITINAS</td><td class="resultado">75–70</td><td class="visitante">HUELGAS - B</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:26</td><td>P. LA VICTORIA</td><td class="local">MARINA ESCOBAR</td><td class="resultado">60–46</td><td class="visitante">PONCE DE LEON</td></tr>
+<tr><td>17:03</td><td>P. LA VICTORIA</td><td class="local">CD NIARA - U</td><td class="resultado">55–49</td><td class="visitante">ZARATAN - SPORT</td></tr>
+</table></div></div>
+
+</div>
+<div id="futbol-fase2-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:22</td><td>P. MIRIAM BLASCO</td><td class="local">CD. SANTO TORIBIO - CÁRITAS</td><td class="resultado">66–64</td><td class="visitante">CD NIARA - A</td></tr>
+<tr><td>09:24</td><td>P. SAN ISIDRO</td><td class="local">CD. FUTSAL CIGALES - CASA2</td><td class="resultado">58–43</td><td class="visitante">GARCIA QUINTANA - CARDENAL M</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:15</td><td>P. SAN ISIDRO</td><td class="local">CONDESA EYLO - VERDE</td><td class="resultado">66–51</td><td class="visitante">CORAZONISTAS</td></tr>
+<tr><td>12:36</td><td>PABELLÓN ESPERANTO</td><td class="local">SAN VIATOR - ENJOY SPORT</td><td class="resultado">48–59</td><td class="visitante">GARCIA QUINTANA - CARDENAL M</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:45</td><td>P. SAN ISIDRO</td><td class="local">ALONSO BERRUGUETE - G</td><td class="resultado">61–37</td><td class="visitante">AGUSTINAS - AZUL</td></tr>
+<tr><td>15:34</td><td>P. LA VICTORIA</td><td class="local">TIERNO GALVAN - A</td><td class="resultado">46–58</td><td class="visitante">HUELGAS - B</td></tr>
+</table></div></div>
+
+</div>
+</div>
+</div>
+<div id="sport-atletismo" class="sport-section"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('atletismo','campocruces',this)">Campo a Través</button>
+<button class="cat-tab" onclick="showCat('atletismo','pistacubierta',this)">Pista Cubierta</button>
+<button class="cat-tab" onclick="showCat('atletismo','pistaairel',this)">Pista Aire Libre</button>
+<button class="cat-tab" onclick="showCat('atletismo','velocidad',this)">Velocidad</button>
+</div>
+<div id="atletismo-cat-campocruces" class="cat-section active">
+<div id="atletismo-campocruces-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Evento</th><th>Atleta</th><th>Colegio</th><th>Marca</th><th>Posición</th></tr>
+<tr><td>100m</td><td>Miguel López</td><td>Colegio 25</td><td>57.12</td><td>10º</td></tr>
+<tr><td>200m</td><td>Javier García</td><td>Colegio 10</td><td>49.42</td><td>8º</td></tr>
+<tr><td>400m</td><td>Sergio García</td><td>Colegio 27</td><td>29.81</td><td>10º</td></tr>
+<tr><td>800m</td><td>Andrés González</td><td>Colegio 45</td><td>84.13</td><td>4º</td></tr>
+<tr><td>Salto Altura</td><td>Valeria González</td><td>Colegio 27</td><td>59.56</td><td>8º</td></tr>
+<tr><td>Salto Longitud</td><td>Carlos Pérez</td><td>Colegio 32</td><td>80.70</td><td>4º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="atletismo-cat-pistacubierta" class="cat-section">
+<div id="atletismo-pistacubierta-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Evento</th><th>Atleta</th><th>Colegio</th><th>Marca</th><th>Posición</th></tr>
+<tr><td>100m</td><td>Javier González</td><td>Colegio 46</td><td>79.43</td><td>4º</td></tr>
+<tr><td>200m</td><td>Lucía Rodríguez</td><td>Colegio 3</td><td>70.23</td><td>10º</td></tr>
+<tr><td>400m</td><td>David González</td><td>Colegio 19</td><td>44.55</td><td>5º</td></tr>
+<tr><td>800m</td><td>Andrés Pérez</td><td>Colegio 35</td><td>32.76</td><td>7º</td></tr>
+<tr><td>Salto Altura</td><td>Teresa Rodríguez</td><td>Colegio 49</td><td>48.16</td><td>9º</td></tr>
+<tr><td>Salto Longitud</td><td>Teresa Pérez</td><td>Colegio 34</td><td>74.41</td><td>9º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="atletismo-cat-pistaairel" class="cat-section">
+<div id="atletismo-pistaairel-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Evento</th><th>Atleta</th><th>Colegio</th><th>Marca</th><th>Posición</th></tr>
+<tr><td>100m</td><td>Lucía Pérez</td><td>Colegio 48</td><td>94.20</td><td>10º</td></tr>
+<tr><td>200m</td><td>Miguel Sánchez</td><td>Colegio 40</td><td>83.39</td><td>3º</td></tr>
+<tr><td>400m</td><td>Sergio Martín</td><td>Colegio 1</td><td>97.41</td><td>4º</td></tr>
+<tr><td>800m</td><td>Verónica Martín</td><td>Colegio 35</td><td>25.82</td><td>8º</td></tr>
+<tr><td>Salto Altura</td><td>Valeria Pérez</td><td>Colegio 10</td><td>38.47</td><td>9º</td></tr>
+<tr><td>Salto Longitud</td><td>Lucía González</td><td>Colegio 43</td><td>19.79</td><td>2º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="atletismo-cat-velocidad" class="cat-section">
+<div id="atletismo-velocidad-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Evento</th><th>Atleta</th><th>Colegio</th><th>Marca</th><th>Posición</th></tr>
+<tr><td>100m</td><td>Lucía Fernández</td><td>Colegio 24</td><td>45.21</td><td>4º</td></tr>
+<tr><td>200m</td><td>David Fernández</td><td>Colegio 14</td><td>41.13</td><td>10º</td></tr>
+<tr><td>400m</td><td>Gabriela López</td><td>Colegio 43</td><td>39.64</td><td>4º</td></tr>
+<tr><td>800m</td><td>Javier Rodríguez</td><td>Colegio 22</td><td>62.96</td><td>3º</td></tr>
+<tr><td>Salto Altura</td><td>Gabriela Martín</td><td>Colegio 16</td><td>77.51</td><td>2º</td></tr>
+<tr><td>Salto Longitud</td><td>Amanda González</td><td>Colegio 34</td><td>66.97</td><td>4º</td></tr>
+</table></div></div>
+</div>
+</div>
+</div>
+<div id="sport-ajedrez" class="sport-section"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('ajedrez','prebenjamin',this)">Prebenjamín</button>
+<button class="cat-tab" onclick="showCat('ajedrez','benjamin',this)">Benjamín</button>
+<button class="cat-tab" onclick="showCat('ajedrez','alevin',this)">Alevín</button>
+<button class="cat-tab" onclick="showCat('ajedrez','infantil',this)">Infantil</button>
+<button class="cat-tab" onclick="showCat('ajedrez','cadete',this)">Cadete</button>
+</div>
+<div id="ajedrez-cat-prebenjamin" class="cat-section active">
+<div id="ajedrez-prebenjamin-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Tablero</th><th>Blancas</th><th>Negras</th><th>Resultado</th></tr>
+<tr><td>Tablero 1</td><td>Colegio 16</td><td>Colegio 46</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 2</td><td>Colegio 33</td><td>Colegio 22</td><td class="resultado">1-0</td></tr>
+<tr><td>Tablero 3</td><td>Colegio 7</td><td>Colegio 10</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 4</td><td>Colegio 30</td><td>Colegio 21</td><td class="resultado">½-½</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="ajedrez-cat-benjamin" class="cat-section">
+<div id="ajedrez-benjamin-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Tablero</th><th>Blancas</th><th>Negras</th><th>Resultado</th></tr>
+<tr><td>Tablero 1</td><td>Colegio 17</td><td>Colegio 48</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 2</td><td>Colegio 42</td><td>Colegio 2</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 3</td><td>Colegio 22</td><td>Colegio 9</td><td class="resultado">0-1</td></tr>
+<tr><td>Tablero 4</td><td>Colegio 24</td><td>Colegio 30</td><td class="resultado">0-1</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="ajedrez-cat-alevin" class="cat-section">
+<div id="ajedrez-alevin-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Tablero</th><th>Blancas</th><th>Negras</th><th>Resultado</th></tr>
+<tr><td>Tablero 1</td><td>Colegio 8</td><td>Colegio 39</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 2</td><td>Colegio 41</td><td>Colegio 15</td><td class="resultado">1-0</td></tr>
+<tr><td>Tablero 3</td><td>Colegio 12</td><td>Colegio 29</td><td class="resultado">0-1</td></tr>
+<tr><td>Tablero 4</td><td>Colegio 44</td><td>Colegio 23</td><td class="resultado">0-1</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="ajedrez-cat-infantil" class="cat-section">
+<div id="ajedrez-infantil-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Tablero</th><th>Blancas</th><th>Negras</th><th>Resultado</th></tr>
+<tr><td>Tablero 1</td><td>Colegio 22</td><td>Colegio 7</td><td class="resultado">0-1</td></tr>
+<tr><td>Tablero 2</td><td>Colegio 10</td><td>Colegio 38</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 3</td><td>Colegio 10</td><td>Colegio 48</td><td class="resultado">1-0</td></tr>
+<tr><td>Tablero 4</td><td>Colegio 30</td><td>Colegio 33</td><td class="resultado">1-0</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="ajedrez-cat-cadete" class="cat-section">
+<div id="ajedrez-cadete-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Tablero</th><th>Blancas</th><th>Negras</th><th>Resultado</th></tr>
+<tr><td>Tablero 1</td><td>Colegio 42</td><td>Colegio 15</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 2</td><td>Colegio 17</td><td>Colegio 39</td><td class="resultado">½-½</td></tr>
+<tr><td>Tablero 3</td><td>Colegio 32</td><td>Colegio 23</td><td class="resultado">1-0</td></tr>
+<tr><td>Tablero 4</td><td>Colegio 19</td><td>Colegio 38</td><td class="resultado">0-1</td></tr>
+</table></div></div>
+</div>
+</div>
+</div>
+<div id="sport-gimnasia" class="sport-section"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('gimnasia','duostrios',this)">Dúos, Tríos, Cuartetos</button>
+<button class="cat-tab" onclick="showCat('gimnasia','individual',this)">Individual</button>
+<button class="cat-tab" onclick="showCat('gimnasia','conjuntos',this)">Conjuntos</button>
+<button class="cat-tab" onclick="showCat('gimnasia','grandesgrupos',this)">Grandes Grupos</button>
+</div>
+<div id="gimnasia-cat-duostrios" class="cat-section active">
+<div id="gimnasia-duostrios-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Participante</th><th>Colegio</th><th>Puntuación</th><th>Posición</th></tr>
+<tr><td>Valeria González</td><td>Colegio 30</td><td>9.07</td><td>11º</td></tr>
+<tr><td>Miguel López</td><td>Colegio 13</td><td>8.3</td><td>2º</td></tr>
+<tr><td>Valeria García</td><td>Colegio 35</td><td>9.23</td><td>11º</td></tr>
+<tr><td>Verónica Fernández</td><td>Colegio 44</td><td>9.6</td><td>7º</td></tr>
+<tr><td>Amanda González</td><td>Colegio 25</td><td>8.41</td><td>2º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="gimnasia-cat-individual" class="cat-section">
+<div id="gimnasia-individual-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Participante</th><th>Colegio</th><th>Puntuación</th><th>Posición</th></tr>
+<tr><td>David Pérez</td><td>Colegio 16</td><td>8.32</td><td>11º</td></tr>
+<tr><td>Pablo González</td><td>Colegio 48</td><td>8.36</td><td>10º</td></tr>
+<tr><td>Amanda González</td><td>Colegio 8</td><td>9.24</td><td>3º</td></tr>
+<tr><td>Sergio Pérez</td><td>Colegio 43</td><td>9.22</td><td>12º</td></tr>
+<tr><td>David Rodríguez</td><td>Colegio 36</td><td>9.53</td><td>1º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="gimnasia-cat-conjuntos" class="cat-section">
+<div id="gimnasia-conjuntos-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Participante</th><th>Colegio</th><th>Puntuación</th><th>Posición</th></tr>
+<tr><td>Sergio Martín</td><td>Colegio 10</td><td>7.94</td><td>14º</td></tr>
+<tr><td>Amanda López</td><td>Colegio 42</td><td>8.28</td><td>1º</td></tr>
+<tr><td>Miguel Martín</td><td>Colegio 2</td><td>9.75</td><td>4º</td></tr>
+<tr><td>Pablo Sánchez</td><td>Colegio 11</td><td>8.32</td><td>14º</td></tr>
+<tr><td>Sergio Martín</td><td>Colegio 41</td><td>8.18</td><td>1º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="gimnasia-cat-grandesgrupos" class="cat-section">
+<div id="gimnasia-grandesgrupos-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Participante</th><th>Colegio</th><th>Puntuación</th><th>Posición</th></tr>
+<tr><td>Alejandro González</td><td>Colegio 21</td><td>7.55</td><td>14º</td></tr>
+<tr><td>Javier Sánchez</td><td>Colegio 9</td><td>9.64</td><td>6º</td></tr>
+<tr><td>David Martín</td><td>Colegio 27</td><td>8.54</td><td>11º</td></tr>
+<tr><td>Amanda García</td><td>Colegio 2</td><td>9.78</td><td>3º</td></tr>
+<tr><td>Fernando Martín</td><td>Colegio 42</td><td>7.83</td><td>11º</td></tr>
+</table></div></div>
+</div>
+</div>
+</div>
+<div id="sport-voleibol" class="sport-section"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('voleibol','benjaminm',this)">Benjamín</button>
+<button class="cat-tab" onclick="showCat('voleibol','alevinm',this)">Alevín Mixto</button>
+<button class="cat-tab" onclick="showCat('voleibol','infantilm',this)">Infantil</button>
+<button class="cat-tab" onclick="showCat('voleibol','cadetm',this)">Cadete</button>
+<button class="cat-tab" onclick="showCat('voleibol','juvenilm',this)">Juvenil</button>
+<button class="cat-tab" onclick="showCat('voleibol','senorm',this)">Sénior</button>
+</div>
+<div id="voleibol-cat-benjaminm" class="cat-section active">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('voleibol-benjaminm','voleibol-benjaminm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('voleibol-benjaminm','voleibol-benjaminm-GrupoB',this)">GrupoB</button>
+<button class="group-tab" onclick="showGroup('voleibol-benjaminm','voleibol-benjaminm-GrupoC',this)">GrupoC</button>
+</div>
+<div id="voleibol-benjaminm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:06</td><td>P. LA VICTORIA</td><td class="local">AYTO.TORDESILLAS - B</td><td class="resultado">26–16</td><td class="visitante">LA ENSEÑANZA - B</td></tr>
+<tr><td>14:57</td><td>P. MIRIAM BLASCO</td><td class="local">SAN AGUSTIN</td><td class="resultado">23–15</td><td class="visitante">MARISTAS INMACULADA - E</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:15</td><td>P. LA VICTORIA</td><td class="local">PINAR DE LA RUBIA</td><td class="resultado">26–18</td><td class="visitante">C. D. OCIO-SPORT - CIGALES</td></tr>
+<tr><td>14:25</td><td>PABELLÓN ESPERANTO</td><td class="local">FERRARI - CADETE C</td><td class="resultado">22–19</td><td class="visitante">IES NUÑEZ DE ARCE - 11</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:27</td><td>PABELLÓN MILAGROS</td><td class="local">APOSTOLADO - BLANCO</td><td class="resultado">21–24</td><td class="visitante">APOSTOLADO - LEOPARDOS</td></tr>
+<tr><td>14:56</td><td>P. HUERTA DEL REY</td><td class="local">MARISTAS INMACULADA - A</td><td class="resultado">23–24</td><td class="visitante">AYTO.TORDESILLAS - A</td></tr>
+</table></div></div>
+
+</div>
+<div id="voleibol-benjaminm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:51</td><td>P. LA VICTORIA</td><td class="local">MARISTAS CCV - IBÉRICA</td><td class="resultado">24–20</td><td class="visitante">ENJOY SPORT - ARCA REAL</td></tr>
+<tr><td>09:57</td><td>P. LA VICTORIA</td><td class="local">VOLEIBOL ARROYO - SOTOVERDE</td><td class="resultado">24–25</td><td class="visitante">VOLEI. LA CISTÉRNIGA - 014</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:13</td><td>P. MIRIAM BLASCO</td><td class="local">VOLEIBOL ARROYO - ATENEA</td><td class="resultado">23–24</td><td class="visitante">C.D.CRISTO REY</td></tr>
+<tr><td>14:54</td><td>P. MIRIAM BLASCO</td><td class="local">SAN JOSE - FABRO</td><td class="resultado">23–18</td><td class="visitante">VOLEIBOL ARROYO - PISUERGA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:36</td><td>P. LA VICTORIA</td><td class="local">VOLEI. LA CISTÉRNIGA - 08</td><td class="resultado">26–21</td><td class="visitante">JUAN XXIII</td></tr>
+<tr><td>16:39</td><td>PABELLÓN ESPERANTO</td><td class="local">IES JIMENEZ LOZANO - M</td><td class="resultado">23–16</td><td class="visitante">IES NUÑEZ DE ARCE - 2</td></tr>
+</table></div></div>
+
+</div>
+<div id="voleibol-benjaminm-GrupoC" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:12</td><td>P. MIRIAM BLASCO</td><td class="local">LA ENSEÑANZA - B</td><td class="resultado">25–22</td><td class="visitante">AGUSTINAS</td></tr>
+<tr><td>18:30</td><td>P. HUERTA DEL REY</td><td class="local">LA ENSEÑANZA - B</td><td class="resultado">25–23</td><td class="visitante">V.C.V. - DUERO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:23</td><td>PABELLÓN ESPERANTO</td><td class="local">HUELGAS - A</td><td class="resultado">24–15</td><td class="visitante">ARCA REAL - ES DEPORTE</td></tr>
+<tr><td>18:52</td><td>P. LAGUNA</td><td class="local">IES DELICIAS - VOLEI CADT</td><td class="resultado">24–20</td><td class="visitante">CONDESA EYLO - 12</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:51</td><td>P. LA VICTORIA</td><td class="local">IES JIMENEZ LOZANO - R</td><td class="resultado">22–23</td><td class="visitante">LOURDES - UNIÓN</td></tr>
+<tr><td>19:11</td><td>P. SAN ISIDRO</td><td class="local">VOLEIBOL ARROYO - ACADEMIA</td><td class="resultado">24–24</td><td class="visitante">AYTO.TORDESILLAS</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="voleibol-cat-alevinm" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('voleibol-alevinm','voleibol-alevinm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('voleibol-alevinm','voleibol-alevinm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="voleibol-alevinm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:19</td><td>P. SAN ISIDRO</td><td class="local">LOURDES - STELLA</td><td class="resultado">20–24</td><td class="visitante">HUELGAS - A</td></tr>
+<tr><td>11:00</td><td>P. SAN ISIDRO</td><td class="local">LA MERCED - OCIO-SPORT</td><td class="resultado">21–18</td><td class="visitante">V.C.V. - DUERO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:06</td><td>PABELLÓN ESPERANTO</td><td class="local">IES NUÑEZ DE ARCE</td><td class="resultado">24–19</td><td class="visitante">V.C.V. - DUERO</td></tr>
+<tr><td>13:38</td><td>P. LAGUNA</td><td class="local">EL PILAR - CHAMI</td><td class="resultado">20–18</td><td class="visitante">VOLEIBOL ARROYO - ARANZANA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:38</td><td>P. SAN ISIDRO</td><td class="local">EL PILAR - 011</td><td class="resultado">23–24</td><td class="visitante">MARISTAS INMACULADA - C</td></tr>
+<tr><td>13:50</td><td>P. HUERTA DEL REY</td><td class="local">LA ENSEÑANZA - C</td><td class="resultado">26–22</td><td class="visitante">IES JIMENEZ LOZANO - M</td></tr>
+</table></div></div>
+
+</div>
+<div id="voleibol-alevinm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:18</td><td>P. HUERTA DEL REY</td><td class="local">LA ENSEÑANZA - B</td><td class="resultado">20–21</td><td class="visitante">C.D.CRISTO REY</td></tr>
+<tr><td>16:22</td><td>P. HUERTA DEL REY</td><td class="local">MARISTAS CCV - COMPOSTELA</td><td class="resultado">26–16</td><td class="visitante">EL PILAR - 1953</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>10:27</td><td>P. LA VICTORIA</td><td class="local">MARTIN BARÓ - OCIO-SPORT</td><td class="resultado">25–18</td><td class="visitante">CONDESA EYLO - 12</td></tr>
+<tr><td>17:42</td><td>PABELLÓN ESPERANTO</td><td class="local">HUELGAS</td><td class="resultado">24–24</td><td class="visitante">FERRARI - CADETE P</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:07</td><td>P. MIRIAM BLASCO</td><td class="local">EL PILAR - CAÑADA</td><td class="resultado">24–15</td><td class="visitante">IES PARQUESOL - M</td></tr>
+<tr><td>18:46</td><td>P. LA VICTORIA</td><td class="local">FERRARI - VOLE INF C</td><td class="resultado">20–23</td><td class="visitante">VICENTE ALEIXANDRE - FREEDOM</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="voleibol-cat-infantilm" class="cat-section">
+<div id="voleibol-infantilm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:41</td><td>PABELLÓN ESPERANTO</td><td class="local">GARCIA QUINTANA - CARDENAL M</td><td class="resultado">22–24</td><td class="visitante">IES NUÑEZ DE ARCE</td></tr>
+<tr><td>15:00</td><td>P. MIRIAM BLASCO</td><td class="local">CONDESA EYLO - OCIO-SPORT</td><td class="resultado">23–15</td><td class="visitante">IES JIMENEZ LOZANO - R</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:06</td><td>P. MIRIAM BLASCO</td><td class="local">SAN JOSE - FABRO</td><td class="resultado">25–16</td><td class="visitante">VOLEI. LA CISTÉRNIGA - 011</td></tr>
+<tr><td>12:51</td><td>PABELLÓN ESPERANTO</td><td class="local">AYTO. SANTOVENIA</td><td class="resultado">23–15</td><td class="visitante">MARTIN BARÓ - 6º</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:46</td><td>P. LAGUNA</td><td class="local">V.C.V. - CALDERON</td><td class="resultado">24–24</td><td class="visitante">MARTIN BARÓ - 5º</td></tr>
+<tr><td>09:46</td><td>P. LAGUNA</td><td class="local">EL PILAR - 2012</td><td class="resultado">23–19</td><td class="visitante">IES PARQUESOL - R</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="voleibol-cat-cadetm" class="cat-section">
+<div id="voleibol-cadetm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:19</td><td>P. LA VICTORIA</td><td class="local">IES NUÑEZ DE ARCE - 11</td><td class="resultado">22–21</td><td class="visitante">MARISTAS CCV - MEDITERRÁNEA</td></tr>
+<tr><td>12:09</td><td>P. HUERTA DEL REY</td><td class="local">IES PARQUESOL - P</td><td class="resultado">20–21</td><td class="visitante">VOLEIBOL ARROYO - ESCUELA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:03</td><td>P. SAN ISIDRO</td><td class="local">CONDESA EYLO - 13</td><td class="resultado">20–20</td><td class="visitante">APOSTOLADO - AZUL</td></tr>
+<tr><td>11:14</td><td>PABELLÓN ESPERANTO</td><td class="local">VOLEIBOL ARROYO - PISUERGA</td><td class="resultado">26–17</td><td class="visitante">IES PARQUESOL - P</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:48</td><td>P. SAN ISIDRO</td><td class="local">VOLEIBOL ARROYO - LA FLECHA</td><td class="resultado">21–20</td><td class="visitante">IES PARQUESOL - R</td></tr>
+<tr><td>12:59</td><td>PABELLÓN ESPERANTO</td><td class="local">APOSTOLADO - AZUL</td><td class="resultado">21–17</td><td class="visitante">VOLEIBOL ARROYO - MONASTERIO</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="voleibol-cat-juvenilm" class="cat-section">
+<div id="voleibol-juvenilm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:21</td><td>P. MIRIAM BLASCO</td><td class="local">ARCA REAL - ES DEPORTE</td><td class="resultado">25–15</td><td class="visitante">V.C.V. - ZARATÁN</td></tr>
+<tr><td>18:31</td><td>PABELLÓN MILAGROS</td><td class="local">SAN JOSE - ARRUPE</td><td class="resultado">25–21</td><td class="visitante">APOSTOLADO - TIGRES</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:04</td><td>P. SAN ISIDRO</td><td class="local">FERRARI - JUVENIL</td><td class="resultado">22–20</td><td class="visitante">PINOALBAR - PINOALBAR</td></tr>
+<tr><td>13:12</td><td>P. LAGUNA</td><td class="local">EL PILAR - 010</td><td class="resultado">24–25</td><td class="visitante">VICENTE ALEIXANDRE - FREEDOM</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:18</td><td>P. MIRIAM BLASCO</td><td class="local">VOLEIBOL ARROYO - ARANZANA</td><td class="resultado">24–20</td><td class="visitante">LA MERCED - OCIO-SPORT</td></tr>
+<tr><td>18:46</td><td>P. HUERTA DEL REY</td><td class="local">IES NUÑEZ DE ARCE - 2</td><td class="resultado">23–25</td><td class="visitante">VOLEIBOL ARROYO - ATENEA</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="voleibol-cat-senorm" class="cat-section">
+<div id="voleibol-senorm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:08</td><td>PABELLÓN ESPERANTO</td><td class="local">APOSTOLADO - AZUL</td><td class="resultado">24–25</td><td class="visitante">AYTO.TORDESILLAS - E</td></tr>
+<tr><td>12:06</td><td>P. SAN ISIDRO</td><td class="local">MARISTAS INMACULADA - C</td><td class="resultado">23–15</td><td class="visitante">EL PILAR - 010</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:16</td><td>P. LAGUNA</td><td class="local">VOLEI. LA CISTÉRNIGA - VERDE</td><td class="resultado">22–23</td><td class="visitante">VOLEI. LA CISTÉRNIGA - 013</td></tr>
+<tr><td>15:27</td><td>P. HUERTA DEL REY</td><td class="local">AYTO.TORDESILLAS - B</td><td class="resultado">23–21</td><td class="visitante">FERRARI - CADETE P</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:36</td><td>PABELLÓN MILAGROS</td><td class="local">AGUSTINAS - BLANCO</td><td class="resultado">26–24</td><td class="visitante">IES PARQUESOL</td></tr>
+<tr><td>15:10</td><td>P. LA VICTORIA</td><td class="local">VOLEIBOL ARROYO - ACADEMIA</td><td class="resultado">25–22</td><td class="visitante">VICENTE ALEIXANDRE - FREEDOM</td></tr>
+</table></div></div>
+
+</div>
+</div>
+</div>
+<div id="sport-balonmano" class="sport-section"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('balonmano','benjaminm',this)">Benjamín</button>
+<button class="cat-tab" onclick="showCat('balonmano','alevinm',this)">Alevín</button>
+<button class="cat-tab" onclick="showCat('balonmano','infantilm',this)">Infantil</button>
+</div>
+<div id="balonmano-cat-benjaminm" class="cat-section active">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('balonmano-benjaminm','balonmano-benjaminm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('balonmano-benjaminm','balonmano-benjaminm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="balonmano-benjaminm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:14</td><td>P. LA VICTORIA</td><td class="local">BM ARROYO - DOMUSVI FEM</td><td class="resultado">24–17</td><td class="visitante">SAN AGUSTIN - A</td></tr>
+<tr><td>13:09</td><td>P. SAN ISIDRO</td><td class="local">AQUONA BM NAVA - A</td><td class="resultado">18–27</td><td class="visitante">SAN AGUSTIN - A</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:50</td><td>P. LA VICTORIA</td><td class="local">PONCE DE LEON - VERDE</td><td class="resultado">24–31</td><td class="visitante">RECOLETAS - VALLSUR</td></tr>
+<tr><td>14:19</td><td>P. HUERTA DEL REY</td><td class="local">RECOLETAS - REBELS AGENCY</td><td class="resultado">32–20</td><td class="visitante">AQUONA BM NAVA - A</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:46</td><td>P. MIRIAM BLASCO</td><td class="local">RECOLETAS - FINVALL</td><td class="resultado">26–31</td><td class="visitante">AQUONA BM NAVA</td></tr>
+<tr><td>12:25</td><td>PABELLÓN ESPERANTO</td><td class="local">BALONMANO DELICIAS</td><td class="resultado">21–25</td><td class="visitante">CBM TUDELA - DONDECHUCHI</td></tr>
+</table></div></div>
+
+</div>
+<div id="balonmano-benjaminm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:18</td><td>P. HUERTA DEL REY</td><td class="local">ZASVISION BM LAGUNA - A</td><td class="resultado">32–18</td><td class="visitante">CANDEAL VIANA - BM. VIANA</td></tr>
+<tr><td>13:13</td><td>P. HUERTA DEL REY</td><td class="local">AYTO. PORTILLO - B</td><td class="resultado">28–30</td><td class="visitante">CBM TUDELA - DONDECHUCHI</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:28</td><td>P. LA VICTORIA</td><td class="local">ZASVISION BM LAGUNA - A</td><td class="resultado">25–21</td><td class="visitante">AULA VALLADOLID - CAVIDEL</td></tr>
+<tr><td>12:57</td><td>P. HUERTA DEL REY</td><td class="local">CBM TUDELA - CAFETERÍA GOYA</td><td class="resultado">20–31</td><td class="visitante">CANDEAL VIANA - BM. VIANA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:11</td><td>P. LA VICTORIA</td><td class="local">RECOLETAS - VALLSUR</td><td class="resultado">30–27</td><td class="visitante">CBM TUDELA - DONDECHUCHI</td></tr>
+<tr><td>09:38</td><td>P. SAN ISIDRO</td><td class="local">ZASVISION BM LAGUNA - A</td><td class="resultado">23–24</td><td class="visitante">BALONMANO DELICIAS</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="balonmano-cat-alevinm" class="cat-section">
+<div id="balonmano-alevinm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:05</td><td>P. HUERTA DEL REY</td><td class="local">RECOLETAS - REBELS AGENCY</td><td class="resultado">25–16</td><td class="visitante">BALONMANO DELICIAS</td></tr>
+<tr><td>11:06</td><td>P. MIRIAM BLASCO</td><td class="local">RECOLETAS - FINVALL</td><td class="resultado">24–25</td><td class="visitante">AULA VALLADOLID - CAVIDEL</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:36</td><td>P. SAN ISIDRO</td><td class="local">BALONMANO DELICIAS</td><td class="resultado">26–21</td><td class="visitante">AULA VALLADOLID - LICEO</td></tr>
+<tr><td>17:14</td><td>P. LAGUNA</td><td class="local">HAND VALL VALLADOLID - G.B.</td><td class="resultado">33–18</td><td class="visitante">RECOLETAS - FINVALL</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:09</td><td>P. MIRIAM BLASCO</td><td class="local">RECOLETAS - VALLSUR</td><td class="resultado">31–21</td><td class="visitante">AULA VALLADOLID - CAVIDEL A</td></tr>
+<tr><td>19:06</td><td>P. LAGUNA</td><td class="local">AULA VALLADOLID - CAVIDEL A</td><td class="resultado">35–29</td><td class="visitante">CANDEAL VIANA - BM. VIANA</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="balonmano-cat-infantilm" class="cat-section">
+<div id="balonmano-infantilm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:17</td><td>P. HUERTA DEL REY</td><td class="local">RECOLETAS - REBELS AGENCY</td><td class="resultado">28–28</td><td class="visitante">RECOLETAS - VALLSUR</td></tr>
+<tr><td>17:34</td><td>P. HUERTA DEL REY</td><td class="local">CBM TUDELA - CAFETERÍA GOYA</td><td class="resultado">23–28</td><td class="visitante">PONCE DE LEON - ROJO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:36</td><td>P. MIRIAM BLASCO</td><td class="local">SAN AGUSTIN - A</td><td class="resultado">20–20</td><td class="visitante">SAN AGUSTIN - B</td></tr>
+<tr><td>18:15</td><td>P. HUERTA DEL REY</td><td class="local">ZASVISION BM LAGUNA - B</td><td class="resultado">18–15</td><td class="visitante">LA ENSEÑANZA - A</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:11</td><td>P. LA VICTORIA</td><td class="local">BM ARROYO - DOMUSVI FEM</td><td class="resultado">24–19</td><td class="visitante">AULA VALLADOLID - CAVIDEL B</td></tr>
+<tr><td>14:45</td><td>PABELLÓN ESPERANTO</td><td class="local">CBM TUDELA - PIZZER CAPRICHO</td><td class="resultado">26–26</td><td class="visitante">AULA VALLADOLID - CAVIDEL</td></tr>
+</table></div></div>
+
+</div>
+</div>
+</div>
+<div id="sport-baloncesto" class="sport-section"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('baloncesto','benj',this)">Benjamín</button>
+<button class="cat-tab" onclick="showCat('baloncesto','alevinf',this)">Alevín Femenino</button>
+<button class="cat-tab" onclick="showCat('baloncesto','alevinm',this)">Alevín Masculino</button>
+<button class="cat-tab" onclick="showCat('baloncesto','infantilf',this)">Infantil Femenino</button>
+<button class="cat-tab" onclick="showCat('baloncesto','infantilm',this)">Infantil Masculino</button>
+<button class="cat-tab" onclick="showCat('baloncesto','cadetef',this)">Cadete Femenino</button>
+<button class="cat-tab" onclick="showCat('baloncesto','cadetm',this)">Cadete Masculino</button>
+<button class="cat-tab" onclick="showCat('baloncesto','juvenilf',this)">Juvenil Femenino</button>
+<button class="cat-tab" onclick="showCat('baloncesto','juvenilm',this)">Juvenil Masculino</button>
+</div>
+<div id="baloncesto-cat-benj" class="cat-section active">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-benj','baloncesto-benj-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('baloncesto-benj','baloncesto-benj-GrupoB',this)">GrupoB</button>
+<button class="group-tab" onclick="showGroup('baloncesto-benj','baloncesto-benj-GrupoC',this)">GrupoC</button>
+</div>
+<div id="baloncesto-benj-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:49</td><td>PABELLÓN ESPERANTO</td><td class="local">SAN JOSE - GRUPO A</td><td class="resultado">60–43</td><td class="visitante">EL PILAR - CHAMI</td></tr>
+<tr><td>12:29</td><td>PABELLÓN MILAGROS</td><td class="local">APOSTOLADO - LAGARTIJAS</td><td class="resultado">47–60</td><td class="visitante">FERRARI - CONTIENDAS FR 08</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:38</td><td>PABELLÓN MILAGROS</td><td class="local">CB VILLA DE LAGUNA - NEGRO</td><td class="resultado">65–37</td><td class="visitante">FERRARI - CONTIENDAS</td></tr>
+<tr><td>18:09</td><td>P. LAGUNA</td><td class="local">CORAZONISTAS - BLANCO</td><td class="resultado">53–50</td><td class="visitante">CD SARABRIS</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:43</td><td>P. HUERTA DEL REY</td><td class="local">SAN AGUSTIN - 1588</td><td class="resultado">52–66</td><td class="visitante">GARCIA QUINTANA - OCIO-SPORT</td></tr>
+<tr><td>14:29</td><td>P. LAGUNA</td><td class="local">CORAZONISTAS - BLANCO</td><td class="resultado">58–63</td><td class="visitante">EL PILAR</td></tr>
+</table></div></div>
+
+</div>
+<div id="baloncesto-benj-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:34</td><td>P. LAGUNA</td><td class="local">SAN JOSE - GARATE</td><td class="resultado">59–39</td><td class="visitante">CORAZONISTAS</td></tr>
+<tr><td>18:52</td><td>PABELLÓN ESPERANTO</td><td class="local">FERRARI - CONTIENDAS FR 08</td><td class="resultado">49–66</td><td class="visitante">TERESIANAS - NARANJA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:15</td><td>P. LAGUNA</td><td class="local">BALONCESTO LA FLECHA</td><td class="resultado">67–65</td><td class="visitante">SAFA-GRIAL</td></tr>
+<tr><td>18:15</td><td>P. LA VICTORIA</td><td class="local">EL PILAR - MARIANISTAS</td><td class="resultado">40–67</td><td class="visitante">CORAZONISTAS - NARANJA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:27</td><td>P. LAGUNA</td><td class="local">FERRARI - CONTIENDAS 011</td><td class="resultado">71–65</td><td class="visitante">SAN AGUSTIN - A</td></tr>
+<tr><td>13:21</td><td>P. HUERTA DEL REY</td><td class="local">FERRARI - CONTIENDAS</td><td class="resultado">60–36</td><td class="visitante">CORAZONISTAS - BLANCO</td></tr>
+</table></div></div>
+
+</div>
+<div id="baloncesto-benj-GrupoC" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:36</td><td>P. HUERTA DEL REY</td><td class="local">AVE MARIA</td><td class="resultado">70–59</td><td class="visitante">AGUSTINAS - CBCV</td></tr>
+<tr><td>16:09</td><td>PABELLÓN ESPERANTO</td><td class="local">SAN AGUSTIN</td><td class="resultado">54–56</td><td class="visitante">EL PILAR</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:53</td><td>P. LAGUNA</td><td class="local">ANA AUSTRIA CIGALES - PONCE</td><td class="resultado">69–35</td><td class="visitante">APOSTOLADO</td></tr>
+<tr><td>14:11</td><td>PABELLÓN ESPERANTO</td><td class="local">BALONCESTO LA FLECHA</td><td class="resultado">55–49</td><td class="visitante">LOURDES - CASTELLA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>12:23</td><td>P. LAGUNA</td><td class="local">LOURDES - BUJEDO</td><td class="resultado">71–50</td><td class="visitante">ANA AUSTRIA CIGALES - PONCE</td></tr>
+<tr><td>16:57</td><td>P. LAGUNA</td><td class="local">APOSTOLADO (Retirado)</td><td class="resultado">73–58</td><td class="visitante">AGUSTINAS - CBCV</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-alevinf" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-alevinf','baloncesto-alevinf-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('baloncesto-alevinf','baloncesto-alevinf-GrupoB',this)">GrupoB</button>
+</div>
+<div id="baloncesto-alevinf-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:38</td><td>P. LAGUNA</td><td class="local">FERRARI - CONTIENDAS FR 09</td><td class="resultado">48–58</td><td class="visitante">CDSI - AMARILLO</td></tr>
+<tr><td>15:19</td><td>P. MIRIAM BLASCO</td><td class="local">SAN JOSE - GRUPO A</td><td class="resultado">57–36</td><td class="visitante">EL PILAR - MARIANISTAS</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:43</td><td>P. HUERTA DEL REY</td><td class="local">AGUSTINAS</td><td class="resultado">52–62</td><td class="visitante">LA SALLE</td></tr>
+<tr><td>17:28</td><td>P. MIRIAM BLASCO</td><td class="local">AYTO. SANTOVENIA</td><td class="resultado">65–70</td><td class="visitante">IVECO CBC-ELALO - BLANCO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:13</td><td>P. SAN ISIDRO</td><td class="local">PINOALBAR</td><td class="resultado">65–59</td><td class="visitante">BASTU CB TUDELA</td></tr>
+<tr><td>10:21</td><td>P. LA VICTORIA</td><td class="local">ANUNCIATA - PADRE COLL</td><td class="resultado">68–69</td><td class="visitante">APOSTOLADO</td></tr>
+</table></div></div>
+
+</div>
+<div id="baloncesto-alevinf-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:44</td><td>P. LAGUNA</td><td class="local">MARINA ESCOBAR</td><td class="resultado">55–39</td><td class="visitante">SAN AGUSTIN - 1621</td></tr>
+<tr><td>09:44</td><td>P. MIRIAM BLASCO</td><td class="local">BALONCESTO LA FLECHA</td><td class="resultado">69–43</td><td class="visitante">BALONCESTO LA FLECHA - C</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:27</td><td>P. HUERTA DEL REY</td><td class="local">PINOALBAR</td><td class="resultado">50–69</td><td class="visitante">FERRARI - CONTIENDAS</td></tr>
+<tr><td>18:59</td><td>P. LAGUNA</td><td class="local">CORAZONISTAS - ROJO</td><td class="resultado">71–43</td><td class="visitante">FERRARI - CONTIENDAS 013</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:45</td><td>PABELLÓN MILAGROS</td><td class="local">LA SALLE</td><td class="resultado">66–37</td><td class="visitante">TIERNO GALVAN</td></tr>
+<tr><td>19:50</td><td>P. LA VICTORIA</td><td class="local">AYTO.TORDESILLAS</td><td class="resultado">52–59</td><td class="visitante">LA CISTERNIGA - MASCULINO</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-alevinm" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-alevinm','baloncesto-alevinm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('baloncesto-alevinm','baloncesto-alevinm-GrupoB',this)">GrupoB</button>
+<button class="group-tab" onclick="showGroup('baloncesto-alevinm','baloncesto-alevinm-GrupoC',this)">GrupoC</button>
+</div>
+<div id="baloncesto-alevinm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:24</td><td>P. MIRIAM BLASCO</td><td class="local">SAFA-GRIAL</td><td class="resultado">56–43</td><td class="visitante">APOSTOLADO - LAGARTIJAS</td></tr>
+<tr><td>13:41</td><td>P. SAN ISIDRO</td><td class="local">SAN AGUSTIN - 1621</td><td class="resultado">63–38</td><td class="visitante">FERRARI - CONTIENDAS 2013</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:14</td><td>P. HUERTA DEL REY</td><td class="local">FERRARI - CONTIENDAS 010</td><td class="resultado">70–47</td><td class="visitante">APOSTOLADO - AZUL</td></tr>
+<tr><td>17:56</td><td>PABELLÓN ESPERANTO</td><td class="local">APOSTOLADO (Retirado)</td><td class="resultado">41–51</td><td class="visitante">LOURDES - BUJEDO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:15</td><td>P. HUERTA DEL REY</td><td class="local">CB VILLA DE LAGUNA - NEGRO</td><td class="resultado">56–45</td><td class="visitante">AVE MARIA</td></tr>
+<tr><td>16:46</td><td>P. LA VICTORIA</td><td class="local">BASTU CB TUDELA</td><td class="resultado">53–65</td><td class="visitante">SAN JOSE - FABRO</td></tr>
+</table></div></div>
+
+</div>
+<div id="baloncesto-alevinm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:20</td><td>P. LA VICTORIA</td><td class="local">PINOALBAR</td><td class="resultado">58–56</td><td class="visitante">AVE MARIA</td></tr>
+<tr><td>12:49</td><td>P. LA VICTORIA</td><td class="local">SAN AGUSTIN - 1588</td><td class="resultado">60–53</td><td class="visitante">LOURDES - STELLA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:33</td><td>P. LAGUNA</td><td class="local">BALONCESTO LA FLECHA - A</td><td class="resultado">53–61</td><td class="visitante">APOSTOLADO - AZUL</td></tr>
+<tr><td>17:29</td><td>PABELLÓN MILAGROS</td><td class="local">CORAZONISTAS - BLANCO</td><td class="resultado">69–53</td><td class="visitante">MARINA ESCOBAR</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:58</td><td>PABELLÓN ESPERANTO</td><td class="local">ANA AUSTRIA CIGALES - PONCE</td><td class="resultado">45–62</td><td class="visitante">IES NUÑEZ DE ARCE - CNTIENDS</td></tr>
+<tr><td>11:10</td><td>P. MIRIAM BLASCO</td><td class="local">LA ENSEÑANZA</td><td class="resultado">43–47</td><td class="visitante">APOSTOLADO - BLANCO</td></tr>
+</table></div></div>
+
+</div>
+<div id="baloncesto-alevinm-GrupoC" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:54</td><td>P. SAN ISIDRO</td><td class="local">CORAZONISTAS - NARANJA</td><td class="resultado">56–70</td><td class="visitante">IÑIGO DE TORO - CONTIENDAS</td></tr>
+<tr><td>10:20</td><td>P. LA VICTORIA</td><td class="local">EL PILAR - CHAMI</td><td class="resultado">65–59</td><td class="visitante">GARCIA QUINTANA - OCIO-SPORT</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>10:28</td><td>PABELLÓN ESPERANTO</td><td class="local">IVECO CBC-ELALO - 2012</td><td class="resultado">66–36</td><td class="visitante">SAN AGUSTIN - B</td></tr>
+<tr><td>19:09</td><td>P. HUERTA DEL REY</td><td class="local">SAN AGUSTIN - A</td><td class="resultado">58–66</td><td class="visitante">SAN JOSE</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:23</td><td>P. SAN ISIDRO</td><td class="local">LA ENSEÑANZA - B</td><td class="resultado">59–68</td><td class="visitante">APOSTOLADO - LAGARTIJAS</td></tr>
+<tr><td>12:06</td><td>PABELLÓN MILAGROS</td><td class="local">LOURDES - BUJEDO</td><td class="resultado">43–66</td><td class="visitante">FERRARI - CONTIENDAS FR 09</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-infantilf" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-infantilf','baloncesto-infantilf-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('baloncesto-infantilf','baloncesto-infantilf-GrupoB',this)">GrupoB</button>
+</div>
+<div id="baloncesto-infantilf-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:13</td><td>P. HUERTA DEL REY</td><td class="local">TIERNO GALVAN</td><td class="resultado">61–51</td><td class="visitante">AGUSTINAS</td></tr>
+<tr><td>16:08</td><td>P. MIRIAM BLASCO</td><td class="local">APOSTOLADO - AZUL</td><td class="resultado">42–42</td><td class="visitante">NARCISO A. CORTES</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:50</td><td>P. LAGUNA</td><td class="local">LA CISTERNIGA - MASCULINO</td><td class="resultado">50–45</td><td class="visitante">IVECO CBC-ELALO - 2012</td></tr>
+<tr><td>16:51</td><td>PABELLÓN MILAGROS</td><td class="local">IÑIGO DE TORO - CONTIENDAS</td><td class="resultado">69–65</td><td class="visitante">LA ENSEÑANZA - B</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:06</td><td>P. LAGUNA</td><td class="local">FERRARI - CONTIENDAS FR 09</td><td class="resultado">42–46</td><td class="visitante">IVECO CBC-ELALO - MORADO</td></tr>
+<tr><td>09:38</td><td>P. MIRIAM BLASCO</td><td class="local">AVE MARIA</td><td class="resultado">71–55</td><td class="visitante">SAN AGUSTIN - 1621</td></tr>
+</table></div></div>
+
+</div>
+<div id="baloncesto-infantilf-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:16</td><td>P. LA VICTORIA</td><td class="local">FERRARI - CONTIENDAS 2012</td><td class="resultado">42–45</td><td class="visitante">PINOALBAR</td></tr>
+<tr><td>15:10</td><td>P. HUERTA DEL REY</td><td class="local">LOURDES - BUJEDO</td><td class="resultado">68–48</td><td class="visitante">ANA AUSTRIA CIGALES - PONCE</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>15:36</td><td>PABELLÓN ESPERANTO</td><td class="local">APOSTOLADO - LAGARTIJAS</td><td class="resultado">61–49</td><td class="visitante">CD SARABRIS - VITAR</td></tr>
+<tr><td>13:50</td><td>P. SAN ISIDRO</td><td class="local">SAN JOSE</td><td class="resultado">65–42</td><td class="visitante">AVE MARIA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:56</td><td>P. MIRIAM BLASCO</td><td class="local">TERESIANAS - AZUL</td><td class="resultado">53–51</td><td class="visitante">SAN JOSE - GRUPO A</td></tr>
+<tr><td>14:37</td><td>P. LA VICTORIA</td><td class="local">BALONCESTO LA FLECHA - C</td><td class="resultado">41–35</td><td class="visitante">IVECO CBC-ELALO - 2012</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-infantilm" class="cat-section">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-infantilm','baloncesto-infantilm-GrupoA',this)">GrupoA</button>
+<button class="group-tab" onclick="showGroup('baloncesto-infantilm','baloncesto-infantilm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="baloncesto-infantilm-GrupoA" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>13:43</td><td>P. LA VICTORIA</td><td class="local">BALONCESTO LA FLECHA</td><td class="resultado">40–55</td><td class="visitante">CORAZONISTAS</td></tr>
+<tr><td>14:41</td><td>P. SAN ISIDRO</td><td class="local">LA CISTERNIGA - MASCULINO</td><td class="resultado">63–48</td><td class="visitante">FERRARI - CONTIENDAS 012</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:47</td><td>P. HUERTA DEL REY</td><td class="local">FERRARI - CONTIENDAS 2013</td><td class="resultado">65–68</td><td class="visitante">SAN AGUSTIN - A</td></tr>
+<tr><td>09:17</td><td>P. LA VICTORIA</td><td class="local">IVECO CBC-ELALO - MORADO</td><td class="resultado">68–53</td><td class="visitante">LA ENSEÑANZA</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>16:26</td><td>P. HUERTA DEL REY</td><td class="local">FERRARI - CONTIENDAS 2013</td><td class="resultado">71–65</td><td class="visitante">TIERNO GALVAN</td></tr>
+<tr><td>12:13</td><td>P. LAGUNA</td><td class="local">ANUNCIATA - PADRE COLL</td><td class="resultado">69–66</td><td class="visitante">PINOALBAR</td></tr>
+</table></div></div>
+
+</div>
+<div id="baloncesto-infantilm-GrupoB" class="group-section">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:17</td><td>P. LAGUNA</td><td class="local">FERRARI - CONTIENDAS 2012</td><td class="resultado">56–43</td><td class="visitante">IÑIGO DE TORO - CONTIENDAS</td></tr>
+<tr><td>16:37</td><td>P. LA VICTORIA</td><td class="local">APOSTOLADO (Retirado)</td><td class="resultado">66–55</td><td class="visitante">APOSTOLADO - AZUL</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>09:24</td><td>P. LA VICTORIA</td><td class="local">IVECO CBC-ELALO - 2012</td><td class="resultado">68–49</td><td class="visitante">LA SALLE - HISPANO</td></tr>
+<tr><td>14:52</td><td>P. MIRIAM BLASCO</td><td class="local">LA ENSEÑANZA</td><td class="resultado">60–44</td><td class="visitante">SAN AGUSTIN - 1588</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:12</td><td>PABELLÓN MILAGROS</td><td class="local">SAN AGUSTIN - 1621</td><td class="resultado">63–56</td><td class="visitante">LOURDES - STELLA</td></tr>
+<tr><td>17:34</td><td>P. MIRIAM BLASCO</td><td class="local">ANUNCIATA - PADRE COLL</td><td class="resultado">73–69</td><td class="visitante">GARCIA QUINTANA - OCIO-SPORT</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-cadetef" class="cat-section">
+<div id="baloncesto-cadetef-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:28</td><td>PABELLÓN MILAGROS</td><td class="local">FERRARI - CONTIENDAS 2013</td><td class="resultado">67–52</td><td class="visitante">IVECO CBC-ELALO - 2011</td></tr>
+<tr><td>10:59</td><td>P. LA VICTORIA</td><td class="local">FERRARI - CONTIENDAS 010</td><td class="resultado">68–40</td><td class="visitante">SAFA-GRIAL</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>10:23</td><td>P. LAGUNA</td><td class="local">AGUSTINAS - CBCV</td><td class="resultado">50–46</td><td class="visitante">APOSTOLADO - OSOS</td></tr>
+<tr><td>09:54</td><td>P. MIRIAM BLASCO</td><td class="local">TIERNO GALVAN</td><td class="resultado">62–35</td><td class="visitante">LOURDES - BUJEDO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:26</td><td>P. MIRIAM BLASCO</td><td class="local">FERRARI - CONTIENDAS 013</td><td class="resultado">45–46</td><td class="visitante">CDSI - AMARILLO</td></tr>
+<tr><td>17:21</td><td>PABELLÓN MILAGROS</td><td class="local">TERESIANAS - AZUL</td><td class="resultado">43–63</td><td class="visitante">APOSTOLADO - BLANCO</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-cadetm" class="cat-section">
+<div id="baloncesto-cadetm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:00</td><td>P. LA VICTORIA</td><td class="local">BALONCESTO LA FLECHA - C</td><td class="resultado">75–64</td><td class="visitante">TIERNO GALVAN</td></tr>
+<tr><td>16:24</td><td>PABELLÓN MILAGROS</td><td class="local">FERRARI - CONTIENDAS 012</td><td class="resultado">65–57</td><td class="visitante">SAN AGUSTIN - A</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:43</td><td>P. SAN ISIDRO</td><td class="local">LA SALLE - HISPANO</td><td class="resultado">49–42</td><td class="visitante">BALONCESTO LA FLECHA - A</td></tr>
+<tr><td>09:43</td><td>P. MIRIAM BLASCO</td><td class="local">CD SARABRIS - CREALIA</td><td class="resultado">46–70</td><td class="visitante">APOSTOLADO - BLANCO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>11:28</td><td>P. LA VICTORIA</td><td class="local">SAN AGUSTIN - B</td><td class="resultado">73–37</td><td class="visitante">SAN AGUSTIN - 1621</td></tr>
+<tr><td>12:07</td><td>P. LA VICTORIA</td><td class="local">APOSTOLADO - AZUL</td><td class="resultado">60–47</td><td class="visitante">ANA AUSTRIA CIGALES - PONCE</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-juvenilf" class="cat-section">
+<div id="baloncesto-juvenilf-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>14:03</td><td>PABELLÓN ESPERANTO</td><td class="local">SAN AGUSTIN - 1588</td><td class="resultado">69–66</td><td class="visitante">BASTU CB TUDELA</td></tr>
+<tr><td>09:40</td><td>P. SAN ISIDRO</td><td class="local">BALONCESTO LA FLECHA - A</td><td class="resultado">47–65</td><td class="visitante">SAN JOSE</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>18:57</td><td>P. LA VICTORIA</td><td class="local">LA CISTERNIGA - MASCULINO</td><td class="resultado">40–36</td><td class="visitante">CB VILLA DE LAGUNA - NEGRO</td></tr>
+<tr><td>15:56</td><td>P. MIRIAM BLASCO</td><td class="local">EL PILAR</td><td class="resultado">68–50</td><td class="visitante">CDSI - AMARILLO</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:24</td><td>P. SAN ISIDRO</td><td class="local">ANA AUSTRIA CIGALES - PONCE</td><td class="resultado">54–60</td><td class="visitante">LOURDES - CASTELLA</td></tr>
+<tr><td>13:49</td><td>P. SAN ISIDRO</td><td class="local">IVECO CBC-ELALO - BLANCO</td><td class="resultado">70–46</td><td class="visitante">SAN JOSE - GRUPO A</td></tr>
+</table></div></div>
+
+</div>
+</div>
+<div id="baloncesto-cat-juvenilm" class="cat-section">
+<div id="baloncesto-juvenilm-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1 – 08/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:04</td><td>P. HUERTA DEL REY</td><td class="local">CB VILLA DE LAGUNA - ROJO</td><td class="resultado">75–63</td><td class="visitante">SAN JOSE - LOYOLA</td></tr>
+<tr><td>13:55</td><td>P. HUERTA DEL REY</td><td class="local">CD SARABRIS - CREALIA</td><td class="resultado">69–64</td><td class="visitante">SAN JOSE</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 2 – 15/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>17:13</td><td>P. LAGUNA</td><td class="local">APOSTOLADO - OSOS</td><td class="resultado">41–44</td><td class="visitante">FERRARI - CONTIENDAS 013</td></tr>
+<tr><td>14:17</td><td>P. LA VICTORIA</td><td class="local">SAN AGUSTIN - 1621</td><td class="resultado">47–43</td><td class="visitante">APOSTOLADO - AZUL</td></tr>
+</table></div></div>
+
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 3 – 22/11/2025</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Hora</th><th>Pista</th><th>Local</th><th>Resultado</th><th>Visitante</th></tr>
+<tr><td>19:47</td><td>P. LAGUNA</td><td class="local">LA ENSEÑANZA</td><td class="resultado">42–62</td><td class="visitante">APOSTOLADO - BLANCO</td></tr>
+<tr><td>18:26</td><td>P. HUERTA DEL REY</td><td class="local">FERRARI - CONTIENDAS 010</td><td class="resultado">54–68</td><td class="visitante">IVECO CBC-ELALO - BLANCO</td></tr>
+</table></div></div>
+
+</div>
+</div>
+</div>
+
+<div id="sport-natacion" class="sport-section"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('natacion','tecnificacion',this)">Jornada de Tecnificación</button>
+<button class="cat-tab" onclick="showCat('natacion','competicion',this)">Jornada de Competición</button>
+<button class="cat-tab" onclick="showCat('natacion','aguas',this)">Aguas Abiertas</button>
+</div>
+<div id="natacion-cat-tecnificacion" class="cat-section active">
+<div id="natacion-tecnificacion-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Prueba</th><th>Nadador</th><th>Colegio</th><th>Marca</th><th>Posición</th></tr>
+<tr><td>50m</td><td>Pablo Fernández</td><td>Colegio 10</td><td>358" seg</td><td>1º</td></tr>
+<tr><td>100m</td><td>Sofía Rodríguez</td><td>Colegio 39</td><td>216" seg</td><td>2º</td></tr>
+<tr><td>200m</td><td>Verónica Rodríguez</td><td>Colegio 31</td><td>196" seg</td><td>7º</td></tr>
+<tr><td>400m</td><td>Amanda Rodríguez</td><td>Colegio 5</td><td>392" seg</td><td>5º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="natacion-cat-competicion" class="cat-section">
+<div id="natacion-competicion-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Prueba</th><th>Nadador</th><th>Colegio</th><th>Marca</th><th>Posición</th></tr>
+<tr><td>50m</td><td>Teresa González</td><td>Colegio 11</td><td>386" seg</td><td>4º</td></tr>
+<tr><td>100m</td><td>Fernando Sánchez</td><td>Colegio 7</td><td>68" seg</td><td>6º</td></tr>
+<tr><td>200m</td><td>Valeria Pérez</td><td>Colegio 12</td><td>377" seg</td><td>10º</td></tr>
+<tr><td>400m</td><td>David Rodríguez</td><td>Colegio 14</td><td>170" seg</td><td>4º</td></tr>
+</table></div></div>
+</div>
+</div>
+<div id="natacion-cat-aguas" class="cat-section">
+<div id="natacion-aguas-Único" class="group-section active">
+<div class="jornada"><div class="jornada-header" onclick="toggleJ(this)"><h4>Jornada 1</h4><span class="jornada-toggle">▼</span></div>
+<div class="jornada-body"><table><tr><th>Prueba</th><th>Nadador</th><th>Colegio</th><th>Marca</th><th>Posición</th></tr>
+<tr><td>50m</td><td>Teresa Martín</td><td>Colegio 32</td><td>167" seg</td><td>10º</td></tr>
+<tr><td>100m</td><td>Verónica Sánchez</td><td>Colegio 8</td><td>374" seg</td><td>3º</td></tr>
+<tr><td>200m</td><td>Alejandro Pérez</td><td>Colegio 42</td><td>53" seg</td><td>6º</td></tr>
+<tr><td>400m</td><td>Sofía Fernández</td><td>Colegio 27</td><td>163" seg</td><td>5º</td></tr>
+</table></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Valla<em>Deporte</em>Escolar</div>
+      <p class="footer-desc">Plataforma integral de seguimiento del deporte escolar en Valladolid.</p>
+    </div>
+    <div class="footer-col">
+      <h4>NAVEGACIÓN</h4>
+      <a href="index.html">Inicio</a><a href="#">Noticias</a><a href="resultados.html">Resultados</a><a href="#">Clasificaciones</a>
+    </div>
+    <div class="footer-col">
+      <h4>INFORMACIÓN</h4>
+      <a href="calendario.html">Calendario</a><a href="manual.html">Manual Periodista</a><a href="quienes-somos.html">Quiénes somos</a><a href="#">Contacto</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024-2025 ValladeporteEscolar · Valladolid</p><p>Proyecto UVA TFG 2024-25</p>
+  </div>
+</div>
+
+<script>
+const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const hoy = new Date();
+document.getElementById('fecha').textContent = dias[hoy.getDay()] + ', ' + hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
+
+function showSport(sport, btn) {
+  document.querySelectorAll('.sport-section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.sport-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('sport-' + sport).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showCat(sport, cat, btn) {
+  const sportDiv = document.getElementById('sport-' + sport);
+  sportDiv.querySelectorAll('.cat-section').forEach(el => el.classList.remove('active'));
+  sportDiv.querySelectorAll('.cat-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(sport + '-cat-' + cat).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showGroup(sport, group, btn) {
+  const catSection = btn.closest('.cat-section');
+  catSection.querySelectorAll('.group-section').forEach(el => el.classList.remove('active'));
+  catSection.querySelectorAll('.group-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById(group).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleJ(header) {
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+  const toggle = header.querySelector('.jornada-toggle');
+  if (toggle) {
+    toggle.textContent = body.classList.contains('open') ? '▲' : '▼';
+  }
+}
+</script>
+</body>
+</html>
