@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clasificaciones · ValladeporteEscolar</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f4f4f4}
+.topbar{background:#0a1628;padding:5px 20px;display:flex;justify-content:space-between;align-items:center}
+.topbar span{color:#7a8fa6;font-size:11px}
+.header{background:#0d2149;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #c9a84c}
+.logo{color:white;font-size:24px;font-weight:bold;line-height:1;text-decoration:none;display:block}
+.logo em{color:#c9a84c;font-style:normal}
+.logo small{display:block;font-size:10px;color:rgba(255,255,255,0.55);margin-top:2px;font-weight:normal}
+.navbar{background:#0a1628;display:flex;padding:0 20px;gap:2px;overflow-x:auto}
+.navbar a{color:#7a8fa6;font-size:12px;padding:9px 14px;text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+.navbar a.active{color:#c9a84c;border-bottom-color:#c9a84c}
+.navbar a:hover{color:white}
+.section-hero{background:linear-gradient(135deg,#0d2149,#163a6e);padding:24px 20px;text-align:center;border-bottom:3px solid #c9a84c}
+.section-hero h1{color:white;font-size:24px;margin-bottom:6px}
+.section-hero h1 em{color:#c9a84c;font-style:normal}
+.section-hero p{color:rgba(255,255,255,0.7);font-size:13px}
+.main{max-width:1100px;margin:0 auto;padding:20px}
+.sport-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.sport-tab{background:#0d2149;color:#7a8fa6;border:1px solid rgba(201,168,76,0.2);padding:8px 16px;border-radius:4px;font-size:12px;cursor:pointer;font-family:Arial,sans-serif}
+.sport-tab.active{background:#c9a84c;color:#0a1628;font-weight:bold}
+.sport-tab:hover:not(.active){color:#c9a84c}
+.sport-section{display:none}
+.sport-section.active{display:block}
+.cat-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:16px;border-bottom:2px solid #c9a84c;padding-bottom:8px}
+.cat-tab{background:#f0f4f8;color:#444;border:none;padding:6px 12px;border-radius:4px 4px 0 0;font-size:11px;cursor:pointer;font-family:Arial,sans-serif}
+.cat-tab.active{background:#0d2149;color:#c9a84c;font-weight:bold}
+.cat-tab:hover:not(.active){background:#dce4ed}
+.cat-section{display:none}
+.cat-section.active{display:block}
+.group-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.group-tab{background:#f0f4f8;color:#444;border:1px solid #ddd;padding:5px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-family:Arial,sans-serif}
+.group-tab.active{background:#163a6e;color:#c9a84c;font-weight:bold;border-color:#163a6e}
+.group-section{display:none}
+.group-section.active{display:block}
+.clasificacion-table{background:white;border-radius:8px;border:1px solid #e0e0e0;overflow:hidden;margin-bottom:12px}
+.clasificacion-table table{width:100%;border-collapse:collapse}
+.clasificacion-table th{background:#0d2149;color:#c9a84c;font-size:11px;padding:7px 10px;text-align:left}
+.clasificacion-table td{font-size:11px;padding:8px 10px;color:#333;border-bottom:1px solid #f0f0f0}
+.clasificacion-table tr:last-child td{border-bottom:none}
+.clasificacion-table tr:nth-child(even) td{background:#f9f9f9}
+.clasificacion-table .posicion{font-weight:bold;color:#c9a84c;width:40px;text-align:center}
+.clasificacion-table .equipo{font-weight:bold;color:#0d2149}
+.clasificacion-table .puntos{font-weight:bold;text-align:right;width:60px;color:#c9a84c}
+.footer{background:#0a1628;padding:20px;border-top:3px solid #c9a84c;margin-top:20px}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px;margin-bottom:16px;max-width:1100px;margin-left:auto;margin-right:auto}
+.footer-logo{color:white;font-size:18px;font-weight:bold;margin-bottom:6px}
+.footer-logo em{color:#c9a84c;font-style:normal}
+.footer-desc{font-size:11px;color:#4a6080;line-height:1.65}
+.footer-col h4{color:#c9a84c;font-size:11px;font-weight:bold;margin-bottom:10px}
+.footer-col a{display:block;color:#4a6080;font-size:11px;margin-bottom:5px;text-decoration:none}
+.footer-col a:hover{color:#c9a84c}
+.footer-bottom{border-top:1px solid #1a2a3a;padding-top:12px;display:flex;justify-content:space-between;max-width:1100px;margin:0 auto}
+.footer-bottom p{color:#2a3a4a;font-size:10px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span>Periodismo deportivo escolar · Valladolid · UVA TFG 2024-25</span>
+  <span id="fecha"></span>
+</div>
+<div class="header">
+  <a href="index.html" class="logo">Valla<em>Deporte</em>Escolar<small>La plataforma del deporte base escolar en Valladolid</small></a>
+</div>
+<div class="navbar">
+  <a href="index.html">Inicio</a><a href="#">Noticias</a><a href="resultados.html">Resultados</a>
+  <a href="clasificaciones.html" class="active">Clasificaciones</a><a href="calendario.html">Calendario</a>
+  <a href="#">Multimedia</a><a href="manual.html">Manual Periodista</a><a href="quienes-somos.html">Quiénes somos</a>
+</div>
+<div class="section-hero">
+  <h1>🏆 Clasificaciones de <em>Deporte Escolar</em></h1>
+  <p>Temporada 2025/2026 · Fundación Municipal de Deportes de Valladolid</p>
+</div>
+<div class="main">
+<div class="sport-tabs">
+  <button class="sport-tab active" onclick="showSport('futbol',this)">⚽ Fútbol Sala</button>
+  <button class="sport-tab " onclick="showSport('atletismo',this)">🏃 Atletismo</button>
+  <button class="sport-tab " onclick="showSport('ajedrez',this)">♟️ Ajedrez</button>
+  <button class="sport-tab " onclick="showSport('gimnasia',this)">🤸 Gimnasia Rítmica</button>
+  <button class="sport-tab " onclick="showSport('voleibol',this)">🏐 Voleibol</button>
+  <button class="sport-tab " onclick="showSport('balonmano',this)">🤾 Balonmano</button>
+  <button class="sport-tab " onclick="showSport('baloncesto',this)">🏀 Baloncesto</button>
+  <button class="sport-tab " onclick="showSport('natacion',this)">🏊 Natación</button>
+</div>
+<div id="sport-futbol" class="sport-section active"><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('futbol','alevinm',this)">Alevín Masculino</button>
+<button class="cat-tab " onclick="showCat('futbol','benjaminm',this)">Benjamín</button>
+<button class="cat-tab " onclick="showCat('futbol','cadetm',this)">Cadete Masculino</button>
+<button class="cat-tab " onclick="showCat('futbol','fase2',this)">2ª Fase</button>
+<button class="cat-tab " onclick="showCat('futbol','infantilm',this)">Infantil Masculino</button>
+<button class="cat-tab " onclick="showCat('futbol','juvenilm',this)">Juvenil Masculino</button>
+</div>
+<div id="futbol-cat-alevinm" class="cat-section active">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-alevinm','futbol-alevinm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('futbol-alevinm','futbol-alevinm-GrupoB',this)">GrupoB</button>
+<button class="group-tab " onclick="showGroup('futbol-alevinm','futbol-alevinm-GrupoC',this)">GrupoC</button>
+</div>
+<div id="futbol-alevinm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">MARISTAS CCV - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">RAMON Y CAJAL - ENJOY SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">IÑIGO DE TORO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">ZARATAN - SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">CD. FUTSAL CIGALES - CASA2</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">CD NIARA - A</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-alevinm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">MARINA ESCOBAR</td><td class="puntos">6 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">G. BERCEO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">GARCIA QUINTANA - CARDENAL M</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">CD. FUTSAL CIGALES - CASA2</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">SAN VIATOR - ENJOY SPORT</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-alevinm-GrupoC" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">RAMON Y CAJAL - ES DEPORTE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">JESUITINAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">MARISTAS CCV</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">ALONSO BERRUGUETE - G</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">UNIÓN ARROYO FS - C</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">UNIÓN ARROYO FS - D</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="futbol-cat-benjaminm" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoB',this)">GrupoB</button>
+<button class="group-tab " onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoC',this)">GrupoC</button>
+<button class="group-tab " onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoD',this)">GrupoD</button>
+<button class="group-tab " onclick="showGroup('futbol-benjaminm','futbol-benjaminm-GrupoE',this)">GrupoE</button>
+</div>
+<div id="futbol-benjaminm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">FERRARI</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">C. JESUS Y MARIA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">CD. FUTSAL CIGALES - CASA2</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">MARISTAS INMACULADA - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">TIERNO GALVAN - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">COLEGIO PEÑALBA</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-benjaminm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">UNIÓN ARROYO FS - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">TIERNO GALVAN - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">SAFA-GRIAL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">ZARATAN - SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">FERRARI</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">SAN VIATOR - ENJOY SPORT</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-benjaminm-GrupoC" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">ANUNCIATA - PADRE COLL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">AGUSTINAS - AZUL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">PABLO PICASSO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">JESUITINAS - MORADO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">AGUSTINAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">MARISTAS INMACULADA</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-benjaminm-GrupoD" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CDFS LA CISTÉRNIGA</td><td class="puntos">9 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">IES ZORRILLA - OCIO-SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">GALILEO - PANTERAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">CORAZONISTAS</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-benjaminm-GrupoE" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">ANUNCIATA - PADRE COLL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">IES PARQUESOL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">CORAZONISTAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">GALILEO - PANTERAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">CORAZONISTAS - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">PABLO PICASSO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="futbol-cat-cadetm" class="cat-section ">
+<div id="futbol-cadetm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">FRANCISCO PINO - 6º</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CD NIARA - N</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">CD NIARA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">CD NIARA - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">COLEGIO PEÑALBA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">CORAZONISTAS</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="futbol-cat-fase2" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-fase2','futbol-fase2-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('futbol-fase2','futbol-fase2-GrupoB',this)">GrupoB</button>
+</div>
+<div id="futbol-fase2-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CONDESA EYLO - VERDE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CD. FUTSAL CIGALES - DQ TRAB</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">ANTONIO MACHADO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">JESUITINAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">MARINA ESCOBAR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">CD NIARA - U</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-fase2-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CD. SANTO TORIBIO - CÁRITAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CD. FUTSAL CIGALES - CASA2</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">CONDESA EYLO - VERDE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">GARCIA QUINTANA - CARDENAL M</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">ALONSO BERRUGUETE - G</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">HUELGAS - B</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="futbol-cat-infantilm" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('futbol-infantilm','futbol-infantilm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('futbol-infantilm','futbol-infantilm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="futbol-infantilm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">ZARATAN - SPORT</td><td class="puntos">6 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CONDESA EYLO - VERDE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">ALONSO BERRUGUETE - G</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">TIERNO GALVAN - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">PONCE DE LEON</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="futbol-infantilm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CORAZONISTAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">COLEGIO PEÑALBA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">CD NIARA - U</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">MARISTAS CCV</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">CRISTOBAL COLON - PANTERAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">MARISTAS INMACULADA - A</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="futbol-cat-juvenilm" class="cat-section ">
+<div id="futbol-juvenilm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CD. SANTO TORIBIO - CÁRITAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CD NIARA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">RAMON Y CAJAL - ENJOY SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">ARCA REAL - ENJOY SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">C. JESUS Y MARIA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">UNIÓN ARROYO FS - D</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+</div>
+<div id="sport-atletismo" class="sport-section "><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('atletismo','campocruces',this)">Campo a Través</button>
+<button class="cat-tab " onclick="showCat('atletismo','pistaairel',this)">Pista Aire Libre</button>
+<button class="cat-tab " onclick="showCat('atletismo','pistacubierta',this)">Pista Cubierta</button>
+<button class="cat-tab " onclick="showCat('atletismo','velocidad',this)">Velocidad</button>
+</div>
+<div id="atletismo-cat-campocruces" class="cat-section active">
+<div id="atletismo-campocruces-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="atletismo-cat-pistaairel" class="cat-section ">
+<div id="atletismo-pistaairel-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="atletismo-cat-pistacubierta" class="cat-section ">
+<div id="atletismo-pistacubierta-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="atletismo-cat-velocidad" class="cat-section ">
+<div id="atletismo-velocidad-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+</div>
+<div id="sport-ajedrez" class="sport-section "><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('ajedrez','alevin',this)">Alevín</button>
+<button class="cat-tab " onclick="showCat('ajedrez','benjamin',this)">Benjamín</button>
+<button class="cat-tab " onclick="showCat('ajedrez','cadete',this)">Cadete</button>
+<button class="cat-tab " onclick="showCat('ajedrez','infantil',this)">Infantil</button>
+<button class="cat-tab " onclick="showCat('ajedrez','prebenjamin',this)">Prebenjamín</button>
+</div>
+<div id="ajedrez-cat-alevin" class="cat-section active">
+<div id="ajedrez-alevin-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">Colegio 41</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">Colegio 29</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">Colegio 23</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">Colegio 8</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">Colegio 39</td><td class="puntos">0.5 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="ajedrez-cat-benjamin" class="cat-section ">
+<div id="ajedrez-benjamin-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">Colegio 9</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">Colegio 30</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">Colegio 17</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">Colegio 48</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">Colegio 42</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">Colegio 2</td><td class="puntos">0.5 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="ajedrez-cat-cadete" class="cat-section ">
+<div id="ajedrez-cadete-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">Colegio 32</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">Colegio 38</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">Colegio 42</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">Colegio 15</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">Colegio 17</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">Colegio 39</td><td class="puntos">0.5 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="ajedrez-cat-infantil" class="cat-section ">
+<div id="ajedrez-infantil-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">Colegio 10</td><td class="puntos">1.5 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">Colegio 7</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">Colegio 30</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">Colegio 38</td><td class="puntos">0.5 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="ajedrez-cat-prebenjamin" class="cat-section ">
+<div id="ajedrez-prebenjamin-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">Colegio 33</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">Colegio 16</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">Colegio 46</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">Colegio 7</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">Colegio 10</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">Colegio 30</td><td class="puntos">0.5 pts</td></tr>
+<tr><td class="posicion">7</td><td class="equipo">Colegio 21</td><td class="puntos">0.5 pts</td></tr>
+</table></div>
+</div>
+</div>
+</div>
+<div id="sport-gimnasia" class="sport-section "><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('gimnasia','conjuntos',this)">conjuntos</button>
+<button class="cat-tab " onclick="showCat('gimnasia','duostrios',this)">duostrios</button>
+<button class="cat-tab " onclick="showCat('gimnasia','grandesgrupos',this)">grandesgrupos</button>
+<button class="cat-tab " onclick="showCat('gimnasia','individual',this)">individual</button>
+</div>
+<div id="gimnasia-cat-conjuntos" class="cat-section active">
+<div id="gimnasia-conjuntos-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="gimnasia-cat-duostrios" class="cat-section ">
+<div id="gimnasia-duostrios-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="gimnasia-cat-grandesgrupos" class="cat-section ">
+<div id="gimnasia-grandesgrupos-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="gimnasia-cat-individual" class="cat-section ">
+<div id="gimnasia-individual-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+</div>
+<div id="sport-voleibol" class="sport-section "><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('voleibol','alevinm',this)">Alevín Masculino</button>
+<button class="cat-tab " onclick="showCat('voleibol','benjaminm',this)">Benjamín</button>
+<button class="cat-tab " onclick="showCat('voleibol','cadetm',this)">Cadete Masculino</button>
+<button class="cat-tab " onclick="showCat('voleibol','infantilm',this)">Infantil Masculino</button>
+<button class="cat-tab " onclick="showCat('voleibol','juvenilm',this)">Juvenil Masculino</button>
+<button class="cat-tab " onclick="showCat('voleibol','senorm',this)">Sénior Masculino</button>
+</div>
+<div id="voleibol-cat-alevinm" class="cat-section active">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('voleibol-alevinm','voleibol-alevinm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('voleibol-alevinm','voleibol-alevinm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="voleibol-alevinm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">HUELGAS - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">LA MERCED - OCIO-SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">IES NUÑEZ DE ARCE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">EL PILAR - CHAMI</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">MARISTAS INMACULADA - C</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">LA ENSEÑANZA - C</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="voleibol-alevinm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">C.D.CRISTO REY</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">MARISTAS CCV - COMPOSTELA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">MARTIN BARÓ - OCIO-SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">EL PILAR - CAÑADA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">VICENTE ALEIXANDRE - FREEDOM</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">HUELGAS</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">7</td><td class="equipo">FERRARI - CADETE P</td><td class="puntos">1 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="voleibol-cat-benjaminm" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('voleibol-benjaminm','voleibol-benjaminm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('voleibol-benjaminm','voleibol-benjaminm-GrupoB',this)">GrupoB</button>
+<button class="group-tab " onclick="showGroup('voleibol-benjaminm','voleibol-benjaminm-GrupoC',this)">GrupoC</button>
+</div>
+<div id="voleibol-benjaminm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">AYTO.TORDESILLAS - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">SAN AGUSTIN</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">PINAR DE LA RUBIA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">FERRARI - CADETE C</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">APOSTOLADO - LEOPARDOS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">AYTO.TORDESILLAS - A</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="voleibol-benjaminm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">MARISTAS CCV - IBÉRICA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">VOLEI. LA CISTÉRNIGA - 014</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">C.D.CRISTO REY</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">SAN JOSE - FABRO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">VOLEI. LA CISTÉRNIGA - 08</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">IES JIMENEZ LOZANO - M</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="voleibol-benjaminm-GrupoC" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">LA ENSEÑANZA - B</td><td class="puntos">6 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">HUELGAS - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">IES DELICIAS - VOLEI CADT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">LOURDES - UNIÓN</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">VOLEIBOL ARROYO - ACADEMIA</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">AYTO.TORDESILLAS</td><td class="puntos">1 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="voleibol-cat-cadetm" class="cat-section ">
+<div id="voleibol-cadetm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">APOSTOLADO - AZUL</td><td class="puntos">4 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">IES NUÑEZ DE ARCE - 11</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">VOLEIBOL ARROYO - ESCUELA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">VOLEIBOL ARROYO - PISUERGA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">VOLEIBOL ARROYO - LA FLECHA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">CONDESA EYLO - 13</td><td class="puntos">1 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="voleibol-cat-infantilm" class="cat-section ">
+<div id="voleibol-infantilm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">IES NUÑEZ DE ARCE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CONDESA EYLO - OCIO-SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">SAN JOSE - FABRO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">AYTO. SANTOVENIA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">EL PILAR - 2012</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">V.C.V. - CALDERON</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">7</td><td class="equipo">MARTIN BARÓ - 5º</td><td class="puntos">1 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="voleibol-cat-juvenilm" class="cat-section ">
+<div id="voleibol-juvenilm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">ARCA REAL - ES DEPORTE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">SAN JOSE - ARRUPE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">FERRARI - JUVENIL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">VICENTE ALEIXANDRE - FREEDOM</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">VOLEIBOL ARROYO - ARANZANA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">VOLEIBOL ARROYO - ATENEA</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="voleibol-cat-senorm" class="cat-section ">
+<div id="voleibol-senorm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">AYTO.TORDESILLAS - E</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">MARISTAS INMACULADA - C</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">VOLEI. LA CISTÉRNIGA - 013</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">AYTO.TORDESILLAS - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">AGUSTINAS - BLANCO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">VOLEIBOL ARROYO - ACADEMIA</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+</div>
+<div id="sport-balonmano" class="sport-section "><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('balonmano','alevinm',this)">Alevín Masculino</button>
+<button class="cat-tab " onclick="showCat('balonmano','benjaminm',this)">Benjamín</button>
+<button class="cat-tab " onclick="showCat('balonmano','infantilm',this)">Infantil Masculino</button>
+</div>
+<div id="balonmano-cat-alevinm" class="cat-section active">
+<div id="balonmano-alevinm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">RECOLETAS - REBELS AGENCY</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">AULA VALLADOLID - CAVIDEL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">BALONMANO DELICIAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">HAND VALL VALLADOLID - G.B.</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">RECOLETAS - VALLSUR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">AULA VALLADOLID - CAVIDEL A</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="balonmano-cat-benjaminm" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('balonmano-benjaminm','balonmano-benjaminm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('balonmano-benjaminm','balonmano-benjaminm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="balonmano-benjaminm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">BM ARROYO - DOMUSVI FEM</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">SAN AGUSTIN - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">RECOLETAS - VALLSUR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">RECOLETAS - REBELS AGENCY</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">AQUONA BM NAVA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">CBM TUDELA - DONDECHUCHI</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="balonmano-benjaminm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">ZASVISION BM LAGUNA - A</td><td class="puntos">6 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CBM TUDELA - DONDECHUCHI</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">CANDEAL VIANA - BM. VIANA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">RECOLETAS - VALLSUR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">BALONMANO DELICIAS</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="balonmano-cat-infantilm" class="cat-section ">
+<div id="balonmano-infantilm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">PONCE DE LEON - ROJO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">ZASVISION BM LAGUNA - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">BM ARROYO - DOMUSVI FEM</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">RECOLETAS - REBELS AGENCY</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">RECOLETAS - VALLSUR</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">SAN AGUSTIN - A</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">7</td><td class="equipo">SAN AGUSTIN - B</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">8</td><td class="equipo">CBM TUDELA - PIZZER CAPRICHO</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">9</td><td class="equipo">AULA VALLADOLID - CAVIDEL</td><td class="puntos">1 pts</td></tr>
+</table></div>
+</div>
+</div>
+</div>
+<div id="sport-baloncesto" class="sport-section "><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('baloncesto','alevinf',this)">Alevín Femenino</button>
+<button class="cat-tab " onclick="showCat('baloncesto','alevinm',this)">Alevín Masculino</button>
+<button class="cat-tab " onclick="showCat('baloncesto','benj',this)">Benjamín</button>
+<button class="cat-tab " onclick="showCat('baloncesto','cadetef',this)">Cadete Femenino</button>
+<button class="cat-tab " onclick="showCat('baloncesto','cadetm',this)">Cadete Masculino</button>
+<button class="cat-tab " onclick="showCat('baloncesto','infantilf',this)">Infantil Femenino</button>
+<button class="cat-tab " onclick="showCat('baloncesto','infantilm',this)">Infantil Masculino</button>
+<button class="cat-tab " onclick="showCat('baloncesto','juvenilf',this)">Juvenil Femenino</button>
+<button class="cat-tab " onclick="showCat('baloncesto','juvenilm',this)">Juvenil Masculino</button>
+</div>
+<div id="baloncesto-cat-alevinf" class="cat-section active">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-alevinf','baloncesto-alevinf-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('baloncesto-alevinf','baloncesto-alevinf-GrupoB',this)">GrupoB</button>
+</div>
+<div id="baloncesto-alevinf-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CDSI - AMARILLO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">SAN JOSE - GRUPO A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">LA SALLE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">IVECO CBC-ELALO - BLANCO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">PINOALBAR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">APOSTOLADO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="baloncesto-alevinf-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">MARINA ESCOBAR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">BALONCESTO LA FLECHA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">FERRARI - CONTIENDAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">CORAZONISTAS - ROJO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">LA SALLE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">LA CISTERNIGA - MASCULINO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-alevinm" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-alevinm','baloncesto-alevinm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('baloncesto-alevinm','baloncesto-alevinm-GrupoB',this)">GrupoB</button>
+<button class="group-tab " onclick="showGroup('baloncesto-alevinm','baloncesto-alevinm-GrupoC',this)">GrupoC</button>
+</div>
+<div id="baloncesto-alevinm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">SAFA-GRIAL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">SAN AGUSTIN - 1621</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">FERRARI - CONTIENDAS 010</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">LOURDES - BUJEDO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">CB VILLA DE LAGUNA - NEGRO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">SAN JOSE - FABRO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="baloncesto-alevinm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">PINOALBAR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">SAN AGUSTIN - 1588</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">APOSTOLADO - AZUL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">CORAZONISTAS - BLANCO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">IES NUÑEZ DE ARCE - CNTIENDS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">APOSTOLADO - BLANCO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="baloncesto-alevinm-GrupoC" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">IÑIGO DE TORO - CONTIENDAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">EL PILAR - CHAMI</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">IVECO CBC-ELALO - 2012</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">SAN JOSE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">APOSTOLADO - LAGARTIJAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">FERRARI - CONTIENDAS FR 09</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-benj" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-benj','baloncesto-benj-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('baloncesto-benj','baloncesto-benj-GrupoB',this)">GrupoB</button>
+<button class="group-tab " onclick="showGroup('baloncesto-benj','baloncesto-benj-GrupoC',this)">GrupoC</button>
+</div>
+<div id="baloncesto-benj-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">SAN JOSE - GRUPO A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">FERRARI - CONTIENDAS FR 08</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">CB VILLA DE LAGUNA - NEGRO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">CORAZONISTAS - BLANCO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">GARCIA QUINTANA - OCIO-SPORT</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">EL PILAR</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="baloncesto-benj-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">SAN JOSE - GARATE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">TERESIANAS - NARANJA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">BALONCESTO LA FLECHA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">CORAZONISTAS - NARANJA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">FERRARI - CONTIENDAS 011</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">FERRARI - CONTIENDAS</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="baloncesto-benj-GrupoC" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">AVE MARIA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">EL PILAR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">ANA AUSTRIA CIGALES - PONCE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">BALONCESTO LA FLECHA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">LOURDES - BUJEDO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">APOSTOLADO (Retirado)</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-cadetef" class="cat-section ">
+<div id="baloncesto-cadetef-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">FERRARI - CONTIENDAS 2013</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">FERRARI - CONTIENDAS 010</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">AGUSTINAS - CBCV</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">TIERNO GALVAN</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">CDSI - AMARILLO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">APOSTOLADO - BLANCO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-cadetm" class="cat-section ">
+<div id="baloncesto-cadetm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">BALONCESTO LA FLECHA - C</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">FERRARI - CONTIENDAS 012</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">LA SALLE - HISPANO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">APOSTOLADO - BLANCO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">SAN AGUSTIN - B</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">APOSTOLADO - AZUL</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-infantilf" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-infantilf','baloncesto-infantilf-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('baloncesto-infantilf','baloncesto-infantilf-GrupoB',this)">GrupoB</button>
+</div>
+<div id="baloncesto-infantilf-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">TIERNO GALVAN</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">LA CISTERNIGA - MASCULINO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">IÑIGO DE TORO - CONTIENDAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">IVECO CBC-ELALO - MORADO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">AVE MARIA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">APOSTOLADO - AZUL</td><td class="puntos">1 pts</td></tr>
+<tr><td class="posicion">7</td><td class="equipo">NARCISO A. CORTES</td><td class="puntos">1 pts</td></tr>
+</table></div>
+</div>
+<div id="baloncesto-infantilf-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">PINOALBAR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">LOURDES - BUJEDO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">APOSTOLADO - LAGARTIJAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">SAN JOSE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">TERESIANAS - AZUL</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">BALONCESTO LA FLECHA - C</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-infantilm" class="cat-section ">
+<div class="group-tabs">
+<button class="group-tab active" onclick="showGroup('baloncesto-infantilm','baloncesto-infantilm-GrupoA',this)">GrupoA</button>
+<button class="group-tab " onclick="showGroup('baloncesto-infantilm','baloncesto-infantilm-GrupoB',this)">GrupoB</button>
+</div>
+<div id="baloncesto-infantilm-GrupoA" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CORAZONISTAS</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">LA CISTERNIGA - MASCULINO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">SAN AGUSTIN - A</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">IVECO CBC-ELALO - MORADO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">FERRARI - CONTIENDAS 2013</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">ANUNCIATA - PADRE COLL</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+<div id="baloncesto-infantilm-GrupoB" class="group-section ">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">FERRARI - CONTIENDAS 2012</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">APOSTOLADO (Retirado)</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">IVECO CBC-ELALO - 2012</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">LA ENSEÑANZA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">SAN AGUSTIN - 1621</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">ANUNCIATA - PADRE COLL</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-juvenilf" class="cat-section ">
+<div id="baloncesto-juvenilf-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">SAN AGUSTIN - 1588</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">SAN JOSE</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">LA CISTERNIGA - MASCULINO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">EL PILAR</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">LOURDES - CASTELLA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">IVECO CBC-ELALO - BLANCO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+<div id="baloncesto-cat-juvenilm" class="cat-section ">
+<div id="baloncesto-juvenilm-Único" class="group-section active">
+<div class="clasificacion-table"><table><tr><th>#</th><th>Equipo</th><th>Puntos</th></tr>
+<tr><td class="posicion">1</td><td class="equipo">CB VILLA DE LAGUNA - ROJO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">2</td><td class="equipo">CD SARABRIS - CREALIA</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">3</td><td class="equipo">FERRARI - CONTIENDAS 013</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">4</td><td class="equipo">SAN AGUSTIN - 1621</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">5</td><td class="equipo">APOSTOLADO - BLANCO</td><td class="puntos">3 pts</td></tr>
+<tr><td class="posicion">6</td><td class="equipo">IVECO CBC-ELALO - BLANCO</td><td class="puntos">3 pts</td></tr>
+</table></div>
+</div>
+</div>
+</div>
+<div id="sport-natacion" class="sport-section "><div class="cat-tabs">
+<button class="cat-tab active" onclick="showCat('natacion','aguas',this)">Aguas</button>
+<button class="cat-tab " onclick="showCat('natacion','competicion',this)">Competición</button>
+<button class="cat-tab " onclick="showCat('natacion','tecnificacion',this)">Tecnificación</button>
+</div>
+<div id="natacion-cat-aguas" class="cat-section active">
+<div id="natacion-aguas-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="natacion-cat-competicion" class="cat-section ">
+<div id="natacion-competicion-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+<div id="natacion-cat-tecnificacion" class="cat-section ">
+<div id="natacion-tecnificacion-Único" class="group-section active">
+<p style="padding:20px;text-align:center;color:#999;">Sin datos disponibles</p>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Valla<em>Deporte</em>Escolar</div>
+      <p class="footer-desc">Plataforma digital dedicada a la visibilización del deporte base escolar en Valladolid. Noticias, resultados, clasificaciones y recursos para toda la comunidad deportiva. Proyecto TFG — Grado en Periodismo, Universidad de Valladolid, 2024-25.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Secciones</h4>
+      <a href="#">Noticias</a>
+      <a href="resultados.html">Resultados</a>
+      <a href="clasificaciones.html">Clasificaciones</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="#">Multimedia</a>
+      <a href="manual.html">Manual Periodista</a>
+    </div>
+    <div class="footer-col">
+      <h4>Información</h4>
+      <a href="quienes-somos.html">Quiénes somos</a>
+      <a href="#">Colabora con nosotros</a>
+      <a href="#">Fundación Municipal de Deportes</a>
+      <a href="#">Política de privacidad</a>
+      <a href="#">Contacto</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 ValladeporteEscolar · Álvaro Cifuentes Miñambres · UVA Periodismo</p>
+    <p>En colaboración con la FMD Valladolid</p>
+  </div>
+</div>
+
+<script>
+  const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const hoy = new Date();
+  document.getElementById('fecha').textContent = dias[hoy.getDay()] + ', ' + hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
+
+  function showSport(sport, btn) {
+    document.querySelectorAll('.sport-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.sport-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById('sport-' + sport).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function showCat(sport, cat, btn) {
+    const sportDiv = document.getElementById('sport-' + sport);
+    sportDiv.querySelectorAll('.cat-section').forEach(el => el.classList.remove('active'));
+    sportDiv.querySelectorAll('.cat-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById(sport + '-cat-' + cat).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function showGroup(sport, group, btn) {
+    const catSection = btn.closest('.cat-section');
+    catSection.querySelectorAll('.group-section').forEach(el => el.classList.remove('active'));
+    catSection.querySelectorAll('.group-tab').forEach(el => el.classList.remove('active'));
+    document.getElementById(group).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
