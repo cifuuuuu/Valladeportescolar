@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noticias - ValladeporteEscolar</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f4f4f4; }
+
+  .topbar { background: #0a1628; padding: 5px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar span { color: #7a8fa6; font-size: 11px; }
+
+  .header { background: #0d2149; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #c9a84c; }
+  .logo { color: white; font-size: 24px; font-weight: bold; line-height: 1; }
+  .logo em { color: #c9a84c; font-style: normal; }
+  .logo small { display: block; font-size: 10px; color: rgba(255,255,255,0.55); margin-top: 2px; font-weight: normal; }
+  .btn-search { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3); color: #c9a84c; padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; }
+
+  .navbar { background: #0a1628; display: flex; padding: 0 20px; gap: 2px; overflow-x: auto; }
+  .navbar a { color: #7a8fa6; font-size: 12px; padding: 9px 14px; text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+  .navbar a.active { color: #c9a84c; border-bottom-color: #c9a84c; }
+  .navbar a:hover { color: white; }
+
+  .page { padding: 16px 20px; max-width: 1200px; margin: 0 auto; }
+
+  /* TÍTULO SECCIÓN */
+  .sec-h { font-size: 20px; font-weight: bold; color: #0d2149; padding: 12px 0; border-bottom: 3px solid #c9a84c; margin-bottom: 20px; }
+
+  /* GRID NOTICIAS */
+  .noticias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 20px; }
+
+  /* NOTICIA CARD */
+  .noticia-card { background: white; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; cursor: pointer; transition: all 0.3s ease; }
+  .noticia-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); transform: translateY(-2px); }
+
+  .noticia-img-header { height: 140px; background: linear-gradient(135deg, #0d2149, #163a6e); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 48px; overflow: hidden; position: relative; }
+  .noticia-img-header img { width: 100%; height: 100%; object-fit: cover; }
+
+  .noticia-body { padding: 14px; }
+  .noticia-sport { font-size: 10px; color: #c9a84c; font-weight: bold; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+  .noticia-title { font-size: 14px; font-weight: bold; color: #0d2149; line-height: 1.4; margin-bottom: 8px; }
+  .noticia-summary { font-size: 12px; color: #666; line-height: 1.5; margin-bottom: 10px; min-height: 36px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .noticia-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: #999; }
+  .noticia-meta .date { color: #999; }
+  .noticia-expand { color: #c9a84c; font-weight: bold; font-size: 12px; }
+
+  /* NOTICIA EXPANDIDA */
+  .noticia-card.expanded { grid-column: 1 / -1; }
+  .noticia-card.expanded .noticia-body { padding: 20px; }
+
+  .noticia-expanded-header { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: flex-start; margin-bottom: 20px; }
+  .noticia-expanded-img-main { height: 300px; background: linear-gradient(135deg, #0d2149, #163a6e); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 60px; }
+  .noticia-expanded-img-main img { width: 100%; height: 100%; object-fit: cover; }
+
+  .noticia-expanded-info { display: flex; flex-direction: column; justify-content: center; }
+  .noticia-expanded-title { font-size: 24px; font-weight: bold; color: #0d2149; line-height: 1.3; margin-bottom: 12px; }
+  .noticia-expanded-meta { display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #666; }
+  .noticia-expanded-meta-item { display: flex; gap: 8px; }
+  .noticia-expanded-meta-label { color: #999; }
+
+  .noticia-expanded-content { font-size: 14px; color: #333; line-height: 1.7; }
+  .noticia-expanded-content p { margin-bottom: 14px; }
+
+  .noticia-expanded-img-body { height: 250px; background: linear-gradient(135deg, #1a4a8a, #163a6e); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.2); font-size: 50px; margin: 16px 0; }
+  .noticia-expanded-img-body img { width: 100%; height: 100%; object-fit: cover; }
+
+  .noticia-close { display: inline-block; margin-top: 12px; padding: 8px 16px; background: #0d2149; color: #c9a84c; border: 1px solid #c9a84c; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer; }
+  .noticia-close:hover { background: #0a1628; }
+
+  /* FOOTER */
+  .footer { background: #0a1628; padding: 20px; border-top: 3px solid #c9a84c; margin-top: 40px; }
+  .footer-bottom p { color: #2a3a4a; font-size: 10px; text-align: center; }
+
+  @media (max-width: 768px) {
+    .noticias-grid { grid-template-columns: 1fr; }
+    .noticia-expanded-header { grid-template-columns: 1fr; }
+    .noticia-title { font-size: 13px; }
+    .noticia-expanded-title { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Periodismo deportivo escolar · Valladolid · UVA TFG 2024-25</span>
+  <span id="fecha"></span>
+</div>
+
+<div class="header">
+  <div class="logo">
+    Valla<em>Deporte</em>Escolar
+    <small>La plataforma del deporte base escolar en Valladolid</small>
+  </div>
+  <button class="btn-search">🔍 Buscar</button>
+</div>
+
+<div class="navbar">
+  <a href="index.html">Inicio</a>
+  <a href="calendario.html">Calendario</a>
+  <a href="resultados.html">Resultados</a>
+  <a href="clasificaciones.html">Clasificaciones</a>
+  <a href="#" class="active">Noticias</a>
+  <a href="quienes-somos.html">Quiénes somos</a>
+</div>
+
+<div class="page">
+  <h1 class="sec-h">📰 Noticias</h1>
+
+  <div class="noticias-grid" id="noticiasGrid"></div>
+</div>
+
+<div class="footer">
+  <div class="footer-bottom">
+    <p>&copy; 2024-2025 ValladeporteEscolar. Todos los derechos reservados.</p>
+  </div>
+</div>
+
+<script>
+const noticias = [
+  {
+    id: 1,
+    sport: "Baloncesto",
+    title: "San José abre la liga con victoria sobre El Pilar",
+    summary: "El equipo benjamín brilla en la zona donde el pivot local fue determinante",
+    date: "20/05/2025",
+    content: `El Polideportivo Manuel Sánchez Cisneros acogió un baloncesto de altísima calidad este sábado. El equipo benjamín San José derrotó de forma contundente al Pilar por 60-43, en esta jornada que abría la liga escolar.
+
+Desde el inicio, los locales impusieron su ritmo acelerado con un baloncesto fluido y ejecuciones precisas. A los ocho minutos, los rojiblancos ya lideraban 18-10, con el perímetro como arma letal.
+
+"Estos muchachos tienen hambre de ganar. Llevan semanas demostrando en cada entrenamiento que están comprometidos con el baloncesto", explicaba el entrenador del San José.
+
+La segunda mitad consolidó el dominio de estos. Con el marcador en 52-40 a falta de tres minutos, Alejandro Núñez, el pívot del Sanjo, desplegó una defensa sofocante en la pintura. Anotó tres puntos consecutivos, puso dos tapones y capturó rebotes cruciales. "Alejandro juega con madurez defensiva poco común para su edad", reconocía el entrenador rival.
+
+Los anfitriones cerraron con sólidas estadísticas: 44% de acierto en triples y apenas 12 pérdidas de balón. El Pilar, con un esfuerzo loable liderado por su ala-pívot Miguel Hernández (16 puntos), no consiguió frenar el ataque rojiblanco.
+
+Esta victoria coloca al San José al frente del Grupo A abriendo así la temporada con una victoria. El próximo encuentro les enfrentará al Apostolado.`
+  },
+  {
+    id: 2,
+    sport: "Baloncesto",
+    title: "El CBC pasa por encima de La Enseñanza para ser más líder del Grupo A",
+    summary: "El infantil masculino del Valladolid afianza el liderato tras dominar un partido mas",
+    date: "19/05/2025",
+    content: `El CBC Valladolid infantil masculino continúa intratable en el Grupo A. El conjunto vallisoletano firmó una nueva exhibición para imponerse con claridad a La Enseñanza y afianzar todavía más un liderato que domina con autoridad jornada tras jornada.
+
+Desde el salto inicial, el CBC marcó el ritmo del encuentro con una defensa intensa y rápidas transiciones que desarbolaron por completo al cuadro rival. La superioridad local se hizo evidente en ambos lados de la pista, con un juego coral y un gran acierto ofensivo que permitió abrir brecha en el marcador desde los primeros minutos.
+
+La Enseñanza intentó reaccionar en varios tramos del partido, pero se encontró con un Valladolid muy sólido, concentrado y decidido a no dar opciones. El control del rebote y la velocidad en circulación de balón fueron claves para que los líderes mantuvieran siempre el dominio del choque.
+
+Con el paso de los cuartos, el CBC no bajó el nivel y terminó cerrando una victoria contundente que refuerza su condición de líder del Grupo A. El infantil masculino vallisoletano sigue demostrando una gran regularidad y confirma, una semana más, su candidatura a pelear por todo esta temporada.`
+  },
+  {
+    id: 3,
+    sport: "Baloncesto",
+    title: "Paula Pérez: \"Queremos competir por todo esta temporada\"",
+    summary: "La jugadora del San José Junior Femenino destaca la unión del equipo y la ambición del conjunto vallisoletano",
+    date: "18/05/2025",
+    content: `Con el comienzo de la temporada a la vuelta de la esquina, el San José Junior Femenino ya trabaja con intensidad para preparar un curso lleno de ilusión y ambición. Una de las voces más destacadas del vestuario es la de Paula Pérez, una de las referentes del equipo pese a su juventud. En esta entrevista, la jugadora analiza los objetivos del grupo, el ambiente dentro del equipo y las ganas de competir al máximo nivel.
+
+¿Cómo afronta el equipo este inicio de temporada?
+"Con muchísimas ganas. Llevamos varias semanas entrenando y se nota que todas venimos con ilusión. El año pasado aprendimos mucho y ahora queremos dar un paso más como equipo. Hay muy buen ambiente y eso se nota en cada entrenamiento."
+
+¿Cuáles son los objetivos del San José Junior Femenino este año?
+"Queremos competir por todo. Sabemos que va a ser una temporada difícil porque hay equipos muy fuertes, pero confiamos mucho en nosotras mismas. Nuestro objetivo es estar arriba y luchar cada partido como si fuera una final."
+
+¿Qué crees que puede hacer especial a este equipo?
+"Sobre todo la unión. Somos un grupo muy unido dentro y fuera de la pista. Muchas llevamos años jugando juntas y eso ayuda muchísimo. Nos entendemos muy bien y siempre intentamos apoyarnos en los momentos difíciles."
+
+¿Cómo ves el nivel del equipo en comparación con otras temporadas?
+"Creo que hemos mejorado bastante. Hemos trabajado mucho durante el verano y en los entrenamientos se nota más intensidad y más confianza. También tenemos jugadoras nuevas que nos van a aportar mucho."
+
+¿Qué papel quieres tener dentro del equipo esta temporada?
+"Intentar ayudar en todo lo posible. Quiero aportar energía, trabajo y dar siempre el máximo. Al final, cada jugadora tiene un papel importante y lo más importante es que el equipo funcione."
+
+¿Qué le dirías a la afición del San José Junior Femenino?
+"Que vengan a apoyarnos porque vamos a dejarlo todo en la pista. Cuando sentimos el apoyo desde la grada jugamos con más motivación. Estamos preparadas para pelear y hacer una gran temporada."
+
+El San José Junior Femenino arranca así un nuevo curso lleno de expectativas, trabajo y ambición. Con jugadoras como Paula Pérez liderando el proyecto, el conjunto vallisoletano sueña con convertirse en uno de los grandes protagonistas de la temporada.`
+  },
+  {
+    id: 4,
+    sport: "Fútbol Sala",
+    title: "Gonzalo de Berceo arranca con autoridad y supera a Niara en la jornada inaugural",
+    summary: "El conjunto vallisoletano dominó a Niara desde el inicio gracias a su intensidad, presión alta y efectividad ofensiva",
+    date: "17/05/2025",
+    content: `El alevín Gonzalo de Berceo comenzó la temporada de fútbol sala con una convincente victoria frente a Niara en un encuentro marcado por el ritmo alto, la intensidad y la eficacia ofensiva del conjunto vallisoletano. El equipo local dejó muy buenas sensaciones en su estreno liguero y confirmó desde el primer partido sus aspiraciones de pelear por los puestos altos de la clasificación.
+
+Desde los compases iniciales, Gonzalo de Berceo salió decidido a imponer su estilo de juego, basado en una presión constante y rápidas transiciones ofensivas que pusieron en aprietos a Niara. La circulación de balón y la movilidad entre líneas fueron claves para que los locales dominaran el encuentro y generaran numerosas ocasiones de peligro.
+
+El ala Diego Martín fue uno de los jugadores más destacados del choque gracias a su velocidad y capacidad para desequilibrar en el uno contra uno. Junto a él, Pablo Sánchez dirigió el juego con criterio y dio equilibrio al equipo tanto en ataque como en defensa. La conexión entre ambos permitió a Gonzalo de Berceo encontrar espacios con facilidad durante gran parte del partido.
+
+Niara intentó reaccionar mediante una defensa más adelantada y buscando ataques rápidos, pero se encontró con un rival muy sólido y bien organizado. Las pérdidas de balón y la falta de acierto en los metros finales dificultaron cualquier intento de remontada visitante.
+
+Con el paso de los minutos, Gonzalo de Berceo fue aumentando su ventaja gracias a su intensidad y capacidad para mantener el control del encuentro. La solidez defensiva y la concentración del equipo evitaron que Niara pudiera acercarse peligrosamente en el marcador.
+
+Tras el partido, el entrenador local destacó el trabajo colectivo de sus jugadores y valoró positivamente el debut liguero. "La primera jornada siempre es importante para coger confianza y empezar con buenas sensaciones. El equipo ha entendido muy bien el plan de partido y eso se ha reflejado en la pista", señaló.
+
+Con esta victoria, Gonzalo de Berceo inicia el campeonato dejando claro que será uno de los equipos a seguir esta temporada en el fútbol sala vallisoletano.`
+  },
+  {
+    id: 5,
+    sport: "Fútbol Sala",
+    title: "Tierno Galván Cadete sorprende a Cigales con una defensa asfixiante y se lleva la victoria (6-4)",
+    summary: "Un partido muy disputado en el que el equipo de Luis Ramos supo mantenerse firme en defensa",
+    date: "16/05/2025",
+    content: `El Tierno Galván Cadete dio la sorpresa de la jornada en el Polideportivo San Isidro al imponerse a Cigales por 6-4 en un intenso partido de fútbol sala, decidido por la solidez defensiva y la eficacia en los momentos clave del conjunto dirigido por Luis Ramos.
+
+El encuentro comenzó con mucha igualdad entre dos equipos bien organizados. Cigales trató de llevar la iniciativa con posesiones largas y un juego elaborado, mientras que Tierno Galván apostó desde el inicio por una presión alta que dificultó la salida de balón rival. El choque se mantuvo equilibrado durante gran parte del primer tiempo.
+
+En la segunda mitad, el ritmo aumentó y llegaron los goles. Cigales logró adelantarse en el marcador en varios tramos del partido, pero el conjunto visitante reaccionó con rapidez en cada ocasión, manteniendo la calma y sin perder la intensidad defensiva.
+
+El pívot Jonathan Ruiz fue uno de los nombres propios del encuentro, destacando tanto en tareas ofensivas como en el trabajo sin balón, ayudando a sostener al equipo en los momentos de mayor presión de Cigales.
+
+El tramo final fue decisivo. Con el marcador ajustado, Tierno Galván Cadete supo aprovechar mejor sus oportunidades y firmó un parcial determinante que le permitió cerrar el partido a su favor. Cigales lo intentó hasta el final, pero se encontró con una defensa muy bien organizada.
+
+Tras el encuentro, el capitán Miguel Soria valoró el esfuerzo del grupo: "Sabíamos que sería muy complicado. La clave ha sido la unión del equipo y no bajar la intensidad en ningún momento".
+
+El entrenador Luis Ramos destacó el trabajo colectivo: "En cadete, la disciplina táctica es fundamental. Hoy el equipo la ha cumplido a la perfección".
+
+Con esta victoria, el Tierno Galván Cadete suma un triunfo de prestigio ante un rival exigente.`
+  },
+  {
+    id: 6,
+    sport: "Atletismo",
+    title: "Record escolar histórico: Javier Rodríguez bate el tiempo en 100 metros lisos con 11.54",
+    summary: "La marca anterior, de 11.78 segundos, llevaba siete años sin ser superada, desde el año 2019",
+    date: "15/05/2025",
+    content: `Rodríguez completó la hazaña en la jornada clasificatoria para la fase escolar celebrada en el Complejo deportivo Esgueva ante una modesta pero atenta concurrencia. Con una salida prácticamente perfecta y un final explosivo donde mostró una aceleración devastadora en los últimos 30 metros, el velocista de 16 años superó ampliamente sus propias expectativas previas al evento.
+
+Su entrenador, Miguel Ángel Sanz, especialista en velocidad que ha trabajado durante meses en la mejora de la técnica de carrera y potencia explosiva de Rodríguez, reconoce el trabajo realizado. "Sabía que estaba preparado para hacer una muy buena marca, pero batir un récord es algo especial. Javier tiene cualidades excepcionales: velocidad de reacción, potencia en la explosión y una resistencia mental poco común para su edad."
+
+"Trabajé todo el año para este momento", declaró Rodríguez visiblemente emocionado tras cruzar la meta y enterarse del tiempo registrado. "Cada sesión de entrenamiento, cada gesto técnico, cada trabajo de fuerza en el gimnasio, estaba orientado a este objetivo. Es increíble haberlo conseguido. Cuando escuché que había corrido en 11.54, no lo creía. Tuve que mirar el cronómetro varias veces."
+
+Con esta marca, Rodríguez se coloca entre los mejores velocistas de su edad a nivel nacional. Su próximo objetivo será la fase regional, donde espera mejorar aún más su marca y consolidarse como una de las promesas del atletismo español en velocidad.
+
+La familia de Rodríguez presenció el evento desde las gradas, celebrando efusivamente el logro. Sus padres, Javier Rodríguez García y María López, han apoyado constantemente la carrera atlética de su hijo. "Sabíamos que podía hacerlo. Lo hemos visto mejorar semana a semana en los entrenamientos", comenta su padre.`
+  },
+  {
+    id: 7,
+    sport: "Atletismo",
+    title: "María Sánchez: \"Mi sueño es ir a unos Juegos Olímpicos\"",
+    summary: "María Sánchez, atleta de 14 años del Colegio Lope de Vega, representa la nueva generación de promesas",
+    date: "14/05/2025",
+    content: `Con un ambicioso objetivo de llegar a unos Juegos Olímpicos, la joven atleta entrena seis días a la semana bajo la dirección técnica del especialista Andrés López, quien ha trabajado con atletas de nivel regional durante más de 15 años.
+
+"Mi sueño es ir a unos Juegos Olímpicos", confiesa María con la seguridad de quien ha fijado un objetivo claro y está trabajando metódicamente para conseguirlo.
+
+"Vi a Óscar Husillos correr en la tele hace dos años y dije: quiero ser como él. Quiero representar a España en unos Juegos Olímpicos. Desde entonces trabajo cada día para lograrlo."
+
+Su interés por el atletismo surgió de manera casi accidental. María participaba en actividades deportivas escolares sin mayor objetivo que divertirse. Sin embargo, en una jornada de atletismo escolar, su profesora de educación física la animó a apuntarse a una carrera. "No me imaginaba que fuera a ser buena en esto", reconoce María. "Pero cuando realicé mi primera salida, algo hizo clic en mi mente. Descubrí que me encantaba."
+
+Desde entonces, su dedicación ha sido absoluta. Entrena en la pista del Complejo deportivo Esgueva bajo la supervisión de López, quien ha notado en ella características poco comunes para su edad.
+
+"María tiene una combinación de talento físico y mentalidad ganadora que es rara", comenta el entrenador. "No solo tiene la capacidad atlética, sino también la inteligencia táctica y la disciplina mental necesarias para llegar lejos en este deporte."
+
+"El trabajo es duro", reconoce María. "Hay días en los que estoy cansada, días en los que quisiera dejar de entrenar. Pero cuando veo que mejoro, cuando veo que mis marcas aumentan, todo tiene sentido. Sé que cada entrenamiento me acerca a mi sueño."
+
+Su próximo objetivo es el campeonato autonómico de categoría infantil, donde espera clasificarse para la selección nacional. "Si consigo una buena marca en el autonómico, podría ir a la fase nacional. Eso sería increíble", comenta con esperanza.
+
+Los expertos en atletismo consideran que María tiene un futuro prometedor. A diferencia de muchos atletas jóvenes que se sienten abrumados por la competencia, ella la ve como una oportunidad para demostrar su valor. "La competencia no me asusta. Me motiva", afirma con convicción.`
+  },
+  {
+    id: 8,
+    sport: "Voleibol",
+    title: "Record histórico: 12 equipos femeninos participan en el torneo cadete benéfico de voleibol escolar",
+    summary: "La expansión significativa del programa evidencia el creciente interés por este deporte",
+    date: "13/05/2025",
+    content: `El torneo benéfico de voleibol femenino escolar alcanza su mayor participación en toda su historia con 12 equipos inscritos para esta temporada.
+
+"Este año tenemos 12 equipos, el número más alto en toda la historia del programa que lleva funcionando desde hace 12 años", afirma con orgullo la coordinadora del torneo, Marta Rodríguez.
+
+"Es un crecimiento extraordinario que refleja el interés real de las estudiantes por el voleibol. Los centros están invirtiendo recursos en crear equipos competitivos, y eso se ve reflejado en la cantidad de inscripciones."
+
+La afluencia masiva de participantes ha obligado a habilitar dos grupos paralelos para gestionar adecuadamente el volumen de participantes. El grupo A está integrado por 6 equipos y el grupo B por otros 6. Esta estructura permite que cada equipo juegue más partidos y que la competición sea más equilibrada.
+
+Los equipos participantes son: Maristas Inmaculada, Condesa Eylo, Lope de Vega, Las Huelgas, Jesuitinas, Apostolado, San José, Colegio Sagrado Corazón, San Agustín, La Salle, La Enseñanza y el Lourdes.
+
+La competición se desarrollará en dos fases claramente diferenciadas. En la primera fase, cada equipo jugará contra los otros 5 de su grupo (grupo A o B). Los cuatro mejores clasificados de cada grupo accederán a una segunda fase de play-offs que determinará el campeón.
+
+"El nivel técnico ha mejorado significativamente respecto a años anteriores", comenta Marta Rodríguez.
+
+"Los centros están contratando entrenadores especializados, dedicando más tiempo a entrenamientos específicos de voleibol. Eso se refleja en la calidad de juego que vemos en los encuentros."
+
+El premio económico será destinado a la ONG que la organización ganadora decida.`
+  },
+  {
+    id: 9,
+    sport: "Voleibol",
+    title: "Sofía García: \"El voleibol me cambió la vida\"",
+    summary: "Sofía García, de 15 años y capitana del equipo de voleibol de Maristas, representa el espíritu de dedicación",
+    date: "12/05/2025",
+    content: `Lo que comenzó como una actividad de diversión hace apenas tres años se ha convertido en la pasión que estructura su día a día, sus amistades y sus perspectivas futuras.
+
+"Empecé a jugar al voleibol por diversión, porque mis amigas decían que era divertido", recuerda Sofía. "Pero ahora es mi pasión. El voleibol me cambió la vida. No solo en lo deportivo, sino en todo aspecto. Me ha dado confianza, amistades profundas, un sentido de pertenencia a algo más grande que yo."
+
+García entrena cinco días a la semana con dedicación absoluta. Ha visto cómo el deporte ha transformado su carácter, haciéndola más fuerte mentalmente, más resiliente ante las dificultades. "El voleibol enseña valores que no aprendes en otros lados", explica con convicción. "Te enseña trabajo en equipo, porque si no trabajas con tus compañeras, no ganas. Te enseña responsabilidad, porque tus errores afectan al equipo. Te enseña perseverancia, porque no siempre ganas, y tienes que levantarte de esas derrotas."
+
+Como capitana, García ha asumido responsabilidades que van más allá de jugar. "Ser capitana significa que tus compañeras confían en ti. Significa que tienes que ser fuerte mentalmente en los momentos difíciles, que tienes que motivar cuando las cosas no van bien. Es una responsabilidad que asumo con honor."
+
+Su entrenador, Carlos Mata, habla de García con admiración. "Sofía tiene cualidades excepcionales como líder. No solo es una buena jugadora técnicamente, sino que tiene carisma. Sus compañeras la respetan y la siguen. Eso es lo que hace que sea una capitana excelente."
+
+Con un equipo joven pero talentoso, Sofía tiene claros sus objetivos inmediatos. "Mi objetivo es ganar el campeonato provincial y clasificarme para la autonómica", afirma con determinación. "Tenemos un equipo muy competitivo. Si seguimos trabajando como lo hacemos ahora, con dedicación y cohesión, lo conseguiremos."
+
+Sofía también es consciente de que el voleibol podría ser su camino futuro. "No sé si llegará el momento en que pueda jugar a nivel profesional, pero lo que sí sé es que el voleibol será parte de mi vida siempre. Incluso si dejo de competir, seguiré jugando, seguiré disfrutando de este deporte."`
+  },
+  {
+    id: 10,
+    sport: "Voleibol",
+    title: "San Agustín arranca la temporada con victoria ante Maristas en un igualado debut del Grupo A (2-1)",
+    summary: "El choque, propio del inicio de temporada, estuvo marcado por la igualdad y los altibajos",
+    date: "11/05/2025",
+    content: `San Agustín comenzó la temporada del Grupo A de voleibol benjamín femenino con una trabajada victoria ante Maristas por 2-1 en un partido muy disputado en el que ambos equipos mostraron ilusión, nervios y muchas ganas de competir en el primer encuentro del curso.
+
+Maristas salió con buen ritmo en el primer set, aprovechando algunos errores de San Agustín propios de los primeros partidos del año, y logró adelantarse en el marcador con un juego sencillo pero efectivo.
+
+Sin embargo, San Agustín fue de menos a más. Con el paso de los puntos, el equipo fue ganando confianza en la recepción y mejorando la colocación del balón, lo que le permitió igualar el encuentro en el segundo set tras un tramo final más sólido y ordenado.
+
+El tercer y definitivo set fue el más emocionante. Ambos equipos pelearon cada punto con intensidad, alternando ventajas mínimas en el marcador. San Agustín logró mantener la calma en los últimos compases y aprovechó mejor sus oportunidades para cerrar el partido a su favor.
+
+Más allá del resultado, el encuentro dejó buenas sensaciones en ambos equipos, que continúan su formación en una categoría donde el aprendizaje y la progresión son tan importantes como la victoria.
+
+Con este triunfo, San Agustín suma su primera victoria de la temporada en el Grupo A, mientras que Maristas se marcha con la sensación de haber competido bien en un partido muy igualado que sirve como punto de partida para el curso.`
+  },
+  {
+    id: 11,
+    sport: "Ajedrez",
+    title: "Pablo Gómez: \"El ajedrez es como un videojuego del cerebro\"",
+    summary: "El ajedrecista Pablo Gómez, cadete del IES Parquesol, sigue dando pasos firmes en su progresión",
+    date: "10/05/2025",
+    content: `Con solo 15 años, ya compite en una categoría superior, donde continúa demostrando una gran capacidad de aprendizaje y una sorprendente madurez en el tablero.
+
+"Para mí el ajedrez es como un videojuego del cerebro", explica Pablo. "Tienes que pensar muchos movimientos por delante y tomar decisiones que luego cambian toda la partida".
+
+Su relación con el ajedrez comenzó a los 7 años, cuando su padre le introdujo en este deporte casi como una actividad educativa. Sin embargo, lo que empezó como algo puntual se convirtió rápidamente en una pasión. En poco tiempo empezó a destacar en torneos escolares hasta llegar a proclamarse campeón provincial en su categoría de base.
+
+Ahora, ya en categoría cadete, Pablo compite con jugadores mayores y más experimentados, algo que no le intimida. Su entorno destaca su capacidad para adaptarse rápidamente a rivales más fuertes y su forma de entender cada partida como un reto diferente.
+
+Su entrenador subraya especialmente su visión estratégica: "Es un jugador muy completo para su edad. No se precipita, piensa bastante y sabe construir partidas con paciencia, algo poco habitual en jugadores tan jóvenes".
+
+Pablo, por su parte, reconoce que lo que más le motiva es el propio reto mental del ajedrez. "Cada partida es como un puzzle distinto. Algunas son fáciles y otras muy complicadas, pero siempre tienes que estar concentrado".
+
+De cara a esta temporada en cadete, su objetivo es seguir creciendo en competición y prepararse para los campeonatos autonómicos. "Quiero seguir mejorando y jugar contra los mejores de Castilla y León. Eso es lo que me ayuda a aprender más", afirma.
+
+Su familia lo acompaña en este proceso sin presión, priorizando su disfrute y formación. Con su talento y su mentalidad tranquila, Pablo Gómez se consolida como una de las jóvenes promesas a seguir en el ajedrez vallisoletano dentro de la exigente categoría cadete.`
+  },
+  {
+    id: 12,
+    sport: "Gimnasia",
+    title: "40 gimnastas de 6 colegios compiten en la jornada de gimnasia artística escolar",
+    summary: "Una jornada de altísimo nivel técnico reunió a 40 jóvenes gimnastas en competición de gimnasia artística",
+    date: "09/05/2025",
+    content: `Una jornada de altísimo nivel técnico reunió a 40 jóvenes gimnastas de 6 colegios de la provincia en la competición de gimnasia artística escolar celebrada en el Polideportivo Fernández Valderrama.
+
+La exhibición del talento gimnástico vallisoletano contó con la participación de principiantes y atletas con varios años de experiencia en gimnasia de competición.
+
+La jornada incluyó competiciones en los cuatro aparatos básicos: barra de equilibrio, suelo, barras asimétricas y viga de equilibrio para las categorías femeninas; y barra fija, barras paralelas, potro de salto y suelo para las categorías masculinas. En cada aparato, los jueces evaluaron tanto la dificultad de los elementos ejecutados como la calidad técnica de la ejecución.
+
+Las categorías Benjamín y Alevín demostraron un nivel técnico considerable. En barra de equilibrio, varias gimnastas completaron rutinas con elementos de dificultad media-alta, incluyendo saltos mortales y cambios de altura. En suelo, los ejercicios combinaban elementos de dificultad con buena ejecución artística y musicales bien seleccionadas.
+
+"El nivel técnico ha mejorado significativamente respecto a años anteriores", comentó uno de los jueces internacionales presentes, Javier Rodríguez Sánchez. "Vemos más rutinas con dificultad real, mejor ejecución técnica, mejor preparación física. Es evidente que los centros están invirtiendo más en gimnasia artística."
+
+Los máximos exponentes técnicos fueron proporcionados por los centros de Maristas, Santa María de Europa y Lope de Vega, que acapararon la mayoría de pódiums en las categorías competidas. En categoría benjamín femenino, la gimnasta de Maristas Elena Ruiz ejecutó una rutina de barra de equilibrio particularmente impresionante, con tres elementos aéreos ejecutados con precisión.
+
+"El nivel de estos niños es excepcional", comenta Carlos Dueñas, entrenador de gimnasia de Maristas. "Han trabajado durante meses preparando sus rutinas. Lo que vemos en competición es el resultado de ese trabajo constante."
+
+La competición incluyó también demostración de gimnasia rítmica, con cintas y aros. Aunque menos participantes en esta disciplina, las rutinas mostraron igualmente buena calidad técnica y coordinación.`
+  },
+  {
+    id: 13,
+    sport: "Balonmano",
+    title: "Aula Valladolid se impone a Lourdes en un duelo igualado de categoría alevín masculina (18-15)",
+    summary: "El Aula Valladolid logró una trabajada victoria que se decidió en los últimos minutos",
+    date: "08/05/2025",
+    content: `El encuentro comenzó con mucha intensidad por parte de ambos equipos. Lourdes salió con un juego muy ordenado en ataque posicional, buscando ataques largos y bien elaborados, mientras que Aula Valladolid intentaba imponer un ritmo más alto, con salidas rápidas y transiciones tras recuperación.
+
+Durante la primera parte, el choque se mantuvo muy equilibrado, con alternancia constante en el marcador y diferencias mínimas entre ambos conjuntos. Ninguno de los dos equipos conseguía abrir brecha, en un duelo marcado por las buenas intervenciones de ambos porteros y algunas pérdidas de balón propias de la categoría.
+
+En la segunda mitad, Aula Valladolid dio un pequeño paso adelante en intensidad defensiva, logrando recuperar varios balones en primera línea que le permitieron correr al contraataque. Ese cambio de ritmo fue clave para empezar a construir una ligera ventaja en el marcador.
+
+Lourdes no se desenganchó del partido en ningún momento y reaccionó con buenas acciones individuales y lanzamientos exteriores que les mantuvieron con opciones hasta el tramo final. A falta de pocos minutos, la diferencia era mínima y el partido seguía completamente abierto.
+
+Sin embargo, en los instantes decisivos, Aula Valladolid mostró más calma en ataque y mayor solidez en defensa, lo que le permitió cerrar el encuentro con un pequeño parcial favorable que resultó definitivo para asegurar la victoria.
+
+Tras el partido, el cuerpo técnico del Aula destacó el esfuerzo colectivo del equipo y la capacidad de los jugadores para mantener la concentración en los momentos clave, algo especialmente valioso en esta categoría de formación.
+
+Con este triunfo, Aula Valladolid sigue creciendo en la competición, mientras que Lourdes dejó una muy buena imagen pese a la derrota en un partido muy igualado y formativo para ambos conjuntos.`
+  },
+  {
+    id: 14,
+    sport: "Natación",
+    title: "Récord escolar histórico en Valladolid: nuevo mejor registro provincial en el 4x100 relevos (3:52.45)",
+    summary: "El Club Natación Valladolid, protagonista del récord, mostró una gran regularidad en los cuatro relevos",
+    date: "07/05/2025",
+    content: `Valladolid vivió una jornada para el recuerdo en el las Piscinas Municipales con la firma de un nuevo récord provincial en la prueba de relevos 4x100 metros, donde el equipo escolar infantil de la capital detuvo el cronómetro en 3:52.45, rebajando la anterior mejor marca (3:54.12) que permanecía vigente desde hacía tres temporadas.
+
+La competición reunió a algunos de los principales clubes de natación de Valladolid en categorías de formación, con presencia de entidades habituales como el Club Natación Valladolid, el Club Deportivo Delicias, el Club Natación Parquesol y el Club Natación Río Esgueva, todos ellos referentes en el desarrollo de jóvenes nadadores en la provincia. El alto nivel de participación elevó el ritmo de la prueba desde las primeras series.
+
+El Club Natación Valladolid, protagonista del récord, mostró una gran regularidad en los cuatro relevos, con parciales muy equilibrados (58.2, 57.9, 58.1 y 58.15), destacando especialmente la precisión en las entregas, uno de los factores clave en este tipo de pruebas. La coordinación entre nadadores permitió minimizar pérdidas en las transiciones y mantener un ritmo constante de competición.
+
+El técnico responsable del equipo valoró el logro como el resultado de un trabajo prolongado: "Ha sido una ejecución muy limpia. En relevos, los cambios marcan la diferencia, y hoy hemos estado especialmente acertados en ese aspecto", señaló tras la prueba.
+
+Desde el ámbito de la natación vallisoletana se destaca el crecimiento del deporte base en la provincia, con clubes como el Club Natación Valladolid o el Club Natación Parquesol y el Club Natación Río Esgueva impulsando de forma constante el desarrollo de jóvenes talentos.
+
+Con este nuevo récord, el equipo se consolida como una de las grandes referencias en categoría escolar dentro de la provincia y afronta con ambición las próximas competiciones.`
+  }
+];
+
+const noticiasGrid = document.getElementById('noticiasGrid');
+let expandedId = null;
+
+function renderNoticias() {
+  noticiasGrid.innerHTML = '';
+
+  noticias.forEach(noticia => {
+    const isExpanded = expandedId === noticia.id;
+    const card = document.createElement('div');
+    card.className = `noticia-card ${isExpanded ? 'expanded' : ''}`;
+
+    if (isExpanded) {
+      card.innerHTML = `
+        <div class="noticia-body">
+          <div class="noticia-expanded-header">
+            <div class="noticia-expanded-img-main">📸</div>
+            <div class="noticia-expanded-info">
+              <span class="noticia-sport">${noticia.sport}</span>
+              <h2 class="noticia-expanded-title">${noticia.title}</h2>
+              <div class="noticia-expanded-meta">
+                <div class="noticia-expanded-meta-item">
+                  <span class="noticia-expanded-meta-label">Publicado:</span>
+                  <span>${noticia.date}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="noticia-expanded-content">
+            ${noticia.content.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('')}
+            <div class="noticia-expanded-img-body">📸</div>
+          </div>
+
+          <button class="noticia-close" onclick="cerrarNoticia()">← Cerrar noticia</button>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="noticia-img-header">📸</div>
+        <div class="noticia-body">
+          <span class="noticia-sport">${noticia.sport}</span>
+          <h3 class="noticia-title">${noticia.title}</h3>
+          <p class="noticia-summary">${noticia.summary}</p>
+          <div class="noticia-meta">
+            <span class="date">${noticia.date}</span>
+            <span class="noticia-expand">Leer más →</span>
+          </div>
+        </div>
+      `;
+    }
+
+    card.addEventListener('click', () => {
+      if (!isExpanded) {
+        expandedId = noticia.id;
+        renderNoticias();
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    noticiasGrid.appendChild(card);
+  });
+}
+
+function cerrarNoticia() {
+  expandedId = null;
+  renderNoticias();
+}
+
+// Mostrar fecha actual
+document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-ES', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
+renderNoticias();
+</script>
+
+</body>
+</html>
