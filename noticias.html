@@ -423,7 +423,7 @@ function renderNoticias() {
       card.innerHTML = `
         <div class="noticia-body">
           <div class="noticia-expanded-header">
-            <div class="noticia-expanded-img-main">📸</div>
+            <div class="noticia-expanded-img-main"><img src="fotos/noticias/noticia-3-header.jpg" alt="Paula Pérez"></div>
             <div class="noticia-expanded-info">
               <span class="noticia-sport">${noticia.sport}</span>
               <h2 class="noticia-expanded-title">${noticia.title}</h2>
@@ -438,7 +438,7 @@ function renderNoticias() {
 
           <div class="noticia-expanded-content">
             ${noticia.content.split('\n\n').map(p => `<p>${p.trim()}</p>`).join('')}
-            <div class="noticia-expanded-img-body">📸</div>
+            <div class="noticia-expanded-img-body"><img src="fotos/noticias/noticia-3-body.jpg" alt="Paula Pérez"></div>
           </div>
 
           <button class="noticia-close" onclick="cerrarNoticia()">← Cerrar noticia</button>
@@ -446,7 +446,7 @@ function renderNoticias() {
       `;
     } else {
       card.innerHTML = `
-        <div class="noticia-img-header">📸</div>
+        <div class="noticia-img-header"><img src="fotos/noticias/noticia-3-header.jpg" alt="Paula Pérez"></div>
         <div class="noticia-body">
           <span class="noticia-sport">${noticia.sport}</span>
           <h3 class="noticia-title">${noticia.title}</h3>
