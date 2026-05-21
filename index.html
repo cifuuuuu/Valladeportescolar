@@ -24,7 +24,7 @@
 
   .ticker { background: #c9a84c; padding: 5px 20px; display: flex; gap: 12px; align-items: center; }
   .ticker-tag { background: #0d2149; color: #c9a84c; font-size: 10px; padding: 2px 7px; border-radius: 2px; flex-shrink: 0; font-weight: bold; }
-  .ticker p { font-size: 12px; color: #0a1628; font-weight: bold; }
+  .ticker p { font-size: 12px; color: #0a1628; font-weight: bold; transition: opacity 0.3s ease; }
 
   .page { padding: 16px 20px; display: grid; grid-template-columns: 1fr 280px; gap: 18px; }
 
@@ -160,7 +160,7 @@
 
 <div class="ticker">
   <span class="ticker-tag">ÚLTIMA HORA</span>
-  <p>La FMD organiza la fase provincial de atletismo escolar este sábado en el Estadio José Zorrilla · 14 centros participantes</p>
+  <p id="ticker-text">La FMD organiza la fase provincial de atletismo escolar este sábado en el Estadio José Zorrilla · 14 centros participantes</p>
 </div>
 
 <div class="page">
@@ -386,6 +386,34 @@
   const hoy = new Date();
   document.getElementById('fecha').textContent = dias[hoy.getDay()] + ', ' + hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
 </script>
-
+<script>
+  // Ticker rotativo automático
+  const tickerNews = [
+    "La FMD organiza la fase provincial de atletismo escolar este sábado en el Estadio José Zorrilla · 14 centros participantes",
+    "San José abre la liga baloncestista con victoria contundente sobre El Pilar por 60-43",
+    "Record histórico: Javier Rodríguez bate el tiempo en 100 metros lisos con 11.54 segundos",
+    "Record femenino: 12 equipos de voleibol participan en torneo cadete benéfico",
+    "Tierno Galván Cadete sorprende a Cigales con defensa asfixiante (6-4)",
+    "CBC lidera el Grupo A tras victoriosa jornada frente a La Enseñanza"
+  ];
+  
+  let tickerIndex = 0;
+  const tickerElement = document.getElementById('ticker-text');
+  
+  function rotateTicker() {
+    tickerElement.style.opacity = '0';
+    setTimeout(() => {
+      tickerIndex = (tickerIndex + 1) % tickerNews.length;
+      tickerElement.textContent = tickerNews[tickerIndex];
+      tickerElement.style.opacity = '1';
+    }, 300);
+  }
+  
+  // Cambiar noticia cada 6 segundos
+  setInterval(rotateTicker, 6000);
+  
+  // Añade esto a tu CSS existente (línea 25):
+  // .ticker p { transition: opacity 0.3s ease; }
+</script>
 </body>
 </html>
