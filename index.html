@@ -149,7 +149,10 @@
     Valla<em>Deporte</em>Escolar
     <small>La plataforma del deporte base escolar en Valladolid</small>
   </div>
-  <button class="btn-search">🔍 Buscar</button>
+  <div style="display:flex;gap:0">
+    <input type="text" id="search-input" placeholder="Buscar en ValladeporteEscolar..." style="padding:6px 12px;border:1px solid rgba(201,168,76,0.3);border-radius:20px 0 0 20px;border-right:none;font-size:12px;width:160px;outline:none;">
+    <button class="btn-search" onclick="buscar()" style="border-radius:0 20px 20px 0;border-left:none;">🔍</button>
+  </div>
 </div>
 
 <div class="navbar">
@@ -401,6 +404,16 @@
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = (scrollTop / docHeight) * 100;
     document.getElementById('progress-bar').style.width = scrolled + '%';
+  });
+ // BUSCADOR EN GOOGLE
+  function buscar() {
+    const termino = document.getElementById('search-input').value;
+    if(termino) {
+      window.open('https://www.google.com/search?q=site:valladeportescolar.com ' + encodeURIComponent(termino), '_blank');
+    }
+  }
+  document.getElementById('search-input').addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') buscar();
   });
 </script>
 <script>
