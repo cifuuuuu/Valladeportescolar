@@ -150,8 +150,8 @@
     <small>La plataforma del deporte base escolar en Valladolid</small>
   </div>
   <div style="display:flex;gap:0">
-    <input type="text" id="search-input" placeholder="Buscar en ValladeporteEscolar..." style="padding:6px 12px;border:1px solid rgba(201,168,76,0.3);border-radius:20px 0 0 20px;border-right:none;font-size:12px;width:160px;outline:none;">
-    <button class="btn-search" onclick="buscar()" style="border-radius:0 20px 20px 0;border-left:none;">🔍</button>
+    <input type="text" id="search-input" placeholder="Buscar noticias..." style="padding:6px 12px;border:1px solid rgba(201,168,76,0.3);border-radius:20px 0 0 20px;border-right:none;font-size:12px;width:160px;outline:none;">
+    <button class="btn-search" onclick="buscarNoticias()" style="border-radius:0 20px 20px 0;border-left:none;">🔍</button>
   </div>
 </div>
 
@@ -405,15 +405,53 @@
     const scrolled = (scrollTop / docHeight) * 100;
     document.getElementById('progress-bar').style.width = scrolled + '%';
   });
- // BUSCADOR EN GOOGLE
-  function buscar() {
-    const termino = document.getElementById('search-input').value;
-    if(termino) {
-      window.open('https://www.google.com/search?q=site:valladeportescolar.com ' + encodeURIComponent(termino), '_blank');
+ // BASE DE DATOS DE NOTICIAS
+  const noticias = [
+    { id: 1, titulo: "San José abre la liga con victoria sobre El Pilar", deporte: "Baloncesto" },
+    { id: 2, titulo: "El CBC pasa por encima de La Enseñanza para ser más líder del Grupo A", deporte: "Baloncesto" },
+    { id: 3, titulo: "Paula Pérez: \"Queremos competir por todo esta temporada\"", deporte: "Baloncesto" },
+    { id: 4, titulo: "Gonzalo de Berceo arranca con autoridad y supera a Niara en la jornada inaugural", deporte: "Fútbol Sala" },
+    { id: 5, titulo: "Tierno Galván Cadete sorprende a Cigales con una defensa asfixiante y se lleva la victoria (6-4)", deporte: "Fútbol Sala" },
+    { id: 6, titulo: "Record escolar histórico: Javier Rodríguez bate el tiempo en 100 metros lisos con 11.54", deporte: "Atletismo" },
+    { id: 7, titulo: "María Sánchez: \"Mi sueño es ir a unos Juegos Olímpicos\"", deporte: "Atletismo" },
+    { id: 8, titulo: "Record histórico: 12 equipos femeninos participan en el torneo cadete benéfico de voleibol escolar", deporte: "Voleibol" },
+    { id: 9, titulo: "Sofía García: \"El voleibol me cambió la vida\"", deporte: "Voleibol" },
+    { id: 10, titulo: "San Agustín arranca la temporada con victoria ante Maristas en un igualado debut del Grupo A (2-1)", deporte: "Voleibol" },
+    { id: 11, titulo: "Pablo Gómez: \"El ajedrez es como un videojuego del cerebro\"", deporte: "Ajedrez" },
+    { id: 12, titulo: "40 gimnastas de 6 colegios compiten en la jornada de gimnasia artística escolar", deporte: "Gimnasia" },
+    { id: 13, titulo: "Aula Valladolid se impone a Lourdes en un duelo igualado de categoría alevín masculina (18-15)", deporte: "Balonmano" },
+    { id: 14, titulo: "Récord escolar histórico en Valladolid: nuevo mejor registro provincial en el 4x100 relevos (3:52.45)", deporte: "Natación" }
+  ];
+
+  // BUSCADOR LOCAL
+  function buscarNoticias() {
+    const termino = document.getElementById('search-input').value.toLowerCase();
+    if(!termino) {
+      alert('Escribe algo para buscar');
+      return;
     }
+    
+    const resultados = noticias.filter(n => 
+      n.titulo.toLowerCase().includes(termino) || 
+      n.deporte.toLowerCase().includes(termino)
+    );
+    
+    if(resultados.length === 0) {
+      alert('No se encontraron noticias con: "' + termino + '"');
+      return;
+    }
+    
+    let html = '<h2>Resultados de búsqueda: "' + termino + '"</h2><div style="margin-top:20px">';
+    resultados.forEach(n => {
+      html += '<div style="background:white;padding:12px;border-radius:8px;margin-bottom:12px;border-left:3px solid #c9a84c"><strong>' + n.deporte + '</strong><br><a href="noticias.html#noticia-' + n.id + '" style="color:#0d2149;text-decoration:none;font-size:14px">' + n.titulo + '</a></div>';
+    });
+    html += '</div>';
+    
+    document.body.innerHTML += '<div id="search-modal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999"><div style="background:white;padding:20px;border-radius:8px;max-width:500px;max-height:80vh;overflow-y:auto">' + html + '<button onclick="document.getElementById(\'search-modal\').remove()" style="margin-top:15px;padding:8px 15px;background:#0d2149;color:white;border:none;border-radius:4px;cursor:pointer">Cerrar</button></div></div>';
   }
+  
   document.getElementById('search-input').addEventListener('keypress', function(e) {
-    if(e.key === 'Enter') buscar();
+    if(e.key === 'Enter') buscarNoticias();
   });
 </script>
 <script>
