@@ -255,15 +255,14 @@
       </div>
       </a>
      <div class="cal-wrap">
-      <div class="cal-nav">
-        <button onclick="mesAnterior()">◀ Anterior</button>
-        <span id="mes-actual">Mayo 2025</span>
-        <button onclick="mesSiguiente()">Siguiente ▶</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-weight:bold;color:#0d2149;gap:10px">
+        <button onclick="calendarAnterior()" style="background:#0d2149;color:#c9a84c;border:1px solid #c9a84c;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:11px;flex:0">◀</button>
+        <span id="mes-actual-cal" style="flex:1;text-align:center">Mayo 2026</span>
+        <button onclick="calendarSiguiente()" style="background:#0d2149;color:#c9a84c;border:1px solid #c9a84c;padding:5px 10px;border-radius:4px;cursor:pointer;font-size:11px;flex:0">▶</button>
       </div>
-      <div id="cal-content"></div>
+      <div id="calendario-dinamico"></div>
+      <div style="text-align:center;padding-top:12px;font-size:10px;color:#999">🟨 = Eventos programados · <a href="calendario.html" style="color:#c9a84c;font-weight:bold;text-decoration:none">Ver detalles →</a></div>
     </div>
-    </div>
-  </div>
 
   <!-- SIDEBAR -->
   <div class="sidebar">
@@ -446,39 +445,33 @@
   document.getElementById('search-input').addEventListener('keypress', function(e) {
     if(e.key === 'Enter') buscarNoticias();
   });
- // CALENDARIO DINÁMICO
-  let mesActual = 5; // Mayo
-  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+ // CALENDARIO DINÁMICO CON EVENTOS REALES
+  const fechasEventos = ['06/11/2025','08/11/2025','09/11/2025','10/11/2025','11/11/2025','14/11/2025','15/11/2025','16/11/2025','19/11/2025','20/11/2025','22/11/2025','23/11/2025','26/11/2025','28/11/2025','29/11/2025','30/11/2025','02/12/2025','03/12/2025','04/12/2025','05/12/2025','09/12/2025','11/12/2025','12/12/2025','13/12/2025','14/12/2025','15/12/2025','16/12/2025','17/12/2025','18/12/2025','28/12/2025','10/01/2026','15/01/2026','16/01/2026','17/01/2026','18/01/2026','19/01/2026','23/01/2026','24/01/2026','25/01/2026','27/01/2026','29/01/2026','30/01/2026','31/01/2026','01/02/2026','02/02/2026','03/02/2026','04/02/2026','06/02/2026','07/02/2026','08/02/2026','09/02/2026','10/02/2026','11/02/2026','12/02/2026','13/02/2026','14/02/2026','16/02/2026','18/02/2026','19/02/2026','20/02/2026','21/02/2026','22/02/2026','23/02/2026','24/02/2026','25/02/2026','26/02/2026','27/02/2026','28/02/2026','01/03/2026','02/03/2026','03/03/2026','04/03/2026','05/03/2026','06/03/2026','07/03/2026','08/03/2026','09/03/2026','10/03/2026','11/03/2026','12/03/2026','13/03/2026','14/03/2026','15/03/2026','16/03/2026','17/03/2026','19/03/2026','20/03/2026','21/03/2026','22/03/2026','23/03/2026','24/03/2026','26/03/2026','27/03/2026','07/04/2026','09/04/2026','10/04/2026','11/04/2026','12/04/2026','14/04/2026','15/04/2026','16/04/2026','18/04/2026','20/04/2026','21/04/2026','22/04/2026','27/04/2026','29/04/2026','30/04/2026','04/05/2026','05/05/2026','07/05/2026','08/05/2026','09/05/2026','10/05/2026','11/05/2026','13/05/2026','14/05/2026','16/05/2026','19/05/2026','23/05/2026'];
   
-  const eventosCalendario = {
-    '8/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '10/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '15/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '17/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '22/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '29/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '13/12': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '10/1': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
-    '7/2': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'}
-  };
+  let mesCalActual = 4; // Mayo = 4 (0-11)
+  const mesesCal = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const diasMes = [31,28,31,30,31,30,31,31,30,31,30,31];
   
-  function generarCalendario() {
-    const diasMes = [31,28,31,30,31,30,31,31,30,31,30,31];
-    const primerDia = new Date(2025, mesActual, 1).getDay();
-    const dias = diasMes[mesActual];
-    const año = mesActual >= 8 ? 2025 : 2026;
+  function tieneEvento(dia, mes, año) {
+    const fecha = (dia<10?'0':'')+dia+'/'+(mes<10?'0':'')+mes+'/'+año;
+    return fechasEventos.includes(fecha);
+  }
+  
+  function generarCalendarioDinamico() {
+    const año = mesCalActual >= 8 ? 2025 : 2026;
+    const primerDia = new Date(año, mesCalActual, 1).getDay();
+    const dias = mesCalActual === 1 && año === 2026 ? 29 : diasMes[mesCalActual];
     
-    document.getElementById('mes-actual').textContent = meses[mesActual] + ' ' + año;
+    document.getElementById('mes-actual-cal').textContent = mesesCal[mesCalActual] + ' ' + año;
     
     let html = '<div class="cal"><div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">X</div><div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>';
     
     for(let i=1; i<primerDia; i++) html += '<div class="cal-day empty"></div>';
     
     for(let dia=1; dia<=dias; dia++) {
-      const fechaClave = dia + '/' + (mesActual+1);
-      const esHoy = dia===7 && mesActual===4;
-      const tieneEvento = eventosCalendario[fechaClave];
-      let clase = esHoy ? 'today' : (tieneEvento ? 'event' : '');
+      const evento = tieneEvento(dia, mesCalActual+1, año);
+      const hoy = dia===22 && mesCalActual===4 && año===2026;
+      const clase = hoy ? 'today' : (evento ? 'event' : '');
       html += '<div class="cal-day ' + clase + '">' + dia + '</div>';
     }
     
@@ -486,33 +479,22 @@
     for(let i=0; i<diasExtra; i++) html += '<div class="cal-day empty"></div>';
     html += '</div>';
     
-    html += '<div style="padding-top:10px">';
-    const eventosDelMes = Object.entries(eventosCalendario).filter(e => e[0].endsWith('/' + (mesActual+1))).map(e => e[1]);
-    if(eventosDelMes.length>0) {
-      eventosDelMes.forEach(e => {
-        html += '<div class="cal-event"><div class="cal-dot" style="background:#1a4a8a"></div><div><div class="cal-txt">' + e.titulo + '</div><div class="cal-date-lbl">' + e.deporte + '</div></div></div>';
-      });
-    } else {
-      html += '<div class="cal-empty">Sin eventos programados</div>';
-    }
-    html += '</div>';
-    
-    document.getElementById('cal-content').innerHTML = html;
+    document.getElementById('calendario-dinamico').innerHTML = html;
   }
   
-  function mesAnterior() {
-    if(mesActual>8) mesActual--;
-    else mesActual = 4;
-    generarCalendario();
+  function calendarAnterior() {
+    mesCalActual--;
+    if(mesCalActual < 8) mesCalActual = 4;
+    generarCalendarioDinamico();
   }
   
-  function mesSiguiente() {
-    if(mesActual<4) mesActual++;
-    else mesActual = 8;
-    generarCalendario();
+  function calendarSiguiente() {
+    mesCalActual++;
+    if(mesCalActual > 4) mesCalActual = 8;
+    generarCalendarioDinamico();
   }
   
-  generarCalendario();
+  generarCalendarioDinamico();
 </script>
 <script>
   // Ticker rotativo automático
