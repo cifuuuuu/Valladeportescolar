@@ -34,32 +34,20 @@
   .mision strong { color: #0d2149; }
 
   /* HERO */
-  .hero { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; margin-bottom: 16px; }
-  .hero-visual { height: 320px; background: linear-gradient(135deg, #0d2149, #163a6e); display: flex; align-items: flex-end; padding: 14px; position: relative; }
-  .hero-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 72px; opacity: 0.1; color: white; }
-  .hero-badge { background: #c9a84c; color: #0a1628; font-size: 10px; padding: 3px 8px; border-radius: 2px; margin-bottom: 6px; display: inline-block; font-weight: bold; }
-  .hero-h { color: white; font-size: 18px; font-weight: bold; line-height: 1.3; max-width: 480px; position: relative; cursor: pointer; transition: color 0.3s ease; }
-.hero-h:hover { color: #c9a84c; }
-  .hero-body { padding: 12px 16px; }
-  .hero-body p { font-size: 13px; color: #555; line-height: 1.65; margin-bottom: 8px; }
-  .meta { display: flex; gap: 12px; font-size: 11px; color: #999; }
-  .meta .by { color: #0d2149; font-weight: bold; }
+  .hero { background: white; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; margin-bottom: 16px; transition: all 0.3s ease; }
+  .hero:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.15); }
+  .hero-visual { height: 320px; background: linear-gradient(135deg, #0d2149, #163a6e); display: flex; align-items: flex-end; padding: 14px; position: relative; transition: filter 0.3s ease; }
+  .hero:hover .hero-visual { filter: brightness(1.08); }
 
   /* SECCIÓN */
   .sec-h { font-size: 15px; font-weight: bold; color: #0d2149; padding-bottom: 6px; border-bottom: 2px solid #c9a84c; margin-bottom: 12px; }
 
   /* GRID NOTICIAS */
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .card { background: white; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; }
-  .card-img { height: 220px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: rgba(255,255,255,0.3); }
-  .img-bb { background: #0d2149; }
-  .img-at { background: #163a6e; }
-  .img-fs { background: #1a4a8a; }
-  .img-vo { background: #0a2a5e; }
-  .card-body { padding: 10px 12px; }
-  .card-sport { font-size: 10px; color: #c9a84c; font-weight: bold; margin-bottom: 3px; }
-  .card-h { font-size: 12px; font-weight: bold; color: #222; line-height: 1.35; margin-bottom: 5px; }
-  .card-date { font-size: 11px; color: #999; }
+  .card { background: white; border-radius: 8px; border: 1px solid #e0e0e0; overflow: hidden; transition: all 0.3s ease; cursor: pointer; }
+  .card:hover { box-shadow: 0 8px 16px rgba(0,0,0,0.15); transform: translateY(-4px); }
+  .card-img { height: 220px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: rgba(255,255,255,0.3); transition: transform 0.3s ease; }
+  .card:hover .card-img { transform: scale(1.05); }
 
   /* CALENDARIO */
   .cal-wrap { background: white; border-radius: 8px; border: 1px solid #e0e0e0; padding: 14px; margin-bottom: 4px; }
@@ -130,9 +118,13 @@
   .footer-col a:hover { color: #c9a84c; }
   .footer-bottom { border-top: 1px solid #1a2a3a; padding-top: 12px; display: flex; justify-content: space-between; }
   .footer-bottom p { color: #2a3a4a; font-size: 10px; }
+ /* PROGRESS BAR */
+  #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #c9a84c, #163a6e); width: 0%; z-index: 1000; transition: width 0.1s ease; }
 </style>
 </head>
 <body>
+
+<div id="progress-bar"></div>
 
 <div class="topbar">
   <span>Periodismo deportivo escolar · Valladolid · UVA TFG 2024-25</span>
@@ -189,6 +181,11 @@
       </div>
     </div>
     </a>
+   <div style="font-size: 11px; color: #999; margin-bottom: 12px; padding-bottom: 8px;">
+      <a href="#" style="color: #0d2149; text-decoration: none; font-weight: bold;">Inicio</a>
+      <span style="color: #ccc;"> / </span>
+      <span style="color: #666;">Últimas noticias</span>
+    </div>
 <p class="sec-h">Últimas noticias</p>
     <div class="grid2">
     <a href="noticias.html#noticia-2" style="text-decoration:none;color:inherit">
@@ -385,6 +382,13 @@
   const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const hoy = new Date();
   document.getElementById('fecha').textContent = dias[hoy.getDay()] + ', ' + hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
+ // PROGRESS BAR
+  window.addEventListener('scroll', function() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrolled = (scrollTop / docHeight) * 100;
+    document.getElementById('progress-bar').style.width = scrolled + '%';
+  });
 </script>
 <script>
   // Ticker rotativo automático
