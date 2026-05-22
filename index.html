@@ -63,18 +63,25 @@
   .card-date { font-size: 11px; color: #999; }
 
   /* CALENDARIO */
-  .cal-wrap { background: white; border-radius: 8px; border: 1px solid #e0e0e0; padding: 14px; margin-bottom: 4px; }
-  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 10px; }
-  .cal-day-name { font-size: 10px; color: #999; text-align: center; padding: 2px 0; }
-  .cal-day { font-size: 11px; text-align: center; padding: 4px 2px; border-radius: 4px; color: #666; }
-  .cal-day.today { background: #0d2149; color: #c9a84c; font-weight: bold; }
-  .cal-day.event { background: #f0f4f8; color: #0d2149; font-weight: bold; }
+  .cal-wrap { background: white; border-radius: 8px; border: 1px solid #e0e0e0; padding: 16px; margin-bottom: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+  .cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-weight: bold; color: #0d2149; }
+  .cal-nav button { background: #0d2149; color: #c9a84c; border: 1px solid #c9a84c; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; }
+  .cal-nav button:hover { background: #163a6e; }
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 14px; }
+  .cal-day-name { font-size: 11px; color: #0d2149; text-align: center; padding: 8px 0; font-weight: bold; border-bottom: 1px solid #e0e0e0; }
+  .cal-day { font-size: 13px; text-align: center; padding: 8px 2px; border-radius: 6px; color: #666; transition: all 0.2s ease; cursor: pointer; position: relative; }
+  .cal-day:hover { background: #f0f4f8; transform: scale(1.05); }
+  .cal-day.today { background: linear-gradient(135deg, #0d2149, #163a6e); color: #c9a84c; font-weight: bold; box-shadow: 0 2px 6px rgba(13,33,73,0.2); }
+  .cal-day.event { background: #fff3cd; color: #0d2149; font-weight: bold; border: 2px solid #c9a84c; }
+  .cal-day.event::after { content: '●'; position: absolute; bottom: -2px; font-size: 6px; color: #c9a84c; }
   .cal-day.empty { color: transparent; }
-  .cal-event { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #eee; }
+  .cal-event { display: flex; gap: 10px; align-items: flex-start; padding: 10px 8px; border-bottom: 1px solid #eee; border-radius: 4px; transition: background 0.2s ease; }
+  .cal-event:hover { background: #f9f9f9; }
   .cal-event:last-child { border-bottom: none; }
-  .cal-dot { width: 7px; height: 7px; border-radius: 50%; background: #c9a84c; flex-shrink: 0; margin-top: 4px; }
-  .cal-txt { font-size: 11px; color: #222; line-height: 1.4; }
-  .cal-date-lbl { font-size: 10px; color: #999; }
+  .cal-dot { width: 10px; height: 10px; border-radius: 50%; background: #c9a84c; flex-shrink: 0; margin-top: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .cal-txt { font-size: 12px; color: #0d2149; line-height: 1.4; font-weight: 500; }
+  .cal-date-lbl { font-size: 11px; color: #999; margin-top: 2px; }
+  .cal-empty { text-align: center; color: #999; padding: 20px; font-size: 12px; }
 
   /* SIDEBAR */
   .sidebar { display: flex; flex-direction: column; gap: 14px; }
@@ -247,28 +254,14 @@
         </div>
       </div>
       </a>
-     </div>
-    <p class="sec-h">Calendario de eventos · <a href="calendario.html" style="color:#c9a84c;text-decoration:none;font-size:12px">Ver calendarios completos →</a></p>
-    <div class="cal-wrap">
-      <div class="cal">
-        <div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">X</div><div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>
-        <div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day empty"></div><div class="cal-day">1</div><div class="cal-day event">2</div><div class="cal-day event">3</div><div class="cal-day">4</div>
-        <div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day today">7</div><div class="cal-day">8</div><div class="cal-day event">9</div><div class="cal-day event">10</div><div class="cal-day">11</div>
-        <div class="cal-day">12</div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day event">17</div><div class="cal-day">18</div>
-        <div class="cal-day">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day event">24</div><div class="cal-day">25</div>
+     <div class="cal-wrap">
+      <div class="cal-nav">
+        <button onclick="mesAnterior()">◀ Anterior</button>
+        <span id="mes-actual">Mayo 2025</span>
+        <button onclick="mesSiguiente()">Siguiente ▶</button>
       </div>
-      <div class="cal-event">
-        <div class="cal-dot"></div>
-        <div><div class="cal-txt">Fase provincial de atletismo escolar – FMD</div><div class="cal-date-lbl">Sáb 10 de mayo · Estadio José Zorrilla</div></div>
-      </div>
-      <div class="cal-event">
-        <div class="cal-dot" style="background:#163a6e"></div>
-        <div><div class="cal-txt">Semifinales liga escolar de baloncesto benjamín</div><div class="cal-date-lbl">Sáb 17 de mayo · Pabellón Huerta del Rey</div></div>
-      </div>
-      <div class="cal-event">
-        <div class="cal-dot" style="background:#1a4a8a"></div>
-        <div><div class="cal-txt">Torneo de fútbol sala femenino – fase final</div><div class="cal-date-lbl">Vie 24 de mayo · Polideportivo San Isidro</div></div>
-      </div>
+      <div id="cal-content"></div>
+    </div>
     </div>
   </div>
 
@@ -453,6 +446,73 @@
   document.getElementById('search-input').addEventListener('keypress', function(e) {
     if(e.key === 'Enter') buscarNoticias();
   });
+ // CALENDARIO DINÁMICO
+  let mesActual = 5; // Mayo
+  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  
+  const eventosCalendario = {
+    '8/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '10/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '15/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '17/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '22/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '29/11': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '13/12': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '10/1': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'},
+    '7/2': {titulo: 'Jornada Fútbol Sala', deporte: 'Fútbol Sala'}
+  };
+  
+  function generarCalendario() {
+    const diasMes = [31,28,31,30,31,30,31,31,30,31,30,31];
+    const primerDia = new Date(2025, mesActual, 1).getDay();
+    const dias = diasMes[mesActual];
+    const año = mesActual >= 8 ? 2025 : 2026;
+    
+    document.getElementById('mes-actual').textContent = meses[mesActual] + ' ' + año;
+    
+    let html = '<div class="cal"><div class="cal-day-name">L</div><div class="cal-day-name">M</div><div class="cal-day-name">X</div><div class="cal-day-name">J</div><div class="cal-day-name">V</div><div class="cal-day-name">S</div><div class="cal-day-name">D</div>';
+    
+    for(let i=1; i<primerDia; i++) html += '<div class="cal-day empty"></div>';
+    
+    for(let dia=1; dia<=dias; dia++) {
+      const fechaClave = dia + '/' + (mesActual+1);
+      const esHoy = dia===7 && mesActual===4;
+      const tieneEvento = eventosCalendario[fechaClave];
+      let clase = esHoy ? 'today' : (tieneEvento ? 'event' : '');
+      html += '<div class="cal-day ' + clase + '">' + dia + '</div>';
+    }
+    
+    const diasExtra = (42 - (primerDia + dias));
+    for(let i=0; i<diasExtra; i++) html += '<div class="cal-day empty"></div>';
+    html += '</div>';
+    
+    html += '<div style="padding-top:10px">';
+    const eventosDelMes = Object.entries(eventosCalendario).filter(e => e[0].endsWith('/' + (mesActual+1))).map(e => e[1]);
+    if(eventosDelMes.length>0) {
+      eventosDelMes.forEach(e => {
+        html += '<div class="cal-event"><div class="cal-dot" style="background:#1a4a8a"></div><div><div class="cal-txt">' + e.titulo + '</div><div class="cal-date-lbl">' + e.deporte + '</div></div></div>';
+      });
+    } else {
+      html += '<div class="cal-empty">Sin eventos programados</div>';
+    }
+    html += '</div>';
+    
+    document.getElementById('cal-content').innerHTML = html;
+  }
+  
+  function mesAnterior() {
+    if(mesActual>8) mesActual--;
+    else mesActual = 4;
+    generarCalendario();
+  }
+  
+  function mesSiguiente() {
+    if(mesActual<4) mesActual++;
+    else mesActual = 8;
+    generarCalendario();
+  }
+  
+  generarCalendario();
 </script>
 <script>
   // Ticker rotativo automático
