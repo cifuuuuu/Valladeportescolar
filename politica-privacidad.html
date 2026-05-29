@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidad · ValladeporteEscolar</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f4f4f4; }
+
+  .topbar { background: #0a1628; padding: 5px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .topbar span { color: #7a8fa6; font-size: 11px; }
+
+  .header { background: #0d2149; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #c9a84c; }
+  .logo { color: white; font-size: 24px; font-weight: bold; line-height: 1; text-decoration: none; display: block; }
+  .logo em { color: #c9a84c; font-style: normal; }
+  .logo small { display: block; font-size: 10px; color: rgba(255,255,255,0.55); margin-top: 2px; font-weight: normal; }
+
+  .navbar { background: #0a1628; display: flex; padding: 0 20px; gap: 2px; overflow-x: auto; }
+  .navbar a { color: #7a8fa6; font-size: 12px; padding: 9px 14px; text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+  .navbar a.active { color: #c9a84c; border-bottom-color: #c9a84c; }
+  .navbar a:hover { color: white; }
+
+  /* HERO SECCIÓN */
+  .section-hero { background: linear-gradient(135deg, #0d2149, #163a6e); padding: 30px 20px; text-align: center; border-bottom: 3px solid #c9a84c; }
+  .section-hero h1 { color: white; font-size: 26px; margin-bottom: 8px; }
+  .section-hero h1 em { color: #c9a84c; font-style: normal; }
+  .section-hero p { color: rgba(255,255,255,0.7); font-size: 13px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+  /* MAIN */
+  .main { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
+
+  .doc-container { background: white; border-radius: 8px; border: 1px solid #e0e0e0; padding: 30px; line-height: 1.75; color: #333; }
+
+  .doc-container h2 { color: #0d2149; font-size: 18px; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 2px solid #c9a84c; font-weight: bold; }
+  .doc-container h2:first-child { margin-top: 0; }
+  .doc-container h3 { color: #0d2149; font-size: 14px; margin: 16px 0 8px; font-weight: bold; }
+  .doc-container p { font-size: 13px; color: #444; margin-bottom: 12px; line-height: 1.7; }
+  .doc-container ul { margin: 10px 0 14px 20px; }
+  .doc-container ul li { font-size: 13px; color: #444; margin-bottom: 6px; line-height: 1.6; }
+  .doc-container strong { color: #0d2149; font-weight: bold; }
+  .doc-container em { color: #555; font-style: italic; }
+
+  .info-box { background: #f0f4f8; border-left: 3px solid #c9a84c; border-radius: 0 6px 6px 0; padding: 12px 14px; margin: 14px 0; }
+  .info-box p { margin: 0; font-size: 12px; color: #555; line-height: 1.6; }
+  .info-box strong { color: #0d2149; }
+
+  .contact-info { background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 16px; margin: 16px 0; }
+  .contact-info p { font-size: 13px; color: #444; margin-bottom: 8px; }
+  .contact-info a { color: #c9a84c; text-decoration: none; font-weight: bold; }
+  .contact-info a:hover { text-decoration: underline; }
+
+  /* FOOTER */
+  .footer { background: #0a1628; padding: 20px; border-top: 3px solid #c9a84c; margin-top: 20px; }
+  .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 20px; margin-bottom: 16px; max-width: 900px; margin-left: auto; margin-right: auto; }
+  .footer-logo { color: white; font-size: 18px; font-weight: bold; margin-bottom: 6px; }
+  .footer-logo em { color: #c9a84c; font-style: normal; }
+  .footer-desc { font-size: 11px; color: #4a6080; line-height: 1.65; }
+  .footer-col h4 { color: #c9a84c; font-size: 11px; font-weight: bold; margin-bottom: 10px; }
+  .footer-col a { display: block; color: #4a6080; font-size: 11px; margin-bottom: 5px; text-decoration: none; }
+  .footer-col a:hover { color: #c9a84c; }
+  .footer-bottom { border-top: 1px solid #1a2a3a; padding-top: 12px; display: flex; justify-content: space-between; max-width: 900px; margin: 0 auto; }
+  .footer-bottom p { color: #2a3a4a; font-size: 10px; }
+
+  /* RESPONSIVE - MÓVIL */
+  @media (max-width: 768px) {
+    .topbar {
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px 10px;
+    }
+    .topbar span {
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .header {
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+    }
+    .logo {
+      font-size: 18px;
+      text-align: center;
+    }
+    .logo small {
+      font-size: 9px;
+    }
+
+    .navbar {
+      gap: 0;
+      padding: 0 10px;
+    }
+    .navbar a {
+      font-size: 11px;
+      padding: 8px 10px;
+    }
+
+    .section-hero {
+      padding: 20px 10px;
+    }
+    .section-hero h1 {
+      font-size: 20px;
+    }
+    .section-hero p {
+      font-size: 12px;
+    }
+
+    .main {
+      padding: 16px 10px;
+    }
+
+    .doc-container {
+      padding: 16px;
+    }
+    .doc-container h2 {
+      font-size: 16px;
+      margin: 16px 0 8px;
+      padding-bottom: 6px;
+    }
+    .doc-container h3 {
+      font-size: 13px;
+      margin: 12px 0 6px;
+    }
+    .doc-container p {
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .doc-container ul li {
+      font-size: 12px;
+    }
+
+    .info-box {
+      padding: 10px 12px;
+      margin: 10px 0;
+    }
+    .info-box p {
+      font-size: 11px;
+    }
+
+    .contact-info {
+      padding: 12px;
+    }
+    .contact-info p {
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .footer-logo {
+      font-size: 14px;
+    }
+    .footer-desc {
+      font-size: 10px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .footer-bottom p {
+      text-align: center;
+      font-size: 9px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span>Periodismo deportivo escolar · Valladolid · UVA TFG 2024-25</span>
+  <span id="fecha"></span>
+</div>
+
+<div class="header">
+  <a href="index.html" class="logo">
+    Valla<em>Deporte</em>Escolar
+    <small>La plataforma del deporte base escolar en Valladolid</small>
+  </a>
+</div>
+
+<div class="navbar">
+  <a href="index.html">Inicio</a>
+  <a href="noticias.html">Noticias</a>
+  <a href="resultados.html">Resultados</a>
+  <a href="clasificaciones.html">Clasificaciones</a>
+  <a href="calendario.html">Calendario</a>
+  <a href="multimedia.html">Multimedia</a>
+  <a href="manual.html">Manual Periodista</a>
+  <a href="quienes-somos.html">Quiénes somos</a>
+</div>
+
+<div class="section-hero">
+  <h1>🔒 Política de <em>Privacidad</em></h1>
+  <p>En ValladeporteEscolar nos comprometemos a proteger tus datos personales y tu privacidad. Lee cómo recopilamos, usamos y protegemos tu información.</p>
+</div>
+
+<div class="main">
+  <div class="doc-container">
+
+    <h2>1. Responsable del tratamiento de datos</h2>
+    <p><strong>ValladeporteEscolar</strong> es una plataforma digital creada como Trabajo de Fin de Grado en el Grado en Periodismo de la Universidad de Valladolid (2024-25). Los datos personales se tratan bajo la responsabilidad de <strong>Álvaro Cifuentes Miñambres</strong>.</p>
+    <p><strong>Contacto para privacidad:</strong> velariparfums@gmail.com</p>
+
+    <h2>2. ¿Qué datos recopilamos?</h2>
+    <p>ValladeporteEscolar recopila únicamente los datos que son <strong>necesarios y proporcionales</strong> para funcionar como plataforma informativa. Estos incluyen:</p>
+    <ul>
+      <li><strong>Datos de navegación:</strong> dirección IP, tipo de navegador, páginas visitadas, fecha y hora de acceso (mediante análisis anónimos).</li>
+      <li><strong>Datos de contacto:</strong> si nos envías contenido, formularios o consultas, recopilamos nombre, email y el contenido del mensaje.</li>
+      <li><strong>Cookies técnicas:</strong> usadas solo para mejorar la experiencia de navegación y mantener la sesión.</li>
+      <li><strong>Datos de menores:</strong> si el contenido incluye fotos o nombres de menores de edad, recopilamos permiso de padres/tutores legales (conforme a la LOPD-GDD).</li>
+    </ul>
+
+    <h2>3. Base legal para el tratamiento</h2>
+    <p>Tratamos tus datos bajo las siguientes bases legales:</p>
+    <ul>
+      <li><strong>Consentimiento:</strong> cuando envías contenido, formularios o comentarios.</li>
+      <li><strong>Interés legítimo:</strong> para mejorar la plataforma, prevenir abusos y garantizar la seguridad.</li>
+      <li><strong>Obligación legal:</strong> cumplimiento de leyes aplicables (ej: menores de edad).</li>
+      <li><strong>Interés público:</strong> como medio informativo escolar, documentamos eventos deportivos de relevancia pública.</li>
+    </ul>
+
+    <h2>4. Finalidad del tratamiento de datos</h2>
+    <p>Utilizamos tus datos solo para:</p>
+    <ul>
+      <li>Mostrar contenido informativo sobre deporte base escolar.</li>
+      <li>Permitir la publicación de contenido enviado por usuarios (noticias, fotos, comentarios).</li>
+      <li>Mejorar la experiencia de navegación y funcionalidad de la plataforma.</li>
+      <li>Comunicarnos contigo si lo solicitas (responder dudas, confirmaciones).</li>
+      <li>Cumplir con obligaciones legales y proteger derechos.</li>
+    </ul>
+    <p><strong>Nunca</strong> vendemos, compartimos ni cedemos tus datos con terceros sin tu consentimiento explícito.</p>
+
+    <h2>5. Derechos de los menores de edad</h2>
+    <p>Respetamos especialmente la privacidad de los menores. Si eres menor de 14 años, requerimos consentimiento de padres/tutores para procesar tus datos. Si eres entre 14 y 18 años, puedes dar consentimiento tú mismo, pero te recomendamos informar a tus padres.</p>
+    <div class="info-box">
+      <p><strong>Importante:</strong> Todas las fotos de menores en la plataforma han sido autorizadas por padres/tutores legales. Si encuentras contenido tuyo que no autorizaste, contacta de inmediato con nosotros.</p>
+    </div>
+
+    <h2>6. Imágenes y contenido multimedia</h2>
+    <p>Las imágenes de deportistas (especialmente menores) se publican únicamente con <strong>autorización previa</strong> de padres o tutores legales. El contenido multimedia:</p>
+    <ul>
+      <li>Se usa exclusivamente para documentar eventos deportivos escolares.</li>
+      <li>No se cede a terceros sin consentimiento adicional.</li>
+      <li>Se elimina de la plataforma si lo solicitas.</li>
+      <li>Se trata conforme a normativa de protección de menores.</li>
+    </ul>
+
+    <h2>7. Conservación de datos</h2>
+    <p>Conservamos tus datos el tiempo estrictamente necesario para cumplir la finalidad para la que fueron recopilados:</p>
+    <ul>
+      <li><strong>Contenido publicado:</strong> mientras esté vigente en la plataforma, a menos que solicites su eliminación.</li>
+      <li><strong>Datos de contacto:</strong> hasta que nos solicites su eliminación o cese la relación contigo.</li>
+      <li><strong>Análisis anónimos:</strong> se conservan durante 12 meses de forma agregada.</li>
+      <li><strong>Logs de seguridad:</strong> máximo 6 meses, conforme a buenas prácticas.</li>
+    </ul>
+
+    <h2>8. Seguridad de los datos</h2>
+    <p>Implementamos medidas de seguridad técnicas y organizativas para proteger tu información:</p>
+    <ul>
+      <li>Uso de conexiones HTTPS (cifrado de datos en tránsito).</li>
+      <li>Acceso restringido a personal autorizado.</li>
+      <li>Backups periódicos para evitar pérdida de datos.</li>
+      <li>Auditorías regulares de seguridad.</li>
+    </ul>
+    <p>Sin embargo, ningún sistema es 100% seguro. Si detectas una brecha de seguridad, contacta inmediatamente con nosotros.</p>
+
+    <h2>9. Tus derechos</h2>
+    <p>Conforme a la Ley Orgánica de Protección de Datos (LOPD-GDD) y el RGPD, tienes los siguientes derechos:</p>
+    <ul>
+      <li><strong>Derecho de acceso:</strong> saber qué datos tenemos sobre ti.</li>
+      <li><strong>Derecho de rectificación:</strong> corregir datos inexactos.</li>
+      <li><strong>Derecho de supresión:</strong> solicitar la eliminación de tus datos ("derecho al olvido").</li>
+      <li><strong>Derecho de limitación:</strong> restringir el tratamiento de tus datos.</li>
+      <li><strong>Derecho de portabilidad:</strong> recibir tus datos en formato estructurado.</li>
+      <li><strong>Derecho de oposición:</strong> rechazar ciertos tratamientos de datos.</li>
+    </ul>
+    <p>Para ejercer cualquiera de estos derechos, <strong>contacta con nosotros</strong> (ver apartado 10).</p>
+
+    <h2>10. Contacto y reclamaciones</h2>
+    <p>Si tienes preguntas sobre esta política de privacidad o deseas ejercer tus derechos, puedes contactar con:</p>
+    <div class="contact-info">
+      <p><strong>Responsable de Privacidad</strong></p>
+      <p>Email: <a href="mailto:velariparfums@gmail.com">velariparfums@gmail.com</a></p>
+      <p>Proyecto: ValladeporteEscolar</p>
+      <p>Institución: Universidad de Valladolid · Grado en Periodismo · 2024-25</p>
+    </div>
+    <p>Si consideras que tus derechos no han sido respetados, también puedes presentar una reclamación ante la <strong>Autoridad de Protección de Datos</strong> de tu comunidad autónoma.</p>
+
+    <h2>11. Cambios en esta política</h2>
+    <p>Nos reservamos el derecho de modificar esta Política de Privacidad en cualquier momento. Los cambios significativos serán comunicados visiblemente en la plataforma. Tu uso continuado de ValladeporteEscolar después de cambios implica tu aceptación de la política modificada.</p>
+    <p><strong>Última actualización:</strong> 29 de mayo de 2025</p>
+
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Valla<em>Deporte</em>Escolar</div>
+      <p class="footer-desc">Plataforma digital dedicada a la visibilización del deporte base escolar en Valladolid. Proyecto TFG — Grado en Periodismo, Universidad de Valladolid, 2024-25.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Secciones</h4>
+      <a href="noticias.html">Noticias</a>
+      <a href="resultados.html">Resultados</a>
+      <a href="clasificaciones.html">Clasificaciones</a>
+      <a href="calendario.html">Calendario</a>
+      <a href="multimedia.html">Multimedia</a>
+      <a href="manual.html">Manual Periodista</a>
+    </div>
+    <div class="footer-col">
+      <h4>Información</h4>
+      <a href="quienes-somos.html">Quiénes somos</a>
+      <a href="#">Colabora con nosotros</a>
+      <a href="#">Fundación Municipal de Deportes</a>
+      <a href="politica-privacidad.html">Política de privacidad</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 ValladeporteEscolar · Álvaro Cifuentes Miñambres · UVA Periodismo</p>
+    <p>En colaboración con la FMD Valladolid</p>
+  </div>
+</div>
+
+<script>
+  const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const hoy = new Date();
+  document.getElementById('fecha').textContent = dias[hoy.getDay()] + ', ' + hoy.getDate() + ' de ' + meses[hoy.getMonth()] + ' de ' + hoy.getFullYear();
+</script>
+
+</body>
+</html>
