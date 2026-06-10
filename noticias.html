@@ -72,11 +72,27 @@
   .footer { background: #0a1628; padding: 20px; border-top: 3px solid #c9a84c; margin-top: 40px; }
   .footer-bottom p { color: #2a3a4a; font-size: 10px; text-align: center; }
 
+  /* FILTROS */
+  .filters-section { background: white; border-radius: 8px; padding: 16px; margin-bottom: 20px; border: 1px solid #e0e0e0; }
+  .filter-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 12px; }
+  .filter-row:last-child { margin-bottom: 0; }
+  #searchNews { flex: 1; min-width: 200px; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
+  #searchNews::placeholder { color: #999; }
+  .sport-filter-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sport-filter-btn { background: #f0f4f8; color: #333; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: all 0.2s; }
+  .sport-filter-btn.active { background: #c9a84c; color: #0a1628; font-weight: bold; border-color: #c9a84c; }
+  .sport-filter-btn:hover { background: #dce4ed; }
+  .order-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px; cursor: pointer; }
+  .results-info { font-size: 12px; color: #666; }
+
   @media (max-width: 768px) {
     .noticias-grid { grid-template-columns: 1fr; }
     .noticia-expanded-header { grid-template-columns: 1fr; }
     .noticia-title { font-size: 13px; }
     .noticia-expanded-title { font-size: 20px; }
+    .filter-row { flex-direction: column; }
+    #searchNews { width: 100%; }
+    .sport-filter-tabs { width: 100%; }
   }
 /* RESPONSIVE - MÓVIL */
 @media (max-width: 768px) {
@@ -327,6 +343,33 @@
 <div class="page">
   <h1 class="sec-h">📰 Noticias</h1>
 
+  <div class="filters-section">
+    <div class="filter-row">
+      <input type="text" id="searchNews" placeholder="🔍 Buscar noticia por título o contenido...">
+      <select class="order-select" id="orderSelect">
+        <option value="recent">Más recientes</option>
+        <option value="oldest">Más antiguos</option>
+      </select>
+    </div>
+
+    <div class="filter-row">
+      <div style="font-size: 12px; color: #666; margin-right: 8px;">Deporte:</div>
+      <div class="sport-filter-tabs">
+        <button class="sport-filter-btn active" onclick="filterSport('todos', this)">Todos</button>
+        <button class="sport-filter-btn" onclick="filterSport('Baloncesto', this)">🏀 Baloncesto</button>
+        <button class="sport-filter-btn" onclick="filterSport('Fútbol Sala', this)">⚽ Fútbol Sala</button>
+        <button class="sport-filter-btn" onclick="filterSport('Atletismo', this)">🏃 Atletismo</button>
+        <button class="sport-filter-btn" onclick="filterSport('Voleibol', this)">🏐 Voleibol</button>
+        <button class="sport-filter-btn" onclick="filterSport('Ajedrez', this)">♟️ Ajedrez</button>
+        <button class="sport-filter-btn" onclick="filterSport('Gimnasia', this)">🤸 Gimnasia</button>
+        <button class="sport-filter-btn" onclick="filterSport('Balonmano', this)">🤾 Balonmano</button>
+        <button class="sport-filter-btn" onclick="filterSport('Natación', this)">🏊 Natación</button>
+      </div>
+    </div>
+
+    <div class="results-info" id="resultsInfo">Mostrando todas las noticias</div>
+  </div>
+
   <div class="noticias-grid" id="noticiasGrid"></div>
 </div>
 
@@ -337,6 +380,10 @@
 </div>
 
 <script>
+let filteredNoticias = [];
+let currentSport = 'todos';
+let currentOrder = 'recent';
+
 const noticias = [
   {
   id: 1,
@@ -345,6 +392,7 @@ const noticias = [
   subtitle: "El equipo benjamín domina el Polideportivo Manuel Sánchez Cisneros con un baloncesto fluido y un pivote determinante",
   summary: "El equipo benjamín brilla en la zona donde el pivot local fue determinante",
   date: "20/05/2025",
+  dateSort: new Date(2025, 4, 20),
   headerImg: "fotos/noticias/noticia-1-header.jpg",
   content: `El Polideportivo Manuel Sánchez Cisneros vivió este sábado un intenso debut de temporada donde el San José se impuso con autoridad a El Pilar en un partido que reflejó el trabajo realizado durante las semanas previas. La victoria de 60-43 posiciona a los benjamines rojiblancos como favoritos en el Grupo A de la liga escolar. Un resultado que no deja lugar a dudas sobre las intenciones competitivas de un equipo que llega a esta primera jornada con ambiciones claras de pelear por los primeros puestos.
 
@@ -379,6 +427,7 @@ Con esta rotunda victoria, el San José abre la temporada como líder del Grupo 
   subtitle: "El infantil masculino de Valladolid demuestra su solidez defensiva y control ofensivo en el Grupo A",
   summary: "El infantil masculino del Valladolid afianza el liderato tras dominar un partido más",
   date: "19/05/2025",
+  dateSort: new Date(2025, 4, 19),
   headerImg: "fotos/noticias/noticia-2-header.jpg",
   content: `El CBC Valladolid infantil masculino continúa intratable en el Grupo A de la liga escolar. El conjunto vallisoletano firmó una nueva exhibición ofensiva para imponerse con claridad a La Enseñanza, afianzando todavía más un liderato que domina con autoridad jornada tras jornada. Esta es la quinta victoria consecutiva de los pupilos del técnico local, una serie que confirma el buen trabajo realizado durante la pretemporada y la solidez de un equipo que se perfila como favorito indiscutible para conquistar el Grupo A.
 
@@ -415,6 +464,7 @@ Con el paso de los cuartos, el CBC no bajó el nivel y terminó cerrando una vic
   subtitle: "La jugadora destaca la unión del equipo y la ambición del conjunto vallisoletano que aspira a todo en esta temporada",
   summary: "La jugadora del San José Junior Femenino destaca la unión del equipo y la ambición del conjunto vallisoletano",
   date: "18/05/2025",
+  dateSort: new Date(2025, 4, 18),
   headerImg: "fotos/noticias/noticia-3-header.jpg",
   content: `Con el comienzo de la temporada a la vuelta de la esquina, el San José Junior Femenino ya trabaja con intensidad para preparar un curso lleno de ilusión y ambición colectiva. Una de las voces más destacadas del vestuario es la de Paula Pérez, una de las referentes del equipo pese a su juventud. Como jugadora con experiencia, Pérez representa el espíritu de un equipo que no oculta sus aspiraciones y que llega a esta nueva campaña con objetivos ambiciosos. En esta entrevista, la jugadora analiza los objetivos del grupo, el ambiente dentro del equipo y las ganas de competir al máximo nivel.
 
@@ -451,6 +501,7 @@ El San José Junior Femenino arranca así un nuevo curso lleno de expectativas, 
   subtitle: "El conjunto alevín dominó desde el inicio gracias a su intensidad defensiva, presión alta y efectividad ofensiva desmedida",
   summary: "El conjunto vallisoletano dominó a Niara desde el inicio gracias a su intensidad, presión alta y efectividad ofensiva",
   date: "17/05/2025",
+  dateSort: new Date(2025, 4, 17),
   headerImg: "fotos/noticias/noticia-4-header.jpg",
   content: `El alevín Gonzalo de Berceo comenzó la temporada de fútbol sala con una convincente victoria frente a Niara en un encuentro marcado por el ritmo alto, la intensidad defensiva constante y la eficacia ofensiva del conjunto vallisoletano. El equipo local dejó muy buenas sensaciones en su estreno liguero y confirmó desde el primer partido sus aspiraciones de pelear por los puestos altos de la clasificación. Una actuación que va más allá de la mera acumulación de puntos: revela la solidez de un proyecto bien estructurado en el que confluyen tanto el trabajo defensivo como la capacidad ofensiva.
 
@@ -493,6 +544,7 @@ Con esta victoria, Gonzalo de Berceo inicia el campeonato dejando claro que ser�
   subtitle: "Un partido muy disputado donde el equipo de Luis Ramos supo mantener la firmeza defensiva en los momentos clave de la competición",
   summary: "Un partido muy disputado en el que el equipo de Luis Ramos supo mantenerse firme en defensa",
   date: "16/05/2025",
+  dateSort: new Date(2025, 4, 16),
   headerImg: "fotos/noticias/noticia-5-header.jpg",
   content: `El Tierno Galván Cadete dio la sorpresa de la jornada en el Polideportivo San Isidro al imponerse a Cigales por 6-4 en un intenso partido de fútbol sala, decidido por la solidez defensiva y la eficacia en los momentos clave del conjunto dirigido por Luis Ramos. Una victoria que va más allá del marcador: representa la consolidación de un equipo que comienza a entender que la disciplina táctica y la concentración mental son tan importantes como la técnica individual en esta categoría cadete, donde el margen de error es mínimo.
 
@@ -537,6 +589,7 @@ Cigales, aunque se marcha con los puntos en contra, dejó demostrada una solidez
   subtitle: "La marca de siete años sin superar cae ante un velocista de apenas 16 años que demuestra cualidades excepcionales en velocidad de reacción y potencia explosiva",
   summary: "La marca anterior, de 11.78 segundos, llevaba siete años sin ser superada, desde el año 2019",
   date: "15/05/2025",
+  dateSort: new Date(2025, 4, 15),
   headerImg: "fotos/noticias/noticia-6-header.jpg",
   content: `Rodríguez completó la hazaña en la jornada clasificatoria para la fase escolar celebrada en el Complejo deportivo Esgueva ante una modesta pero atenta concurrencia. Con una salida prácticamente perfecta y un final explosivo donde mostró una aceleración devastadora en los últimos 30 metros, el velocista de apenas 16 años superó ampliamente sus propias expectativas previas al evento. Batió un récord que llevaba siete años sin ser tocado, desde 2019, cuando se estableció la marca anterior de 11.78 segundos. Esta es la clase de actuación que marca un punto de inflexión en la carrera de un deportista.
 
@@ -579,6 +632,7 @@ La pregunta ahora es: ¿cuál será el próximo capítulo en la carrera de Rodr�
   subtitle: "A los 14 años, la atleta del Colegio Lope de Vega combina talento físico excepcional con una mentalidad ganadora poco común para su edad",
   summary: "María Sánchez, atleta de 14 años del Colegio Lope de Vega, representa la nueva generación de promesas",
   date: "14/05/2025",
+  dateSort: new Date(2025, 4, 14),
   headerImg: "fotos/noticias/noticia-7-header.jpg",
   content: `Con un ambicioso objetivo de llegar a unos Juegos Olímpicos, la joven atleta entrena seis días a la semana bajo la dirección técnica del especialista Andrés López, quien ha trabajado con atletas de nivel regional durante más de 15 años. A los 14 años, María Sánchez ya ha establecido un objetivo que a muchos adultos les parecería irreal, pero que en su caso parece no solo posible sino probable. Lo más notabilidad no es tanto el objetivo en sí, sino la claridad mental y la disciplina que una adolescente muestra para perseguirlo.
 
@@ -627,6 +681,7 @@ Sus padres apoyan su sueño sin presión excesiva, conscientes de que el atletis
   subtitle: "La expansión sin precedentes del programa evidencia el creciente interés por el voleibol entre las estudiantes de la provincia",
   summary: "La expansión significativa del programa evidencia el creciente interés por este deporte",
   date: "13/05/2025",
+  dateSort: new Date(2025, 4, 13),
   headerImg: "fotos/noticias/noticia-8-header.jpg",
   content: `El torneo benéfico de voleibol femenino escolar alcanza su mayor participación en toda su historia con 12 equipos inscritos para esta temporada. Un hito que marca un antes y un después en un programa que, durante una década, ha servido como cantera de talento y promotor del voleibol femenino en las escuelas de la provincia.
 
@@ -675,6 +730,7 @@ El próximo desafío será mantener esta calidad mientras se gestiona el crecimi
   subtitle: "A los 15 años, la capitana combina madurez táctica con carisma de liderazgo que inspira a sus compañeras hacia objetivos ambiciosos",
   summary: "Sofía García, de 15 años y capitana del equipo de voleibol de Maristas, representa el espíritu de dedicación",
   date: "12/05/2025",
+  dateSort: new Date(2025, 4, 12),
   headerImg: "fotos/noticias/noticia-9-header.jpg",
   content: `Lo que comenzó como una actividad de diversión hace apenas tres años se ha convertido en la pasión que estructura su día a día, sus amistades y sus perspectivas futuras. Sofía García, capitana del equipo de voleibol de Maristas, representa una generación de líderes femeninos que entienden el deporte no como competencia individual, sino como construcción colectiva. A los 15 años, ya lidera a un equipo joven pero talentoso hacia objetivos que parecen ambiciosos, pero que dentro de su mentalidad de trabajo son perfectamente alcanzables.
 
@@ -727,6 +783,7 @@ En una era donde la representación de líderes femeninas sigue siendo insuficie
   subtitle: "El choque, propio del inicio de temporada, estuvo marcado por la igualdad, los altibajos y la capacidad de los equipos para competir en categoría benjamín",
   summary: "El choque, propio del inicio de temporada, estuvo marcado por la igualdad y los altibajos",
   date: "11/05/2025",
+  dateSort: new Date(2025, 4, 11),
   headerImg: "fotos/noticias/noticia-10-header.jpg",
   content: `San Agustín comenzó la temporada del Grupo A de voleibol benjamín femenino con una trabajada victoria ante Maristas por 2-1 en un partido muy disputado en el que ambos equipos mostraron ilusión, nervios y muchas ganas de competir en el primer encuentro del curso. Un resultado que, más allá de los puntos en juego, refleja el nivel competitivo que la categoría benjamín ha alcanzado en la provincia. Ambos equipos dejaron sensaciones positivas, lo cual es precisamente lo que debería ocurrir en primeras jornadas de temporada.
 
@@ -773,6 +830,7 @@ Lo importante de este primer encuentro es que ambos equipos demostraron que el v
   subtitle: "A los 15 años y compitiendo en categoría superior, el cadete del IES Parquesol demuestra una madurez táctica y mental poco común",
   summary: "El ajedrecista Pablo Gómez, cadete del IES Parquesol, sigue dando pasos firmes en su progresión",
   date: "10/05/2025",
+  dateSort: new Date(2025, 4, 10),
   headerImg: "fotos/noticias/noticia-11-header.jpg",
   content: `Con solo 15 años, ya compite en una categoría superior, donde continúa demostrando una gran capacidad de aprendizaje y una sorprendente madurez en el tablero. Pablo Gómez representa una generación de ajedrecistas jóvenes que entienden el juego no como un pasatiempo, sino como una disciplina que requiere dedicación, estudio constante y evolución mental permanente. Su progresión rápida desde categorías de base hasta cadete, saltándose barreras de edad, es indicativo del talento excepcional que posee.
 
@@ -829,6 +887,7 @@ Lo que diferencia a Gómez de muchos otros ajedrecistas jóvenes es su madurez e
   subtitle: "Una competición de altísimo nivel reunió a jóvenes gimnastas en el Polideportivo Fernández Valderrama, demostrando el crecimiento cualitativo del deporte en la provincia",
   summary: "Una jornada de altísimo nivel técnico reunió a 40 jóvenes gimnastas en competición de gimnasia artística",
   date: "09/05/2025",
+  dateSort: new Date(2025, 4, 9),
   headerImg: "fotos/noticias/noticia-12-header.jpg",
   content: `Una jornada de altísimo nivel técnico reunió a 40 jóvenes gimnastas de 6 colegios de la provincia en la competición de gimnasia artística escolar celebrada en el Polideportivo Fernández Valderrama. La exhibición del talento gimnástico vallisoletano contó con la participación de principiantes y atletas con varios años de experiencia en gimnasia de competición. Lo que más sorprendió no fue simplemente la cantidad de participantes, sino la calidad técnica y la madurez ejecutiva demostrada por gimnastas tan jóvenes.
 
@@ -883,6 +942,7 @@ Con 40 gimnastas compitiendo a este nivel, con centros invirtiendo en entrenador
   subtitle: "El encuentro se decidió en los últimos minutos gracias a la solidez defensiva y compostura ofensiva del conjunto local",
   summary: "El Aula Valladolid logró una trabajada victoria que se decidió en los últimos minutos",
   date: "08/05/2025",
+  dateSort: new Date(2025, 4, 8),
   headerImg: "fotos/noticias/noticia-13-header.jpg",
   content: `El encuentro comenzó con mucha intensidad por parte de ambos equipos, cada uno con su propia visión de cómo dominar el partido. Lourdes salió con un juego muy ordenado en ataque posicional, buscando ataques largos y bien elaborados donde el balón circulaba entre varios jugadores antes de llegar al lanzador. Este sistema requiere paciencia y ejecución precisa, pero cuando funciona produce buenos porcentajes de gol. Mientras que Aula Valladolid intentaba desde el salto inicial imponer un ritmo más alto, con salidas rápidas y transiciones tras recuperación que buscaban desestabilizar la defensa rival.
 
@@ -931,6 +991,7 @@ En categoría alevín, donde aún se está desarrollando la base de los futuros 
   subtitle: "El Club Natación Valladolid establece una marca que permanecerá en la historia del deporte base de la provincia",
   summary: "El Club Natación Valladolid, protagonista del récord, mostró una gran regularidad en los cuatro relevos",
   date: "07/05/2025",
+  dateSort: new Date(2025, 4, 7),
   headerImg: "fotos/noticias/noticia-14-header.jpg",
   content: `Valladolid vivió una jornada para el recuerdo en las Piscinas Municipales con la firma de un nuevo récord provincial en la prueba de relevos 4x100 metros, donde el equipo escolar infantil del Club Natación Valladolid detuvo el cronómetro en 3:52.45, rebajando la anterior mejor marca de 3:54.12 que permanecía vigente desde hacía tres temporadas. Un tiempo que, aunque pueda parecer numérico en la superficie, representa meses de trabajo coordinado, perfeccionamiento técnico y especialmente, excelencia en la ejecución de un aspecto a menudo subestimado: los cambios de relevista.
 
@@ -980,13 +1041,51 @@ Los récords provinciales son, en muchos sentidos, hitos que marcan el progreso 
 }
 ];
 
+function filterSport(sport, btn) {
+  currentSport = sport;
+  document.querySelectorAll('.sport-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const searchTerm = document.getElementById('searchNews').value.toLowerCase();
+
+  filteredNoticias = noticias.filter(noticia => {
+    const matchSport = currentSport === 'todos' || noticia.sport === currentSport;
+    const matchSearch = noticia.title.toLowerCase().includes(searchTerm) || noticia.subtitle.toLowerCase().includes(searchTerm) || noticia.content.toLowerCase().includes(searchTerm);
+    return matchSport && matchSearch;
+  });
+
+  if (currentOrder === 'recent') {
+    filteredNoticias.sort((a, b) => b.dateSort - a.dateSort);
+  } else {
+    filteredNoticias.sort((a, b) => a.dateSort - b.dateSort);
+  }
+
+  updateResultsInfo();
+  renderNoticias();
+}
+
+function updateResultsInfo() {
+  const info = document.getElementById('resultsInfo');
+  const total = noticias.length;
+  const shown = filteredNoticias.length;
+
+  if (currentSport === 'todos' && document.getElementById('searchNews').value === '') {
+    info.textContent = `Mostrando todas las noticias (${shown}/${total})`;
+  } else {
+    info.textContent = `Mostrando ${shown} de ${total} noticias`;
+  }
+}
+
 const noticiasGrid = document.getElementById('noticiasGrid');
 let expandedId = null;
 
 function renderNoticias() {
   noticiasGrid.innerHTML = '';
 
-  noticias.forEach(noticia => {
+  filteredNoticias.forEach(noticia => {
     const isExpanded = expandedId === noticia.id;
     const card = document.createElement('div');
     card.className = `noticia-card ${isExpanded ? 'expanded' : ''}`;
@@ -1047,6 +1146,13 @@ function cerrarNoticia() {
   renderNoticias();
 }
 
+// Listeners para filtros
+document.getElementById('searchNews').addEventListener('input', applyFilters);
+document.getElementById('orderSelect').addEventListener('change', (e) => {
+  currentOrder = e.target.value;
+  applyFilters();
+});
+
 // Mostrar fecha actual
 document.getElementById('fecha').textContent = new Date().toLocaleDateString('es-ES', {
   weekday: 'long',
@@ -1055,7 +1161,7 @@ document.getElementById('fecha').textContent = new Date().toLocaleDateString('es
   day: 'numeric'
 });
 
-renderNoticias();
+applyFilters();
 </script>
 
 </body>
