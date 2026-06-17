@@ -347,7 +347,7 @@
 
     <div class="carousel">
       <div class="carousel-viewer">
-        <img id="carousel-img" class="carousel-img" src="fotos/multimedia/galeria-baloncesto-01.jpg" alt="Foto">
+        <img id="carousel-img" class="carousel-img" src="fotos/multimedia/galeria-baloncesto-01.jpg" alt="Galería fotográfica de deporte base escolar en Valladolid">
       </div>
       <div class="carousel-controls">
         <button class="carousel-btn" onclick="anterior()">◄ Anterior</button>
@@ -454,6 +454,7 @@ let deporteFiltro = 'todos';
 function actualizarCarrusel() {
   const foto = fotosActuales[indiceActual];
   document.getElementById('carousel-img').src = `fotos/multimedia/${foto.archivo}`;
+  document.getElementById('carousel-img').alt = `${foto.nombre}: ${foto.desc.split('.')[0]}`;  // ← ESTA LÍNEA
   document.getElementById('carousel-sport').textContent = foto.nombre;
   document.getElementById('carousel-text').textContent = foto.desc;
   document.getElementById('carousel-counter').textContent = `Foto ${indiceActual + 1} de ${fotosActuales.length}`;
